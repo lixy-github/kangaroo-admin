@@ -1,0 +1,40 @@
+@import '~iview/src/styles/index.less';
+
+@menu-dark-title: #001529;
+@menu-dark-active-bg: #000c17;
+@layout-sider-background: #001529;
+
+.custom-page {
+    margin: 20px 0;
+    text-align: right;
+}
+.custom-form {
+    width: 500px;
+    margin: 0 auto;
+}
+.suffix-label {
+    position: absolute;
+    top: 1px;
+    right: -15px;
+}
+
+.no-start {
+    .ivu-form-item {
+        .ivu-form-item-label:before {
+            display: none;
+        }
+    }
+}
+
+.total-money {
+    color: red;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+// 审核公用modal样式
+.examine-modal {
+    .ivu-modal-header, .ivu-modal-footer {
+        border: 0;
+    }
+}

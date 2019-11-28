@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta content="webkit" name="renderer">
+	<meta content="YES" name="apple-touch-fullscreen">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="-1" http-equiv="Expires">
+	<meta content="no-cache" http-equiv="pragram">
+	<meta name="screen-orientation" content="portrait">
+	<meta name="x5-orientation" content="portrait">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>MACC</title>
+</head>
+<style type="text/css">
+	body,
+	html {
+		background: #fff;
+		min-height: 100%
+	}
+
+	blockquote,
+	body,
+	dd,
+	div,
+	dl,
+	dt,
+	fieldset,
+	form,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	input,
+	li,
+	ol,
+	p,
+	pre,
+	td,
+	textarea,
+	th,
+	ul {
+		margin: 0;
+		padding: 0;
+		font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;
+		color: #333;
+		-webkit-tap-highlight-color: transparent
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0
+	}
+
+	fieldset,
+	img {
+		border: 0;
+		display: block
+	}
+
+	img {
+		width: 100%;
+		height: 100%
+	}
+
+	address,
+	b,
+	caption,
+	cite,
+	code,
+	dfn,
+	em,
+	i,
+	strong,
+	th,
+	u,
+	var {
+		font-style: normal;
+		font-weight: 400
+	}
+
+	input,
+	textarea {
+		outline: 0
+	}
+
+	ol,
+	ul {
+		list-style: none
+	}
+
+	caption,
+	th {
+		text-align: left
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-size: 100%;
+		font-weight: 400
+	}
+
+	a {
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		text-decoration: none
+	}
+
+	i {
+		font-style: normal
+	}
+
+	#backChain .solutionList .Lists:after,
+	#backChain .solutionList .Lists:before,
+	#error .errorBanner .canuser .browserWarp:after,
+	#error .errorBanner .canuser .browserWarp:before {
+		display: table;
+		content: ""
+	}
+
+	#backChain .solutionWarp .solutionHeader h2 {
+		font-size: 36px;
+		font-weight: 700;
+		line-height: 62px
+	}
+
+	#backChain .solutionList .Lists {
+		zoom: 1;
+		margin-bottom: 68px
+	}
+
+	#backChain .solutionList .imgWarp {
+		width: 40%
+	}
+
+	#backChain .solutionList .imgWarp img {
+		width: auto
+	}
+
+	#backChain .solutionList .solutionInfo {
+		padding-top: 35px;
+		width: 55%
+	}
+
+	#backChain .solutionList .solutionInfo .infos {
+		height: 32px;
+		line-height: 32px
+	}
+
+	#backChain .solutionList .solutionTitle {
+		font-size: 22px;
+		font-weight: 700;
+		height: 32px;
+		line-height: 32px;
+		margin-bottom: 35px
+	}
+
+	#error {
+		height: 980px;
+		width: 100%;
+		background-image: url(img/background.png)
+	}
+
+	#error .errorBanner {
+		width: 1200px;
+		margin: 0 auto;
+		overflow: hidden;
+		background-image: url(img/error.png);
+		height: 900px;
+		background-repeat: no-repeat;
+		background-position: 50% 36%
+	}
+
+	#error .errorBanner h2 {
+		color: #fff;
+		font-size: 52px;
+		padding-top: 96px;
+		text-align: center;
+		height: 58px;
+		line-height: 58px
+	}
+
+	#error .errorBanner .canuser .canHeader {
+		padding-top: 400px
+	}
+
+	#error .errorBanner .canuser .canHeader h3 {
+		font-size: 32px;
+		color: #fff;
+		text-align: center
+	}
+
+	#error .errorBanner .canuser .browserWarp {
+		zoom: 1;
+		padding-top: 32px
+	}
+
+	#error .errorBanner .canuser .browserWarp .list {
+		width: 20%;
+		height: 280px;
+		text-align: center;
+		float: left;
+		cursor: pointer
+	}
+
+	#error .errorBanner .canuser .browserWarp .list p {
+		color: #fff;
+		padding-top: 8px
+	}
+
+	#error .errorBanner .canuser .browserWarp .list .upload {
+		margin-top: 30px;
+		display: none
+	}
+
+	#error .errorBanner .canuser .browserWarp .list .upload span {
+		display: inline-block;
+		color: #fff;
+		width: 114px;
+		height: 36px;
+		line-height: 36px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		background: #4479c5;
+		border: 1px solid #84aede
+	}
+
+	#error .errorBanner .canuser .browserWarp .list .moren {
+		display: block
+	}
+
+	#error .errorBanner .canuser .browserWarp .list img {
+		height: auto;
+		width: auto;
+		display: inline-block;
+		text-align: center
+	}
+</style>
+
+<body>
+	<div id="error">
+		<div class="errorBanner">
+			<h2>当前浏览器暂不支持访问！！</h2>
+			<div class="canuser">
+				<div class="canHeader">
+					<h3>推荐使用以下浏览器访问</h3>
+				</div>
+				<ul class="browserWarp">
+					<li class="list">
+						<a href="https://browser.360.cn/ee/">
+							<img src="img/img-browser-logo2.43ea27ba.png" alt="" />
+							<p>360极速版</p>
+							<div class="upload">
+								<span>下载</span>
+							</div>
+						</a>
+					</li>
+					<li class="list">
+						<a href="https://www.liebao.cn/download.html">
+							<img src="img/img-browser-logo3.fcf83e3f.png" alt="" />
+							<p>猎豹</p>
+							<div class="upload">
+								<span>下载</span>
+							</div>
+						</a>
+					</li>
+					<li class="list">
+						<a href="https://www.google.cn/chrome/">
+							<img src="img/img-browser-logo1.b467761b.png" alt="" />
+							<p>谷歌</p>
+							<div class="upload moren">
+								<span>下载</span>
+							</div>
+						</a>
+					</li>
+					<li class="list">
+						<a href="https://ie.sogou.com/">
+							<img src="img/img-browser-logo4.0eb517b1.png" alt="" />
+							<p>搜狗浏览器</p>
+							<div class="upload">
+								<span>下载</span>
+							</div>
+						</a>
+					</li>
+					<li class="list">
+						<a href="http://www.maxthon.cn/">
+							<img src="img/img-browser-logo5.8b76596a.png" alt="" />
+							<p>遨游</p>
+							<div class="upload">
+								<span>下载</span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
