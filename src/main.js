@@ -12,11 +12,15 @@ import './index.less'
 
 import md5 from 'js-md5'
 import Public from '@/libs/public'
+import components from './components/globalComponents/index.js'
 
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
-
+Object.keys(components).forEach(key => {
+  var name = key.replace(/(\w)/, v => v.toUpperCase()) // 首字母大写
+  Vue.component(`ty${name}`, components[key])
+})
 /**
  * @description 注册admin内置插件
  */

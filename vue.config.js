@@ -12,8 +12,7 @@ const resolve = dir => {
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
 // iview-admin线上演示打包路径： https://file.iviewui.com/admin-dist/
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/staticAdminApp/' : '/'
-// const BASE_URL = process.env.NODE_ENV === 'production' ? '/icqbit/admin/' : '/'
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/manager/' : '/'
 
 module.exports = {
   // Project deployment base
@@ -42,7 +41,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://47.244.35.73', // jxyex 线上
+        target: 'http://192.168.1.150:8080',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
