@@ -41,7 +41,7 @@
         <Row>
           <Col span="11">
           <FormItem prop="startDate">
-            <DatePicker type="date" placeholder="年-月-日" v-model="formValidate.startDate" :disabled="formValidate.type == 'COUNT'"></DatePicker>
+            <DatePicker type="date" placeholder="年-月-日" v-model="formValidate.startDate" :disabled="formValidate.type == 'COUNT'" format="yyyy-MM-dd " @on-change="formValidate.startDate=$event"></DatePicker>
           </FormItem>
           </Col>
           <Col span="2" style="text-align: center">-</Col>
@@ -56,7 +56,7 @@
         <Row>
           <Col span="11">
           <FormItem prop="endDate">
-            <DatePicker type="date" placeholder="年-月-日" v-model="formValidate.endDate"></DatePicker>
+            <DatePicker type="date" placeholder="年-月-日" v-model="formValidate.endDate" format="yyyy-MM-dd " @on-change="formValidate.endDate=$event"></DatePicker>
           </FormItem>
           </Col>
           <Col span="2" style="text-align: center">-</Col>
@@ -85,6 +85,12 @@
       <FormItem label="发放量：" prop="number">
         <Input v-model="formValidate.number" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券发放量"></Input>
       </FormItem>
+      <FormItem label="开始/结束：" prop="status">
+        <RadioGroup v-model="formValidate.status">
+          <Radio label="OPEN">开始</Radio>
+          <Radio label="CLOSE">结束</Radio>
+        </RadioGroup>
+      </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
         <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
@@ -93,6 +99,7 @@
   </div>
 </template>
 <script>
+import _request from '@/utils/request'
 export default {
   data () {
     return {
@@ -105,7 +112,8 @@ export default {
         price: '',
         detail: '',
         number: '',
-        type: 'TERM'
+        type: 'TERM',
+        status: 'OPEN'
         // img: '',// */
 
       },
@@ -135,22 +143,22 @@ export default {
           { required: true, message: '请输入矿机型号', trigger: 'blur' }
         ]
         /* power: [
-            { required: true, message: '请输入算力', trigger: 'blur' },
-            { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-          ],
-          leaseNum: [
-            { required: true, message: '请输入租赁天数', trigger: 'blur' },
-            { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-          ],
-          monthRate: [
-            { required: true, message: '请输入利率', trigger: 'blur' }
-          ],
-          shelf: [
-            { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-          ],
-          img: [
-            { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-          ], */
+              { required: true, message: '请输入算力', trigger: 'blur' },
+              { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+            ],
+            leaseNum: [
+              { required: true, message: '请输入租赁天数', trigger: 'blur' },
+              { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+            ],
+            monthRate: [
+              { required: true, message: '请输入利率', trigger: 'blur' }
+            ],
+            shelf: [
+              { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+            ],
+            img: [
+              { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+            ], */
       }
     }
   },
@@ -169,38 +177,22 @@ export default {
     },
     // 新增/修改
     handleSubmit (name) {
-      let _data = {
-        detail: this.formValidate.detail,
-        endDate: this.formValidate.detail,
-        name: this.formValidate.name,
-        number: this.formValidate.number
-        // price: this.formValidate.price,
-        // price: this.formValidate.price,
-        // price: this.formValidate.price,
-        // price: this.formValidate.price,
-
-        /* price
-          string
-                      (query)
-          优惠券面值
-
-          startDate
-          string
-                      (query)
-          开始时间, swagger调试时间必须这种格式: Tue Dec 10 15: 00: 46 CST 2019
-
-          type */
-      }
       this.$refs[name].validate((valid) => {
         if (valid) {
-          /* _request.http(this, '/admin/coupon/add', {
-          pageIndex: this.detailPageData.pageIndex,
-          pageSize: this.detailPageData.pageSize,
-          id: this.rowId
-        }).then(res => {
-          this.detailTableData = res.data.data.dataList;
-          this.detailPageData.total = res.data.data.total
-        }) */
+          let _data = {
+            detail: this.formValidate.detail,
+            endDate: this.formValidate.endDate + this.formValidate.endTime,
+            startDate: this.formValidate.type == 'COUNT' ? '' : this.formValidate.startDate + this.formValidate.startTime,
+            name: this.formValidate.name,
+            number: this.formValidate.number,
+            price: this.formValidate.price,
+            type: this.formValidate.type,
+            status: this.formValidate.status
+          }
+          _request.http(this, '/admin/coupon/add', _data).then(res => {
+            this.$Message.success('添加成功')
+            this.$router.push('coupon-list')
+          })
         }
       })
     },

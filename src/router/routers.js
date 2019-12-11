@@ -98,6 +98,14 @@ export default [{
     // access: ['会员管理', '会员列表', '商家审核']
   },
   children: [{
+    path: 'commodity-list',
+    name: 'commodity-list',
+    meta: {
+      //    hideInMenu: true,
+      title: '商品列表'
+    },
+    component: () => import('@/view/commodity/commodity-list.vue')
+  }, {
     path: 'commodity-classify',
     name: 'commodity-classify',
     meta: {
@@ -106,15 +114,7 @@ export default [{
     },
     component: () => import('@/view/commodity/commodity-classify.vue')
   }
-    /* {
-        path: 'coupon-add',
-        name: 'coupon-add',
-        meta: {
-          //    hideInMenu: true,
-          title: '添加优惠券'
-        },
-        component: () => import('@/view/discountCoupon/coupon-add.vue')
-      }, */
+
   ]
 }
   /* {
