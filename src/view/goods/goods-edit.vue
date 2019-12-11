@@ -2,7 +2,7 @@
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
       <FormItem label="商品名称：" prop="name">
-        <Input v-model="formValidate.name" placeholder="请输入优惠券名称" style="width:300px"></Input>
+        <Input v-model="formValidate.name" placeholder="请输入商品名称" style="width:300px"></Input>
       </FormItem>
       <FormItem label="商品分类：" prop="name">
         <Select v-model="formValidate.classId" style="width:300px">
@@ -30,10 +30,10 @@
         </Upload>
       </FormItem>
       <FormItem label="商品属性：" prop="name">
-        <Input v-model="formValidate.feilds" placeholder="请输入优惠券名称" style="width:300px"></Input>
+        <Input v-model="formValidate.feilds" placeholder="请输入商品属性" style="width:300px"></Input>
       </FormItem>
       <FormItem label="售货服务：" prop="name">
-        <Input v-model="formValidate.afterService" placeholder="请输入优惠券名称" style="width:300px"></Input>
+        <Input v-model="formValidate.afterService" placeholder="请输入售货服务" style="width:300px"></Input>
       </FormItem>
       <FormItem label="商品描述：" prop="name">
         <wang-editor v-model="formValidate.description"></wang-editor>
@@ -72,11 +72,11 @@ export default {
         description: ''
 
         /* price: '',
-          detail: '',
-          number: '',
-          type: 'TERM',
-          status: 'OPEN',
-          img: '', */
+            detail: '',
+            number: '',
+            type: 'TERM',
+            status: 'OPEN',
+            img: '', */
 
       },
       ruleValidate: {
@@ -105,22 +105,22 @@ export default {
           { required: true, message: '请输入矿机型号', trigger: 'blur' }
         ]
         /* power: [
-                { required: true, message: '请输入算力', trigger: 'blur' },
-                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-              ],
-              leaseNum: [
-                { required: true, message: '请输入租赁天数', trigger: 'blur' },
-                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-              ],
-              monthRate: [
-                { required: true, message: '请输入利率', trigger: 'blur' }
-              ],
-              shelf: [
-                { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-              ],
-              img: [
-                { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-              ], */
+                  { required: true, message: '请输入算力', trigger: 'blur' },
+                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                ],
+                leaseNum: [
+                  { required: true, message: '请输入租赁天数', trigger: 'blur' },
+                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                ],
+                monthRate: [
+                  { required: true, message: '请输入利率', trigger: 'blur' }
+                ],
+                shelf: [
+                  { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+                ],
+                img: [
+                  { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+                ], */
       },
       cityList: [],
       msgCN: ''
@@ -211,9 +211,9 @@ export default {
       }
 
       /* this.$refs[name].validate((valid) => {
-          if(valid) {
-          }
-        }) */
+            if(valid) {
+            }
+          }) */
     },
     handleReset (name) {
       this.$refs[name].resetFields()

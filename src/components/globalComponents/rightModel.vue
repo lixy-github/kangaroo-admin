@@ -27,33 +27,33 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.addChannelList {
-  position: fixed;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 580px;
-  background: #fff;
-  z-index: 10;
-  overflow-y: auto;
-}
-.addChannelList::-webkit-scrollbar {
-  display: none;
-}
-.model {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  top: 0;
-  left: 0;
-  z-index: 9;
-}
-.footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
-}
+  .addChannelList {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 580px;
+    background: #fff;
+    z-index: 11;
+    overflow-y: auto;
+  }
+  .addChannelList::-webkit-scrollbar {
+    display: none;
+  }
+  .model {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+  .footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+  }
 </style>
