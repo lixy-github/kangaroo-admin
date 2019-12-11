@@ -14,12 +14,15 @@ Axios.interceptors.request.use(
     if (getToken()) {
       config.headers.common['admintoken'] = getToken()
     }
+    if (config.url.indexOf('/admin/') > -1) {
+      config.headers.MTOKEN = getToken()
+    }
     if (config.method === 'post') {
       config.data = qs.stringify(config.data)
     }
-    if (config.url.indexOf('/admin/user/login') > -1) {
+    /* if (config.url.indexOf('/admin/user/login') > -1) {
       config.headers.uuid = sessionStorage.uuid
-    }
+    } */
     return config
   },
   error => {

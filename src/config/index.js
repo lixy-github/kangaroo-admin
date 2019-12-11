@@ -23,7 +23,7 @@ export default {
   /**
    * 图片上传地址  post请求
    */
-  uploadUrl: '/admin/upload/file',
+  uploadUrl: '/web/commonfile/upload.htm',
   /**
    * @description 默认打开的首页的路由name值，默认为home
    */

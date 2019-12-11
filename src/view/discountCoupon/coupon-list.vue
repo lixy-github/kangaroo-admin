@@ -37,7 +37,7 @@
     <ty-right-model :isShow="detailsIsShow" @changeModelStatus="HandlClose(false)">
       <div slot="list">
         <!-- 弹框标题 -->
-        <div class="title">
+        <div class="modelTitle">
           <span>{{title+'领取详情'}}</span>
           <Icon type="md-close" @click="HandlClose(false)" />
         </div>
@@ -91,7 +91,7 @@ export default {
           align: 'center',
           minWidth: 150,
           render: (h, p) => {
-            return h('div', {}, p.row.createDate ? p.row.createDate : '--')
+            return h('div', {}, p.row.startDate ? p.row.startDate : '--')
           }
         },
         {
@@ -280,7 +280,6 @@ export default {
     },
     // 开始/结束
     edit (id, status) {
-      console.log(status)
       this.$Modal.confirm({
         title: '提示',
         content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
@@ -334,7 +333,7 @@ export default {
 }
 </script>
 <style lang="less">
-  .title {
+  .modelTitle {
     height: 42px;
     box-sizing: border-box;
     display: flex;

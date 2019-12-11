@@ -1,5 +1,6 @@
 import Axios from '@/libs/axios.js'
-
+import config from '@/config'
+export const imgLoadUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 // 登录
 export const login = (data) => {
   return Axios.request({
@@ -44,3 +45,5 @@ export const couponAdd = (data) => {
     method: 'post'
   })
 }
+
+/* 商品 */

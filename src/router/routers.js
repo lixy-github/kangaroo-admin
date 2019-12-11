@@ -55,7 +55,7 @@ export default [{
     component: () => import('@/view/home/home.vue')
   }]
 },
-  //   优惠券
+  //   优惠券管理
 {
   path: '/discountCoupon',
   name: 'discountCoupon',
@@ -86,10 +86,10 @@ export default [{
   }
   ]
 },
-  //   商品
+  //   商品管理
 {
-  path: '/commodity',
-  name: 'commodity',
+  path: '/goods',
+  name: 'goods',
   component: Main,
   meta: {
     title: '商品管理',
@@ -98,54 +98,73 @@ export default [{
     // access: ['会员管理', '会员列表', '商家审核']
   },
   children: [{
-    path: 'commodity-list',
-    name: 'commodity-list',
+    path: 'goods-list',
+    name: 'goods-list',
     meta: {
       //    hideInMenu: true,
       title: '商品列表'
     },
-    component: () => import('@/view/commodity/commodity-list.vue')
-  }, {
-    path: 'commodity-classify',
-    name: 'commodity-classify',
+    component: () => import('@/view/goods/goods-list.vue')
+  },
+  {
+    path: 'goods-edit',
+    name: 'goods-add',
+    meta: {
+      hideInMenu: true,
+      title: '添加商品'
+    },
+    component: () => import('@/view/goods/goods-edit.vue')
+  },
+  {
+    path: 'goods-edit/:content',
+    name: 'goods-edit',
+    meta: {
+      hideInMenu: true,
+      title: '修改商品'
+    },
+    component: () => import('@/view/goods/goods-edit.vue')
+  },
+  {
+    path: 'goods-classify',
+    name: 'goods-classify',
     meta: {
       title: '商品分类'
       // access: ['会员列表']
     },
-    component: () => import('@/view/commodity/commodity-classify.vue')
+    component: () => import('@/view/goods/goods-classify.vue')
   }
 
   ]
+},
+  //   区域管理
+{
+  path: '/district',
+  name: 'district',
+  component: Main,
+  meta: {
+    title: '区域管理',
+    icon: 'md-grid',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'district-list',
+    name: 'district-list',
+    meta: {
+      title: '区域商品'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/district/district-list.vue')
+  },
+  {
+    path: 'district-timeList',
+    name: 'district-timeList',
+    meta: {
+      title: '区域时段'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/district/district-timeList.vue')
+  }
+  ]
 }
-  /* {
-      path: '/member',
-      name: 'member',
-      component: Main,
-      meta: {
-          title: '会员管理',
-          icon: 'ios-people',
-          showAlways: true,
-          access: ['会员管理', '会员列表', '商家审核']
-      },
-      children: [
-          {
-              path: 'list',
-              name: 'member-list',
-              meta: {
-                  title: '会员列表',
-                  access: ['会员列表']
-              },
-              component: () => import('@/view/member/member-list.vue')
-          },
-          {
-              path: 'list/:id',
-              name: 'member-detail',
-              meta: {
-                  hideInMenu: true,
-                  title: '会员详情'
-              },
-              component: () => import('@/view/member/member-detail.vue')
-          },
-      ]
-  }, */
 ]

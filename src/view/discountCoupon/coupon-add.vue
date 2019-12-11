@@ -1,6 +1,6 @@
 <template>
   <div class="addMillForm">
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
 
       <!-- <FormItem label="矿机封面图：" prop="img">
         <img style="height: 50px" v-if="formValidate.img" :src="host+formValidate.img" alt />
@@ -76,14 +76,20 @@
       <FormItem label="优惠券描述：" prop="detail">
         <Input v-model="formValidate.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入优惠券描述"></Input>
       </FormItem>
-      <!-- <FormItem label="优惠券图片：" prop="img">
-        <img style="height: 50px" v-if="formValidate.img" :src="host+formValidate.img" alt />
-        <Upload :show-upload-list='false' :on-remove="onRemove" :before-upload="beforeUpload" ref="upload" :on-success="onSuccess" :action="sdbaseUrl+'/app/upload/file'">
-          <Button icon="ios-cloud-upload-outline">上传图片</Button>
-        </Upload>
-      </FormItem> -->
       <FormItem label="发放量：" prop="number">
         <Input v-model="formValidate.number" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券发放量"></Input>
+      </FormItem>
+      <FormItem label="优惠券可用图片：" prop="imageUsable">
+        <img style="height: 50px" v-if="formValidate.imageUsable" :src="formValidate.imageUsable" alt />
+        <Upload :show-upload-list='false' :before-upload="beforeUpload" ref="upload" :on-success="onSuccess" :action="imgLoadUrl+'/web/commonfile/upload.htm'">
+          <Button icon="ios-cloud-upload-outline">上传图片</Button>
+        </Upload>
+      </FormItem>
+      <FormItem label="优惠券失效图片：" prop="imageDisable">
+        <img style="height: 50px" v-if="formValidate.imageDisable" :src="formValidate.imageDisable" alt />
+        <Upload :show-upload-list='false' :before-upload="beforeUpload" ref="upload" :on-success="DisonSuccess" :action="imgLoadUrl+'/web/commonfile/upload.htm'">
+          <Button icon="ios-cloud-upload-outline">上传图片</Button>
+        </Upload>
       </FormItem>
       <FormItem label="开始/结束：" prop="status">
         <RadioGroup v-model="formValidate.status">
@@ -100,9 +106,11 @@
 </template>
 <script>
 import _request from '@/utils/request'
+import { imgLoadUrl } from '@/api/api'
 export default {
   data () {
     return {
+      imgLoadUrl,
       formValidate: {
         startDate: '',
         startTime: '',
@@ -113,8 +121,9 @@ export default {
         detail: '',
         number: '',
         type: 'TERM',
-        status: 'OPEN'
-        // img: '',// */
+        status: 'OPEN',
+        imageUsable: '', // */
+        imageDisable: ''// */
 
       },
       ruleValidate: {
@@ -141,34 +150,44 @@ export default {
         ],
         number: [
           { required: true, message: '请输入矿机型号', trigger: 'blur' }
+        ],
+        imageUsable: [
+          { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+        ],
+        imageDisable: [
+          { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
         ]
         /* power: [
-              { required: true, message: '请输入算力', trigger: 'blur' },
-              { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-            ],
-            leaseNum: [
-              { required: true, message: '请输入租赁天数', trigger: 'blur' },
-              { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-            ],
-            monthRate: [
-              { required: true, message: '请输入利率', trigger: 'blur' }
-            ],
-            shelf: [
-              { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-            ],
-            img: [
-              { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-            ], */
+                { required: true, message: '请输入算力', trigger: 'blur' },
+                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+              ],
+              leaseNum: [
+                { required: true, message: '请输入租赁天数', trigger: 'blur' },
+                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+              ],
+              monthRate: [
+                { required: true, message: '请输入利率', trigger: 'blur' }
+              ],
+              shelf: [
+                { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+              ],
+              imageUsable: [
+                { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+              ], */
       }
     }
   },
   methods: {
     // 图片上传
-    onRemove () {
-      this.formValidate.img = ''
-    },
+    /* onRemove() {
+        this.formValidate.img = ''
+      }, */
     onSuccess (r, file, list) {
-      this.formValidate.img = r.data
+      this.formValidate.imageUsable = r.data.url
+    },
+    /* 失效图片 */
+    DisonSuccess (r, file, list) {
+      this.formValidate.imageDisable = r.data.url
     },
     beforeUpload () {
       if (this.$refs.upload.fileList.length > 0) {
@@ -187,7 +206,9 @@ export default {
             number: this.formValidate.number,
             price: this.formValidate.price,
             type: this.formValidate.type,
-            status: this.formValidate.status
+            status: this.formValidate.status,
+            imageUsable: this.formValidate.imageUsable,
+            imageDisable: this.formValidate.imageDisable
           }
           _request.http(this, '/admin/coupon/add', _data).then(res => {
             this.$Message.success('添加成功')
@@ -204,7 +225,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .addMillForm {
     width: 500px;
     margin: 0 auto;
