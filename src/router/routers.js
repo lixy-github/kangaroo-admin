@@ -148,13 +148,31 @@ export default [{
     // access: ['会员管理', '会员列表', '商家审核']
   },
   children: [{
-    path: 'district-list',
-    name: 'district-list',
+    path: 'goods-putaway',
+    name: 'goods-putaway',
     meta: {
-      title: '区域商品'
+      title: '商品上架'
       // access: ['会员列表']
     },
-    component: () => import('@/view/district/district-list.vue')
+    component: () => import('@/view/district/goods-putaway.vue')
+  },
+  {
+    path: 'putaway-edit',
+    name: 'putaway-add',
+    meta: {
+      hideInMenu: true,
+      title: '添加上架商品'
+    },
+    component: () => import('@/view/district/putaway-edit.vue')
+  },
+  {
+    path: 'putaway-edit',
+    name: 'putaway-edit',
+    meta: {
+      hideInMenu: true,
+      title: '修改上架商品'
+    },
+    component: () => import('@/view/district/putaway-edit.vue')
   },
   {
     path: 'district-timeList',
