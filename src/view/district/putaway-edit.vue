@@ -115,22 +115,22 @@ export default {
           { required: true, message: '请输入矿机型号', trigger: 'blur' }
         ]
         /* power: [
-                    { required: true, message: '请输入算力', trigger: 'blur' },
-                    { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                  ],
-                  leaseNum: [
-                    { required: true, message: '请输入租赁天数', trigger: 'blur' },
-                    { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                  ],
-                  monthRate: [
-                    { required: true, message: '请输入利率', trigger: 'blur' }
-                  ],
-                  shelf: [
-                    { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-                  ],
-                  img: [
-                    { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-                  ], */
+                      { required: true, message: '请输入算力', trigger: 'blur' },
+                      { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                    ],
+                    leaseNum: [
+                      { required: true, message: '请输入租赁天数', trigger: 'blur' },
+                      { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                    ],
+                    monthRate: [
+                      { required: true, message: '请输入利率', trigger: 'blur' }
+                    ],
+                    shelf: [
+                      { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+                    ],
+                    img: [
+                      { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+                    ], */
       },
       cityList: [],
       msgCN: ''
@@ -216,9 +216,9 @@ export default {
       }
 
       /* this.$refs[name].validate((valid) => {
-              if(valid) {
-              }
-            }) */
+                if(valid) {
+                }
+              }) */
     },
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -242,12 +242,11 @@ export default {
       })
       if (this.$route.params.content) {
         let data = JSON.parse(this.$route.params.content)
-        console.log(data)
         this.formValidate = {
-          id: data.goodsid,
+          id: data.rushid,
           consumerPrice: data.consumerPrice,
           coupon: data.coupon,
-          goodsId: data.goodsId,
+          goodsId: data.goodsid,
           maxBuyNo: data.maxBuyNo,
           maxBuyNoDay: data.maxBuyNoDay,
           maxBuyNoMonth: data.maxBuyNoMonth,

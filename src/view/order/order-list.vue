@@ -19,7 +19,6 @@
         </Col>
         <Col span="1" offset="1" style="width: 200px">
         <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
-        <Button type="primary" @click="addBtn" style="margin-right:20px;">添加优惠券</Button>
         </Col>
       </Row>
     </Form>
@@ -32,27 +31,6 @@
         <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
       </div>
     </div>
-
-    <!-- 领取详情 -->
-    <ty-right-model :isShow="detailsIsShow" @changeModelStatus="HandlClose(false)">
-      <div slot="list">
-        <!-- 弹框标题 -->
-        <div class="modelTitle">
-          <span>{{title+'领取详情'}}</span>
-          <Icon type="md-close" @click="HandlClose(false)" />
-        </div>
-        <div class="content">
-          <Table :columns="detailTableColumns" :data="detailTableData" size="small" ref="table" stripe>
-          </Table>
-          <!-- 分页 -->
-          <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-              <Page :total="detailPageData.total" :current="detailPageData.pageIndex" @on-change="detailChangePage" :page-size="detailPageData.pageSize"></Page>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ty-right-model>
   </div>
 </template>
 <script>
@@ -123,32 +101,6 @@ export default {
           }
         },
         {
-          title: '未使用图片',
-          align: 'center',
-          minWidth: 120,
-          render: (h, p) => {
-            return h('img', {
-              attrs: {
-                src: p.row.imageUsable,
-                style: 'height:40px;margin-top:5px;'
-              }
-            }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-          }
-        },
-        {
-          title: '已失效图片',
-          align: 'center',
-          minWidth: 120,
-          render: (h, p) => {
-            return h('img', {
-              attrs: {
-                src: p.row.imageDisable,
-                style: 'height:40px;margin-top:5px;'
-              }
-            }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-          }
-        },
-        {
           title: '发放量',
           align: 'center',
           key: 'number',
@@ -193,23 +145,7 @@ export default {
                     this.edit(row.id, status)
                   }
                 }
-              }, status == 'OPEN' ? '结束' : '开始'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-
-                },
-                style: {
-                  marginRight: '5px',
-                  display: status == 'WAITING' ? 'none' : 'block'
-                },
-                on: {
-                  click: () => {
-                    this.viewDetails(row)
-                  }
-                }
-              }, '领取详情')
+              }, status == 'OPEN' ? '结束' : '开始')
             ])
           }
         }
@@ -219,48 +155,7 @@ export default {
         pages: 0, // 总页数
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
-      },
-      /* 领取详情 */
-      detailTableData: [],
-      detailTableColumns: [
-        {
-          title: 'id',
-          align: 'center',
-          key: 'id',
-          minWidth: 50
-        },
-        {
-          title: '电话',
-          align: 'center',
-          key: 'phone',
-          minWidth: 100
-        },
-        {
-          title: '领取时间',
-          align: 'center',
-          key: 'createDate',
-          minWidth: 100
-        },
-        {
-          title: '是否使用',
-          align: 'center',
-          minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, p.row.used == 'Y' ? '已使用' : '未使用')
-          }
-        }
-      ],
-      detailPageData: {
-        total: 0, // 总共多少数据
-        pages: 0, // 总页数
-        pageIndex: 1, // 当前页
-        pageSize: 15 // 每页数据条数
       }
-    }
-  },
-  computed: {
-    imgLoadUrl () {
-      return process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
     }
   },
   methods: {
@@ -308,35 +203,6 @@ export default {
           this.$Message.info('已取消')
         }
       })
-    },
-    /* 查看领取详情 */
-    viewDetails (row) {
-      this.HandlClose(true)
-      this.title = row.name
-      this.rowId = row.id
-      this.getDetailsData()
-    },
-    // 领取详情列表
-    getDetailsData () {
-      _request.http(this, '/admin/coupon/got/list', {
-        pageIndex: this.detailPageData.pageIndex,
-        pageSize: this.detailPageData.pageSize,
-        id: this.rowId
-      }).then(res => {
-        this.detailTableData = res.data.data.dataList
-        this.detailPageData.total = res.data.data.total
-      })
-    },
-    // 详情切换页码
-    detailChangePage (current) {
-      this.detailPageData.pageIndex = current
-      this.detailTableData = this.getDetailsData()
-    },
-    HandlClose (flag) {
-      this.detailsIsShow = flag
-    },
-    addBtn () {
-      this.$router.push('coupon-add')
     }
   },
   mounted () {
@@ -345,22 +211,4 @@ export default {
 }
 </script>
 <style lang="less">
-  .modelTitle {
-    height: 42px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #ebebeb;
-    color: #333333;
-    text-align: left;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 20px;
-    > i {
-      cursor: pointer;
-      line-height: 24px !important;
-      color: #444444;
-    }
-  }
 </style>

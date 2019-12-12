@@ -40,13 +40,13 @@
       <FormItem label="开始日期：">
         <Row>
           <Col span="11">
-          <FormItem prop="startDate">
+          <FormItem>
             <DatePicker type="date" placeholder="年-月-日" v-model="formValidate.startDate" :disabled="formValidate.type == 'COUNT'" format="yyyy-MM-dd " @on-change="formValidate.startDate=$event"></DatePicker>
           </FormItem>
           </Col>
           <Col span="2" style="text-align: center">-</Col>
           <Col span="11">
-          <FormItem prop="startTime">
+          <FormItem>
             <TimePicker type="time" placeholder="时-分-秒" v-model="formValidate.startTime" :disabled="formValidate.type == 'COUNT'"></TimePicker>
           </FormItem>
           </Col>
@@ -158,30 +158,30 @@ export default {
           { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
         ]
         /* power: [
-                { required: true, message: '请输入算力', trigger: 'blur' },
-                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-              ],
-              leaseNum: [
-                { required: true, message: '请输入租赁天数', trigger: 'blur' },
-                { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-              ],
-              monthRate: [
-                { required: true, message: '请输入利率', trigger: 'blur' }
-              ],
-              shelf: [
-                { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-              ],
-              imageUsable: [
-                { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-              ], */
+                  { required: true, message: '请输入算力', trigger: 'blur' },
+                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                ],
+                leaseNum: [
+                  { required: true, message: '请输入租赁天数', trigger: 'blur' },
+                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                ],
+                monthRate: [
+                  { required: true, message: '请输入利率', trigger: 'blur' }
+                ],
+                shelf: [
+                  { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+                ],
+                imageUsable: [
+                  { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+                ], */
       }
     }
   },
   methods: {
     // 图片上传
     /* onRemove() {
-        this.formValidate.img = ''
-      }, */
+          this.formValidate.img = ''
+        }, */
     onSuccess (r, file, list) {
       this.formValidate.imageUsable = r.data.url
     },

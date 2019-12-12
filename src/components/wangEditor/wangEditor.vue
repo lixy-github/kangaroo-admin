@@ -140,7 +140,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   .editor {
     width: 100%;
     background: #fff;

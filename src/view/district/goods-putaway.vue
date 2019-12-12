@@ -3,15 +3,20 @@
     <Form :model="formItem" :label-width="80">
       <Row style="padding-bottom: 20px;">
         <Col span="3" style="width: 250px">
-        <FormItem label="商品分类：" prop="name">
-          <Select v-model="formItem.classId">
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        <FormItem label="时间段" prop="name">
+          <Select v-model="formItem.timeid">
+            <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         </Col>
         <Col span="3" style="width: 300px">
-        <FormItem label="商品名称">
-          <Input v-model="formItem.name" placeholder="商品名称查询"></Input>
+        <FormItem label="区域">
+          <Select v-model="formItem.scope">
+            <Option value="">全部</Option>
+            <Option value="RUSH">抢购区</Option>
+            <Option value="BATCH">批发区</Option>
+            <Option value="RUSH_FIRST">消费区</Option>
+          </Select>
         </FormItem>
         </Col>
         <Col span="1" offset="1" style="width: 200px">
@@ -48,10 +53,10 @@ export default {
     }
     return {
       formItem: {
-        classId: '',
-        name: ''
+        timeid: '',
+        scope: ''
       },
-      cityList: [],
+      timeList: [],
       title: '',
       rowId: '',
       tableData: [],
@@ -60,13 +65,13 @@ export default {
           title: '商品名称',
           align: 'center',
           key: 'name',
-          minWidth: 100
+          minWidth: 120
         },
         {
           title: '商品价格',
           align: 'center',
           key: 'price',
-          minWidth: 100
+          minWidth: 90
         },
         {
           title: '消费券价格',
@@ -78,63 +83,66 @@ export default {
           title: '库存',
           align: 'center',
           key: 'stock',
-          minWidth: 100
+          minWidth: 80
         },
         {
-          title: '可抢数量',
+          title: '可抢',
           align: 'center',
           key: 'num',
-          minWidth: 100
+          minWidth: 75
         },
         {
-          title: '已抢数量',
+          title: '已抢',
           align: 'center',
           key: 'alreadyNum',
-          minWidth: 100
+          minWidth: 75
         },
         {
           title: '赠券',
           align: 'center',
           key: 'coupon',
-          minWidth: 100
+          minWidth: 80
         },
         {
           title: '邮费',
           align: 'center',
           key: 'postage',
-          minWidth: 100
+          minWidth: 80
         },
         {
           title: '最大可抢数量',
           align: 'center',
           key: 'maxBuyNo',
-          minWidth: 100
+          minWidth: 110
+        },
+        {
+          title: '时间段',
+          align: 'center',
+          key: 'hours',
+          minWidth: 80,
+          render: (h, p) => {
+            return h('div', {}, p.row.timeid ? p.row.hours + ':' + p.row.min : '--')
+          }
+        },
+        {
+          title: '区域',
+          align: 'center',
+          minWidth: 85,
+          render: (h, p) => {
+            return h('div', {}, transScope(p.row.scope))
+          }
         },
         {
           title: '每天可抢数量',
           align: 'center',
           key: 'maxBuyNoDay',
-          minWidth: 100
+          minWidth: 110
         },
         {
           title: '每月可抢数量',
           align: 'center',
           key: 'maxBuyNoMonth',
-          minWidth: 100
-        },
-        {
-          title: '时间段',
-          align: 'center',
-          key: 'className',
-          minWidth: 100
-        },
-        {
-          title: '区域',
-          align: 'center',
-          minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, transScope(p.row.scope))
-          }
+          minWidth: 110
         },
         {
           title: '操作',
@@ -170,7 +178,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.delete(row.id)
+                    this.delete(row.rushid)
                   }
                 }
               }, '下架')
@@ -189,16 +197,24 @@ export default {
   methods: {
     // 获取商品列表
     getData () {
+      this.timeList = []
       let _data = {
-        scope: '',
-        timeid: '',
+        scope: this.formItem.scope,
+        timeid: this.formItem.timeid,
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize
 
       }
-      _request.http(this, '/admin/rushpay/goods/findList', _data).then(res => {
-        this.tableData = res.data.data
-        // this.pageData.total = res.data.data.total
+      _request.http(this, '/admin/rushpay/goods/findListByPage', _data).then(res => {
+        this.tableData = res.data.data.dataList
+        this.pageData.total = res.data.data.total
+      })
+      _request.http(this, '/admin/rushpay/time/template/findList', {
+        scope: this.scope// RUSH,//抢购  BATCH,//批发
+      }).then(res => {
+        res.data.data.forEach(element => {
+          this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
+        })
       })
     },
     // 获取商品分类

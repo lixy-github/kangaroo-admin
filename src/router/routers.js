@@ -184,5 +184,88 @@ export default [{
     component: () => import('@/view/district/district-timeList.vue')
   }
   ]
+},
+  //   订单管理
+  /* {
+    path: '/order',
+    name: 'order',
+    component: Main,
+    meta: {
+      title: '订单管理',
+      icon: 'ios-list-box-outline',
+      showAlways: true
+      // access: ['会员管理', '会员列表', '商家审核']
+    },
+    children: [{
+      path: 'order-list',
+      name: 'order-list',
+      meta: {
+        title: '订单列表'
+        // access: ['会员列表']
+      },
+      component: () => import('@/view/order/order-list.vue')
+    }]
+  }, */
+  //   会员管理
+{
+  path: '/user',
+  name: 'user',
+  component: Main,
+  meta: {
+    title: '会员管理',
+    icon: 'md-person',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'user-list',
+    name: 'user-list',
+    meta: {
+      title: '用户列表'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/user/user-list.vue')
+  },
+  {
+    path: 'user-level',
+    name: 'user-level',
+    meta: {
+      title: '用户等级'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/user/user-level.vue')
+  }
+  ]
+},
+  //   内容管理
+{
+  path: '/content',
+  name: 'content',
+  component: Main,
+  meta: {
+    title: '内容管理',
+    icon: 'ios-map',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'swiper-list',
+    name: 'swiper-list',
+    meta: {
+      title: '轮播图管理'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/content/swiper-list.vue')
+  },
+  {
+    path: 'register-text',
+    name: 'register-text',
+    meta: {
+      title: '注册协议'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/content/register-text.vue')
+  }
+  ]
 }
 ]
