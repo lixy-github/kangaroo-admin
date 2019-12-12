@@ -1,42 +1,52 @@
 <template>
   <div class="addMillForm">
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-      <FormItem label="商品名称：" prop="name">
-        <Input v-model="formValidate.name" placeholder="请输入优惠券名称" style="width:300px"></Input>
-      </FormItem>
-      <FormItem label="商品分类：" prop="name">
-        <Select v-model="formValidate.classId" style="width:300px">
-          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
+      <FormItem label="商品：" prop="name">
+        <Select v-model="formValidate.goodsId" style="width:300px">
+          <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="轮播图：" prop="img">
-        <div class="demo-upload-list" v-for="(item,index) in formValidate.images" :key="index">
-          <img :src="item.url"/>
-          <div class="demo-upload-list-cover">
-            <Icon type="ios-trash-outline" @click.native="handleRemoveList(index)"></Icon>
-          </div>
-        </div>
-
-        <Upload :show-upload-list="false" :on-exceeded-size="handleMaxSize" :on-success="handleSuccessList" :format="['jpg','jpeg','png']" :max-size="2048" multiple type="drag" :action="imgLoadUrl+'/web/commonfile/upload.htm'" style="display: inline-block;width:58px;">
-          <div style="width: 58px;height:58px;line-height: 58px;">
-            <Icon type="ios-camera" size="20"></Icon>
-          </div>
-        </Upload>
+      <FormItem label="商品区域：" prop="name">
+        <Select v-model="formValidate.scope" style="width:300px">
+          <Option value="RUSH">抢购区</Option>
+          <Option value="BATCH">批发区</Option>
+          <Option value="RUSH_FIRST">消费区</Option>
+        </Select>
       </FormItem>
-      <FormItem label="封面图：" prop="img">
-        <img style="height: 100px" v-if="formValidate.coverImg" :src="formValidate.coverImg" alt />
-        <Upload :show-upload-list='false' :on-remove="coverImgonRemove" :before-upload="beforeUpload" ref="upload" :on-success="onSuccess" :action="imgLoadUrl+'/web/commonfile/upload.htm'">
-          <Button icon="ios-cloud-upload-outline">上传图片</Button>
-        </Upload>
+      <FormItem label="商品价格：" prop="name">
+        <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="商品属性：" prop="name">
-        <Input v-model="formValidate.feilds" placeholder="请输入优惠券名称" style="width:300px"></Input>
+      <FormItem label="消费券价格：" prop="name">
+        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="售货服务：" prop="name">
-        <Input v-model="formValidate.afterService" placeholder="请输入优惠券名称" style="width:300px"></Input>
+      <FormItem label="库存：" prop="name">
+        <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="商品描述：" prop="name">
-        <wang-editor v-model="formValidate.description"></wang-editor>
+      <FormItem label="可抢数量：" prop="name">
+        <Input v-model="formValidate.num" placeholder="请输入可抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <!-- <FormItem label="已抢数量：" prop="name">
+        <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem> -->
+      <FormItem label="赠券：" prop="name">
+        <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <FormItem label="邮费：" prop="name">
+        <Input v-model="formValidate.postage" placeholder="请输入邮费" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <FormItem label="最大可抢购数量：" prop="name">
+        <Input v-model="formValidate.maxBuyNo" placeholder="请输入最大可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <FormItem label="每天可抢购数量：" prop="name">
+        <Input v-model="formValidate.maxBuyNoDay" placeholder="请输入每天可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <FormItem label="每月可抢购数量：" prop="name">
+        <Input v-model="formValidate.maxBuyNoMonth" placeholder="请输入每月可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem>
+      <FormItem label="时间段：" prop="name">
+        <Select v-model="formValidate.timeid" style="width:300px">
+          <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
@@ -56,6 +66,9 @@ export default {
   },
   data () {
     return {
+      goodsList: [],
+      timeList: [],
+      /*  */
       imgLoadUrl,
       imageUrl: '',
       hasImage: false,
@@ -63,21 +76,18 @@ export default {
       // imageUrlList: [],
       /* **************** */
       formValidate: {
-        name: '',
-        classId: '',
-        images: [],
-        coverImg: '',
-        feilds: '',
-        afterService: '',
-        description: ''
-
-        /* price: '',
-            detail: '',
-            number: '',
-            type: 'TERM',
-            status: 'OPEN',
-            img: '', */
-
+        consumerPrice: '',
+        coupon: '',
+        goodsId: '',
+        maxBuyNo: '',
+        maxBuyNoDay: '',
+        maxBuyNoMonth: '',
+        num: '',
+        postage: '',
+        price: '',
+        scope: '',
+        stock: '',
+        timeid: ''
       },
       ruleValidate: {
         startDate: [
@@ -105,22 +115,22 @@ export default {
           { required: true, message: '请输入矿机型号', trigger: 'blur' }
         ]
         /* power: [
-                  { required: true, message: '请输入算力', trigger: 'blur' },
-                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                ],
-                leaseNum: [
-                  { required: true, message: '请输入租赁天数', trigger: 'blur' },
-                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                ],
-                monthRate: [
-                  { required: true, message: '请输入利率', trigger: 'blur' }
-                ],
-                shelf: [
-                  { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-                ],
-                img: [
-                  { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-                ], */
+                    { required: true, message: '请输入算力', trigger: 'blur' },
+                    { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                  ],
+                  leaseNum: [
+                    { required: true, message: '请输入租赁天数', trigger: 'blur' },
+                    { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+                  ],
+                  monthRate: [
+                    { required: true, message: '请输入利率', trigger: 'blur' }
+                  ],
+                  shelf: [
+                    { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
+                  ],
+                  img: [
+                    { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+                  ], */
       },
       cityList: [],
       msgCN: ''
@@ -177,81 +187,97 @@ export default {
     handleSubmit (name) {
       if (this.$route.params.content) {
         // 修改
-        let _data = {
-          id: this.formValidate.id,
-          afterService: this.formValidate.afterService,
-          classId: this.formValidate.classId,
-          coverImg: this.formValidate.coverImg,
-          description: this.formValidate.description,
-          feilds: this.formValidate.feilds,
-          images: JSON.stringify(this.formValidate.images),
-          name: this.formValidate.name
-        }
-        _request.http(this, '/admin/goods/modify', _data).then(res => {
+        _request.http(this, '/admin/rushpay/goods/modify', this.formValidate).then(res => {
           this.$Message.success('修改成功')
           this.$router.push({
-            name: 'goods-list'
+            name: 'goods-putaway'
           })
         })
       } else {
-        // 添加
+        //   // 添加
         let _data = {
-          afterService: this.formValidate.afterService,
-          classId: this.formValidate.classId,
-          coverImg: this.formValidate.coverImg,
-          description: this.formValidate.description,
-          feilds: this.formValidate.feilds,
-          images: JSON.stringify(this.formValidate.images),
-          name: this.formValidate.name
+          consumerPrice: this.formValidate.consumerPrice,
+          coupon: this.formValidate.coupon,
+          goodsId: this.formValidate.goodsId,
+          maxBuyNo: this.formValidate.maxBuyNo,
+          maxBuyNoDay: this.formValidate.maxBuyNoDay,
+          maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
+          num: this.formValidate.num,
+          postage: this.formValidate.postage,
+          price: this.formValidate.price,
+          scope: this.formValidate.scope,
+          stock: this.formValidate.stock,
+          timeid: this.formValidate.timeid
         }
-        _request.http(this, '/admin/goods/add', _data).then(res => {
+        _request.http(this, '/admin/rushpay/goods/add', _data).then(res => {
           this.$Message.success('添加成功')
-          this.$router.push('goods-list')
+          this.$router.push('goods-putaway')
         })
       }
 
       /* this.$refs[name].validate((valid) => {
-            if(valid) {
-            }
-          }) */
+              if(valid) {
+              }
+            }) */
     },
     handleReset (name) {
       this.$refs[name].resetFields()
     },
-    getClass () {
-      this.cityList = []
-      _request.http(this, '/admin/goods/class/findList').then(res => {
+    getGoodsList () {
+      this.goodsList = []
+      this.timeList = []
+      let _data = {
+        pageIndex: 1,
+        pageSize: 2000
+      }
+      _request.http(this, '/admin/goods/findList', _data).then(res => {
+        res.data.data.dataList.forEach(element => {
+          this.goodsList.push({ 'value': element.id, 'label': element.name })
+        })
+      })
+      _request.http(this, '/admin/rushpay/time/template/findList').then(res => {
         res.data.data.forEach(element => {
-          this.cityList.push({ 'value': element.id, 'label': element.name })
+          this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
         })
       })
       if (this.$route.params.content) {
         let data = JSON.parse(this.$route.params.content)
+        console.log(data)
         this.formValidate = {
-          id: data.id,
-          name: data.name,
-          classId: data.classId,
-          images: JSON.parse(data.images),
-          coverImg: data.coverImg,
-          feilds: data.feilds,
-          afterService: data.afterService,
-          description: data.description
+          id: data.goodsid,
+          consumerPrice: data.consumerPrice,
+          coupon: data.coupon,
+          goodsId: data.goodsId,
+          maxBuyNo: data.maxBuyNo,
+          maxBuyNoDay: data.maxBuyNoDay,
+          maxBuyNoMonth: data.maxBuyNoMonth,
+          num: data.num,
+          postage: data.postage,
+          price: data.price,
+          scope: data.scope,
+          stock: data.stock,
+          timeid: data.timeid
         }
       } else {
         this.formValidate = {
-          name: '',
-          classId: '',
-          images: [],
-          coverImg: '',
-          feilds: '',
-          afterService: '',
-          description: ''
+          consumerPrice: '',
+          coupon: '',
+          goodsId: '',
+          maxBuyNo: '',
+          maxBuyNoDay: '',
+          maxBuyNoMonth: '',
+          num: '',
+          postage: '',
+          price: '',
+          scope: '',
+          stock: '',
+          timeid: ''
         }
       }
     }
   },
   mounted () {
-    this.getClass()
+    this.getGoodsList()
   },
   created () {
   }

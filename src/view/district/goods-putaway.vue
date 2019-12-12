@@ -1,9 +1,8 @@
 <template>
   <div>
-    <!-- <DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker> -->
     <Form :model="formItem" :label-width="80">
       <Row style="padding-bottom: 20px;">
-        <!-- <Col span="3" style="width: 250px">
+        <Col span="3" style="width: 250px">
         <FormItem label="商品分类：" prop="name">
           <Select v-model="formItem.classId">
             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -14,9 +13,9 @@
         <FormItem label="商品名称">
           <Input v-model="formItem.name" placeholder="商品名称查询"></Input>
         </FormItem>
-        </Col> -->
+        </Col>
         <Col span="1" offset="1" style="width: 200px">
-        <!-- <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button> -->
+        <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
         <Button type="primary" @click="addBtn" style="margin-right:20px;">添加上架商品</Button>
         </Col>
       </Row>
@@ -174,7 +173,7 @@ export default {
                     this.delete(row.id)
                   }
                 }
-              }, '删除')
+              }, '下架')
             ])
           }
         }
@@ -211,30 +210,31 @@ export default {
         })
       })
     },
-    // 删除商品
+    // 下架商品
     delete (id) {
-      /* this.$Modal.confirm({
-          title: '提示',
-          content: `确定要删除此商品吗？`,
-          onOk: () => {
-            _request.http(this, '/admin/goods/remove', {
-              id: id
-            }).then(res => {
-              this.$Message.success('删除成功')
-              this.getData()
-            })
-          },
-          onCancel: () => {
-            this.$Message.info('已取消')
-          }
-        }) */
+      this.$Modal.confirm({
+        title: '提示',
+        content: `确定要下架此商品吗？`,
+        onOk: () => {
+          _request.http(this, '/admin/rushpay/goods/remove', {
+            id: id
+          }).then(res => {
+            this.$Message.success('下架成功')
+            this.getData()
+          })
+        },
+        onCancel: () => {
+          this.$Message.info('已取消')
+        }
+      })
     },
     // 编辑
     edit (row) {
-      /* this.$router.push({
-          name: 'goods-edit',
-          params: { content: JSON.stringify(row) }
-        }) */
+      console.log(row)
+      this.$router.push({
+        name: 'putaway-edit',
+        params: { content: JSON.stringify(row) }
+      })
     },
     // 搜索
     onSearch () {
@@ -247,7 +247,7 @@ export default {
       this.tableData = this.mockTableData()
     },
     addBtn () {
-      // this.$router.push('putaway-edit')
+      this.$router.push('putaway-edit')
     }
   },
   mounted () {

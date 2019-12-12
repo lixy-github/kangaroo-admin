@@ -223,7 +223,6 @@ export default {
         name: this.formItem.name,
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize
-
       }
       _request.http(this, '/admin/goods/findList', _data).then(res => {
         this.tableData = res.data.data.dataList
@@ -359,13 +358,13 @@ export default {
         margin: 10px 10px 10px 0;
       }
       /* .border {
-                                                        display: inline-block;
-                                                        width: 10px;
-                                                        height: 10px;
-                                                        background: #2d8cf0;
-                                                        border-radius: 50%;
-                                                        margin-right: 20px;
-                                                      } */
+                                                          display: inline-block;
+                                                          width: 10px;
+                                                          height: 10px;
+                                                          background: #2d8cf0;
+                                                          border-radius: 50%;
+                                                          margin-right: 20px;
+                                                        } */
     }
   }
 </style>

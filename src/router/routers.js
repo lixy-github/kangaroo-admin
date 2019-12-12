@@ -166,7 +166,7 @@ export default [{
     component: () => import('@/view/district/putaway-edit.vue')
   },
   {
-    path: 'putaway-edit',
+    path: 'putaway-edit/:content',
     name: 'putaway-edit',
     meta: {
       hideInMenu: true,
