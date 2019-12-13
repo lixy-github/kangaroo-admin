@@ -45,5 +45,21 @@ export const couponAdd = (data) => {
     method: 'post'
   })
 }
+// 获取注册协议
+export const registerAgreementread = (data) => {
+  return Axios.request({
+    url: '/admin/contentBanner/registerAgreement/read',
+    data: data,
+    method: 'post'
+  })
+}
+// 修改注册协议
+export const registerAgreementupdate = (data) => {
+  return Axios.request({
+    url: '/admin/contentBanner/registerAgreement/update',
+    data: data,
+    method: 'post'
+  })
+}
 
 /* 商品 */

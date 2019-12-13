@@ -19,7 +19,7 @@
         </Col>
         <Col span="1" offset="1" style="width: 200px">
         <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
-        <Button type="primary" @click="addBtn" style="margin-right:20px;">添加轮播图</Button>
+        <Button type="primary" @click="addBtn('formValidate')" style="margin-right:20px;">添加轮播图</Button>
         </Col>
       </Row>
     </Form>
@@ -34,20 +34,20 @@
     </div>
     <!-- 编辑轮播图 -->
     <Modal v-model="modal" :title="title">
-      <Form :label-width="100" v-model="formValidate" ref="formValidate" :rules="ruleValidate">
+      <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
         <FormItem label="商品：" prop="name">
           <Select v-model="formValidate.name" style="width:300px">
             <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
-        <FormItem label="商品区域：" prop="name">
+        <FormItem label="商品区域：" prop="scope">
           <Select v-model="formValidate.scope" style="width:300px">
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
             <Option value="RUSH_FIRST">消费区</Option>
           </Select>
         </FormItem>
-        <FormItem label="图片：">
+        <FormItem label="图片：" prop="url">
           <img style="height: 100px" v-if="formValidate.url" :src="formValidate.url" alt />
           <Upload :show-upload-list='false' :on-remove="coverImgonRemove" :before-upload="beforeUpload" ref="upload" :on-success="onSuccess" :action="imgLoadUrl+'/web/commonfile/upload.htm'">
             <Button icon="ios-cloud-upload-outline">上传图片</Button>
@@ -62,9 +62,9 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
 import { imgLoadUrl } from '@/api/api'
-import config from '@/config'
+import { contentBannerlist, goodsfindList, contentBannerdelete, contentBanneradd } from '@/api/content'
+
 export default {
   name: 'discountCoupon',
   data () {
@@ -91,7 +91,13 @@ export default {
       },
       ruleValidate: {
         name: [
-          { required: true, message: '请输入等级名称', trigger: 'blur' }
+          { required: true, message: '请选择商品', trigger: 'change' }
+        ],
+        scope: [
+          { required: true, message: '请选择商品区域', trigger: 'change' }
+        ],
+        url: [
+          { required: true, type: 'string', message: '请上传轮播图', trigger: 'change' }
         ]
       },
       rowId: '',
@@ -147,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '5px',
-                  },
-                  on: {
-                    click: () => {
-                      this.edit(row)
+                    props: {
+                      type: 'primary',
+                      size: 'small'
+                    },
+                    style: {
+                      marginRight: '5px',
+                    },
+                    on: {
+                      click: () => {
+                        this.edit(row)
+                      }
                     }
-                  }
-                }, '编辑'), */
+                  }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',
@@ -190,7 +196,6 @@ export default {
   methods: {
     // 获取
     getData () {
-      this.agentLevelList = []
       let startDate = this.formItem.time[0]
       let endDate = this.formItem.time[1]
       let _data = {
@@ -200,9 +205,13 @@ export default {
         startDate: startDate ? startDate + ' 00:00:00' : '',
         scope: this.formItem.scope
       }
-      _request.http(this, '/admin/contentBanner/list', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      contentBannerlist(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 搜索
@@ -216,18 +225,21 @@ export default {
       this.tableData = this.mockTableData()
     },
     getGoodsList () {
-      _request.http(this, '/admin/rushpay/goods/findList').then(res => {
-        res.data.data.forEach(element => {
-          this.goodsList.push({ 'value': element.rushid, 'label': element.name })
-        })
+      goodsfindList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.goodsList.push({ 'value': element.rushid.toString(), 'label': element.name })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 新增
-    addBtn () {
+    addBtn (name) {
       this.modal = true
       this.title = '添加轮播图'
-      this.formValidate.level = ''
-      this.formValidate.levelValue = ''
+      this.$refs[name].resetFields()
     },
     // 删除轮播
     delete (row) {
@@ -235,11 +247,13 @@ export default {
         title: '提示',
         content: `确定要删除此轮播图吗？`,
         onOk: () => {
-          _request.http(this, '/admin/contentBanner/delete', {
-            id: row.id
-          }).then(res => {
-            this.$Message.success('删除成功')
-            this.getData()
+          contentBannerdelete({ id: row.id }).then(res => {
+            if (res.data.code == '0') {
+              this.$Message.success('删除成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {
@@ -255,43 +269,42 @@ export default {
       this.formValidate.level = row.level
       this.formValidate.levelValue = row.levelValue
     },
-    // 新增
-    addBtn () {
-      this.modal = true
-      this.title = '添加轮播图'
-      this.formValidate = {
-        scope: '',
-        name: '',
-        url: ''
-      }
-    },
     ok (name) {
-      // this.$refs[name].validate((valid) => {
-      //   if(valid) {
-      if (this.title == '添加轮播图') {
-        _request.http(this, '/admin/contentBanner/add', {
-          name: this.formValidate.name,
-          scope: this.formValidate.scope,
-          url: this.formValidate.url
-        }).then(res => {
-          this.modal = false
-          this.$Message.success('添加成功')
-          this.getData()
-        })
-      } else {
-        _request.http(this, '/admin/user/userLevel/update', {
-          id: this.rowId,
-          level: this.formValidate.level,
-          levelValue: this.formValidate.levelValue
-        }).then(res => {
-          this.modal = false
-          this.$Message.success('修改成功')
-          this.getData()
-        })
-      }
-
-      //   }
-      // })
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          if (this.title == '添加轮播图') {
+            contentBanneradd({
+              name: this.formValidate.name,
+              scope: this.formValidate.scope,
+              url: this.formValidate.url
+            }).then(res => {
+              if (res.data.code == '0') {
+                this.modal = false
+                this.$Message.success('添加成功')
+                this.getData()
+              } else {
+                this.modal = false
+                this.$Message.error(res.data.msg)
+              }
+            })
+          } else {
+            /* contentBannerupdate({
+                name: this.formValidate.name,
+                scope: this.formValidate.scope,
+                url: this.formValidate.url
+              }).then(res => {
+                if(res.data.code == '0') {
+                  this.modal = false
+                  this.$Message.success('添加成功')
+                  this.getData()
+                } else {
+                  this.modal = false
+                  this.$Message.error(res.data.msg);
+                }
+              }); */
+          }
+        }
+      })
     },
     // 图上传
     coverImgonRemove () {

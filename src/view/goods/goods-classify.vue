@@ -32,9 +32,8 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import { couponList } from '@/api/api'
-import config from '@/config'
+import { classfindList } from '@/api/district'
+import { goodsclassmodify, goodsclassadd, goodsclassremove } from '@/api/goods'
 export default {
   name: 'goodsClassify',
   data () {
@@ -100,16 +99,15 @@ export default {
       ]
     }
   },
-  computed: {
-    imgLoadUrl () {
-      return process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-    }
-  },
   methods: {
     // 获取
     getData () {
-      _request.http(this, '/admin/goods/class/findList').then(res => {
-        this.tableData = res.data.data
+      classfindList().then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 搜索
@@ -135,21 +133,29 @@ export default {
         return
       }
       if (this.title == '添加商品分类') {
-        _request.http(this, '/admin/goods/class/add', {
+        goodsclassadd({
           name: this.formItem.name
         }).then(res => {
-          this.modal = false
-          this.$Message.success('添加成功')
-          this.getData()
+          if (res.data.code == '0') {
+            this.modal = false
+            this.$Message.success('添加成功')
+            this.getData()
+          } else {
+            this.$Message.error(res.data.msg)
+          }
         })
       } else {
-        _request.http(this, '/admin/goods/class/modify', {
+        goodsclassmodify({
           id: this.rowId,
           name: this.formItem.name
         }).then(res => {
-          this.modal = false
-          this.$Message.success('修改成功')
-          this.getData()
+          if (res.data.code == '0') {
+            this.modal = false
+            this.$Message.success('修改成功')
+            this.getData()
+          } else {
+            this.$Message.error(res.data.msg)
+          }
         })
       }
     },
@@ -159,11 +165,15 @@ export default {
         title: '提示',
         content: `确定要删除此商品分类吗？`,
         onOk: () => {
-          _request.http(this, '/admin/goods/class/remove', {
+          goodsclassremove({
             id: id
           }).then(res => {
-            this.$Message.success('删除成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('删除成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {

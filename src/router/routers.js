@@ -186,26 +186,26 @@ export default [{
   ]
 },
   //   订单管理
-  /* {
-    path: '/order',
-    name: 'order',
-    component: Main,
+{
+  path: '/order',
+  name: 'order',
+  component: Main,
+  meta: {
+    title: '订单管理',
+    icon: 'ios-list-box-outline',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'order-list',
+    name: 'order-list',
     meta: {
-      title: '订单管理',
-      icon: 'ios-list-box-outline',
-      showAlways: true
-      // access: ['会员管理', '会员列表', '商家审核']
+      title: '订单列表'
+      // access: ['会员列表']
     },
-    children: [{
-      path: 'order-list',
-      name: 'order-list',
-      meta: {
-        title: '订单列表'
-        // access: ['会员列表']
-      },
-      component: () => import('@/view/order/order-list.vue')
-    }]
-  }, */
+    component: () => import('@/view/order/order-list.vue')
+  }]
+},
   //   会员管理
 {
   path: '/user',

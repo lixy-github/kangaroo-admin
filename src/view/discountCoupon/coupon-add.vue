@@ -1,37 +1,7 @@
 <template>
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
-
-      <!-- <FormItem label="矿机封面图：" prop="img">
-        <img style="height: 50px" v-if="formValidate.img" :src="host+formValidate.img" alt />
-        <Upload :show-upload-list='false' :on-remove="onRemove" :before-upload="beforeUpload" ref="upload" :on-success="onSuccess" :action="sdbaseUrl+'/app/upload/file'">
-          <Button icon="ios-cloud-upload-outline">上传图片</Button>
-        </Upload>
-      </FormItem>
-      <FormItem label="矿机名称：" prop="name">
-        <Input v-model="formValidate.name" placeholder="请输入矿机名称"></Input>
-      </FormItem>
-      <FormItem label="矿机型号：" prop="model">
-        <Input v-model="formValidate.model" placeholder="请输入矿机型号"></Input>
-      </FormItem>
-      <FormItem label="租赁天数：" prop="leaseNum">
-        <Input v-model="formValidate.leaseNum" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入租赁天数"></Input>
-      </FormItem>
-      <FormItem label="算力：" prop="power">
-        <Input v-model="formValidate.power" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入算力">
-        <span style="color: #666;font-weight: bold" slot="append">TH / S</span>
-        </Input>
-      </FormItem>
-      <FormItem label="利率：" prop="monthRate">
-        <Input v-model="formValidate.monthRate" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入利率"></Input>
-      </FormItem>
-      <FormItem label="状态：" prop="shelf">
-        <RadioGroup v-model="formValidate.shelf">
-          <Radio label="1">上架</Radio>
-          <Radio label="0">下架</Radio>
-        </RadioGroup>
-      </FormItem> -->
-      <FormItem label="有效期类型：" prop="shelf">
+      <FormItem label="有效期类型：">
         <RadioGroup v-model="formValidate.type">
           <Radio label="COUNT">倒计时</Radio>
           <Radio label="TERM">时间段</Radio>
@@ -105,8 +75,8 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
 import { imgLoadUrl } from '@/api/api'
+import { couponadd } from '@/api/discountCoupon'
 export default {
   data () {
     return {
@@ -127,61 +97,40 @@ export default {
 
       },
       ruleValidate: {
-        startDate: [
-          { required: true, message: '请选择开始日期', trigger: 'change' }
-        ],
-        startTime: [
-          { required: true, message: '请选择开始日期', trigger: 'blur' }
-        ],
         endDate: [
           { required: true, message: '请选择结束日期', trigger: 'change' }
         ],
         endTime: [
-          { required: true, message: '请选择结束日期', trigger: 'blur' }
+          { required: true, message: '请选择结束日期', trigger: 'change' }
         ],
         name: [
-          { required: true, message: '请输入矿机名称', trigger: 'blur' }
+          { required: true, message: '请输入优惠券名称', trigger: 'blur' }
         ],
         price: [
-          { required: true, message: '请输入矿机型号', trigger: 'blur' }
+          { required: true, message: '请输入优惠券面值', trigger: 'blur' },
+          { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         detail: [
-          { required: true, message: '请输入矿机型号', trigger: 'blur' }
+          { required: true, message: '请输入优惠券描述', trigger: 'blur' }
         ],
         number: [
-          { required: true, message: '请输入矿机型号', trigger: 'blur' }
+          { required: true, message: '请输入优惠券发放量', trigger: 'blur' },
+          { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         imageUsable: [
-          { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+          { required: true, type: 'string', message: '请上传优惠券可用图片', trigger: 'change' }
         ],
         imageDisable: [
-          { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
+          { required: true, type: 'string', message: '请上传优惠券失效图片', trigger: 'change' }
         ]
-        /* power: [
-                  { required: true, message: '请输入算力', trigger: 'blur' },
-                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                ],
-                leaseNum: [
-                  { required: true, message: '请输入租赁天数', trigger: 'blur' },
-                  { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
-                ],
-                monthRate: [
-                  { required: true, message: '请输入利率', trigger: 'blur' }
-                ],
-                shelf: [
-                  { required: true, type: 'string', message: '请选择状态', trigger: 'change' }
-                ],
-                imageUsable: [
-                  { required: true, type: 'string', message: '请上传矿机封面图', trigger: 'change' }
-                ], */
       }
     }
   },
   methods: {
     // 图片上传
     /* onRemove() {
-          this.formValidate.img = ''
-        }, */
+            this.formValidate.img = ''
+          }, */
     onSuccess (r, file, list) {
       this.formValidate.imageUsable = r.data.url
     },
@@ -196,8 +145,16 @@ export default {
     },
     // 新增/修改
     handleSubmit (name) {
+      console.log(this.formValidate.startDate)
       this.$refs[name].validate((valid) => {
         if (valid) {
+          if (this.formValidate.type != 'COUNT') {
+            /* 不等于倒计时验证开始时间 */
+            if (this.formValidate.startDate == '' || this.formValidate.startTime == '') {
+              this.$Message.info('请选择开始日期')
+              return
+            }
+          }
           let _data = {
             detail: this.formValidate.detail,
             endDate: this.formValidate.endDate + this.formValidate.endTime,
@@ -210,9 +167,13 @@ export default {
             imageUsable: this.formValidate.imageUsable,
             imageDisable: this.formValidate.imageDisable
           }
-          _request.http(this, '/admin/coupon/add', _data).then(res => {
-            this.$Message.success('添加成功')
-            this.$router.push('coupon-list')
+          couponadd(_data).then(res => {
+            if (res.data.code == '0') {
+              this.$Message.success('添加成功')
+              this.$router.push('coupon-list')
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         }
       })

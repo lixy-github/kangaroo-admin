@@ -56,9 +56,7 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import { couponList } from '@/api/api'
-import config from '@/config'
+import { couponList, couponswitch, coupongotList } from '@/api/discountCoupon'
 export default {
   name: 'discountCoupon',
   data () {
@@ -258,11 +256,6 @@ export default {
       }
     }
   },
-  computed: {
-    imgLoadUrl () {
-      return process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-    }
-  },
   methods: {
     // 获取
     getData () {
@@ -275,9 +268,13 @@ export default {
         pageSize: this.pageData.pageSize,
         type: this.formItem.type// 类型
       }
-      _request.http(this, '/admin/coupon/list', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      couponList(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 搜索
@@ -296,12 +293,16 @@ export default {
         title: '提示',
         content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
         onOk: () => {
-          _request.http(this, '/admin/coupon/switch', {
+          couponswitch({
             id: id,
             status: status == 'OPEN' ? 'CLOSE' : 'OPEN'
           }).then(res => {
-            this.$Message.success('操作成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('操作成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {
@@ -318,13 +319,17 @@ export default {
     },
     // 领取详情列表
     getDetailsData () {
-      _request.http(this, '/admin/coupon/got/list', {
+      coupongotList({
         pageIndex: this.detailPageData.pageIndex,
         pageSize: this.detailPageData.pageSize,
         id: this.rowId
       }).then(res => {
-        this.detailTableData = res.data.data.dataList
-        this.detailPageData.total = res.data.data.total
+        if (res.data.code == '0') {
+          this.detailTableData = res.data.data.dataList
+          this.detailPageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 详情切换页码

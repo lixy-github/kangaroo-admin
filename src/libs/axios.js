@@ -6,7 +6,7 @@ import {
   getToken
 } from '@/libs/util'
 Axios.defaults.timeout = 10000 // 响应时间
-// Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro // 配置接口地址
+Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro // 配置接口地址
 
 // 添加一个请求拦截器
 Axios.interceptors.request.use(
@@ -18,6 +18,12 @@ Axios.interceptors.request.use(
       config.headers.MTOKEN = getToken()
     }
     if (config.method === 'post') {
+      let _data = config.data
+      for (var key in _data) {
+        if (_data[key] == '') {
+          delete _data[key]
+        }
+      }
       config.data = qs.stringify(config.data)
     }
     /* if (config.url.indexOf('/admin/user/login') > -1) {

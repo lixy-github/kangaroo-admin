@@ -2,7 +2,7 @@
   <div>
     <Row style="padding-bottom: 20px;">
       <Col span="1" offset="1" style="width: 200px">
-      <Button type="primary" @click="addBtn" style="margin-right:20px;">添加用户等级</Button>
+      <Button type="primary" @click="addBtn('formValidate')" style="margin-right:20px;">添加用户等级</Button>
       </Col>
     </Row>
     <!-- 表格 -->
@@ -16,25 +16,23 @@
     </div>
     <!-- 代理级别 -->
     <Modal v-model="modal" :title="title">
-      <Form :label-width="100" v-model="formValidate" ref="formValidate" :rules="ruleValidate">
-        <FormItem label="等级名称：">
-          <Input v-model="formValidate.level" placeholder="请输入等级名称"></Input>
+      <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+        <FormItem label="等级：" prop="level">
+          <Input v-model="formValidate.level" placeholder="请输入等级" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
         </FormItem>
-        <FormItem label="等级经验值：">
+        <FormItem label="等级经验值：" prop="levelValue">
           <Input v-model="formValidate.levelValue" placeholder="请输入等级经验值" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
         </FormItem>
       </Form>
       <div slot="footer">
         <Button type="text" size="large" @click="modal = false">取消</Button>
-        <Button type="primary" size="large" @click="ok('formValidate')">确定</Button>
+        <Button type="primary" size="large" @click="handleSubmit('formValidate')">确定</Button>
       </div>
     </Modal>
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import { couponList } from '@/api/api'
-import config from '@/config'
+import { userLevelList, userLeveldelete, userLeveladd, userLevelupdate } from '@/api/user'
 export default {
   name: 'discountCoupon',
   data () {
@@ -46,11 +44,12 @@ export default {
       },
       ruleValidate: {
         level: [
-          { required: true, message: '请输入等级名称', trigger: 'blur' }
+          { required: true, message: '请输入等级', trigger: 'blur' },
+          { pattern: /^\+?[0-9]\d*$/, message: '请输入整数', trigger: 'blur' }
         ],
         levelValue: [
-          { required: true, message: '请输入等级经验值', trigger: 'blur' }
-          // { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+          { required: true, message: '请输入等级经验值', trigger: 'blur' },
+          { pattern: /^\+?[0-9]\d*$/, message: '请输入整数', trigger: 'blur' }
         ]
       },
       rowId: '',
@@ -68,7 +67,7 @@ export default {
           minWidth: 100
         },
         {
-          title: '等级名称',
+          title: '等级',
           align: 'center',
           key: 'level',
           minWidth: 80
@@ -131,9 +130,13 @@ export default {
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize
       }
-      _request.http(this, '/admin/user/userLevel/list', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      userLevelList(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 切换页码
@@ -142,23 +145,28 @@ export default {
       this.tableData = this.mockTableData()
     },
     // 新增
-    addBtn () {
+    addBtn (name) {
       this.modal = true
       this.title = '添加用户等级'
-      this.formValidate.level = ''
-      this.formValidate.levelValue = ''
+      this.$refs[name].resetFields()
+      // this.formValidate.level = ''
+      // this.formValidate.levelValue = ''
     },
-    // 查看资金
+    // 删除等级
     delete (row) {
       this.$Modal.confirm({
         title: '提示',
         content: `确定要删除此等级吗？`,
         onOk: () => {
-          _request.http(this, '/admin/user/userLevel/delete', {
+          userLeveldelete({
             id: row.id
           }).then(res => {
-            this.$Message.success('删除成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('删除成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {
@@ -174,32 +182,41 @@ export default {
       this.formValidate.level = row.level
       this.formValidate.levelValue = row.levelValue
     },
-    ok (name) {
-      // this.$refs[name].validate((valid) => {
-      //   if(valid) {
-      if (this.title == '添加用户等级') {
-        _request.http(this, '/admin/user/userLevel/add', {
-          level: this.formValidate.level,
-          levelValue: this.formValidate.levelValue
-        }).then(res => {
-          this.modal = false
-          this.$Message.success('添加成功')
-          this.getData()
-        })
-      } else {
-        _request.http(this, '/admin/user/userLevel/update', {
-          id: this.rowId,
-          level: this.formValidate.level,
-          levelValue: this.formValidate.levelValue
-        }).then(res => {
-          this.modal = false
-          this.$Message.success('修改成功')
-          this.getData()
-        })
-      }
-
-      //   }
-      // })
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          if (this.title == '添加用户等级') {
+            userLeveladd({
+              level: this.formValidate.level,
+              levelValue: this.formValidate.levelValue
+            }).then(res => {
+              if (res.data.code == '0') {
+                this.modal = false
+                this.$Message.success('添加成功')
+                this.getData()
+              } else {
+                this.modal = false
+                this.$Message.error(res.data.msg)
+              }
+            })
+          } else {
+            userLevelupdate({
+              id: this.rowId,
+              level: this.formValidate.level,
+              levelValue: this.formValidate.levelValue
+            }).then(res => {
+              if (res.data.code == '0') {
+                this.modal = false
+                this.$Message.success('修改成功')
+                this.getData()
+              } else {
+                this.modal = false
+                this.$Message.error(res.data.msg)
+              }
+            })
+          }
+        }
+      })
     }
   },
   mounted () {

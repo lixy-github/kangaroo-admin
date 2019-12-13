@@ -92,9 +92,7 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import { couponList } from '@/api/api'
-import config from '@/config'
+import { userlist, agentLevelList, userinfo, agentLevelupdate, controlupdate } from '@/api/user'
 export default {
   name: 'discountCoupon',
   data () {
@@ -269,17 +267,26 @@ export default {
         parentId: this.formItem.parentId, // 上级Id
         phone: this.formItem.phone// 手机号
       }
-      _request.http(this, '/admin/user/list', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      // userlist
+      userlist(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 获取代理等级
     getagentLevel () {
-      _request.http(this, '/admin/user/agentLevel/list').then(res => {
-        let list = res.data.data
-        for (let key in list) {
-          this.agentLevelList.push({ 'value': key, 'label': list[key] })
+      agentLevelList().then(res => {
+        if (res.data.code == '0') {
+          let list = res.data.data
+          for (let key in list) {
+            this.agentLevelList.push({ 'value': key, 'label': list[key] })
+          }
+        } else {
+          this.$Message.error(res.data.msg)
         }
       })
     },
@@ -295,11 +302,13 @@ export default {
     },
     // 查看资金
     view (row) {
-      _request.http(this, '/admin/user/info', {
-        id: row.id
-      }).then(res => {
-        this.moneyModal = true
-        this.userData = res.data.data
+      userinfo({ id: row.id }).then(res => {
+        if (res.data.code == '0') {
+          this.moneyModal = true
+          this.userData = res.data.data
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 设置代理级别
@@ -309,13 +318,18 @@ export default {
       this.agentLevel = row.agentLevel
     },
     ok () {
-      _request.http(this, '/admin/user/agentLevel/update', {
+      agentLevelupdate({
         id: this.rowId,
         agentLevel: this.agentLevel
       }).then(res => {
-        this.modal = false
-        this.$Message.success('操作成功')
-        this.getData()
+        if (res.data.code == '0') {
+          this.modal = false
+          this.$Message.success('操作成功')
+          this.getData()
+        } else {
+          this.modal = false
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 设置风控
@@ -329,13 +343,18 @@ export default {
         this.$Message.info('请选择风控')
         return
       }
-      _request.http(this, '/admin/user/control/update', {
+      controlupdate({
         id: this.rowId,
         controlRt: this.controlRt
       }).then(res => {
-        this.riskModal = false
-        this.$Message.success('操作成功')
-        this.getData()
+        if (res.data.code == '0') {
+          this.riskModal = false
+          this.$Message.success('操作成功')
+          this.getData()
+        } else {
+          this.riskModal = false
+          this.$Message.error(res.data.msg)
+        }
       })
     }
   },

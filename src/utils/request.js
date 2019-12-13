@@ -10,15 +10,15 @@ import Cookies from 'js-cookie'
  * @returns {Promise<any>}
  */
 /* formData */
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-// axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
-// axios.defaults.transformRequest = [function(data) {
-//   let src = ''
-//   for (let item in data) {
-//     src += encodeURIComponent(item) + '=' + encodeURIComponent(data[item]) + '&'
-//   }
-//   return src
-// }]
+/* axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.transformRequest = [function(data) {
+  let src = ''
+  for (let item in data) {
+    src += encodeURIComponent(item) + '=' + encodeURIComponent(data[item]) + '&'
+  }
+  return src
+}] */
 let ajaxurl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
 
 function http (_self, url, data, cur) {
@@ -84,6 +84,7 @@ function initPostData (obj) {
       postData[item] = obj[item]
     }
   })
+  console.log(postData)
   return postData
 }
 

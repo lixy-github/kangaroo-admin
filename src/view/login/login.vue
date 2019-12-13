@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import _request from '@/utils/request'
 import { login } from '@/api/api'
 import { setToken } from '@/libs/util'
 import { mapMutations, mapActions } from 'vuex'
@@ -87,45 +86,27 @@ export default {
           var key2 = '8e0ae4bab00a5005a887ca8f8155bcfc'
           var secretCode = key2 + this.form.code + key1
           sessionStorage.uuid = secretCode
-          _request.http(this, '/web/adminLogin', {
+          login({
             mobile: this.form.mobile,
             password: this.$public.fiveMd5(this.form.password, this),
             // pswd: secret.encrypt(this.form.password),
             code: this.form.code
           }).then(res => {
-            console.log(res)
-            this.$Message.success('登录成功')
-            setToken(res.data.data.token)
-            this.handleLogin(res.data.data.menuList)
-            Cookies.set('jxyex-username', this.form.mobile, { expires: 7 })
-            this.$router.push({
-              name: 'home'
-            })
+            if (res.data.code == '0') {
+              this.$Message.success('登录成功')
+              setToken(res.data.data.token)
+              this.handleLogin(res.data.data.menuList)
+              Cookies.set('jxyex-username', this.form.mobile, { expires: 7 })
+              this.$router.push({
+                name: 'home'
+              })
+            } else {
+              this.$Message.warning(res.data.msg)
+            }
+            this.loading = false
           }).catch(err => {
             this.loading = false
           })
-          /*  login({
-               mobile: this.form.mobile,
-               password: this.$public.fiveMd5(this.form.password, this),
-               // pswd: secret.encrypt(this.form.password),
-               code: this.form.code
-             }).then(res => {
-               if(res.data.code == "0") {
-                 this.$Message.success("登录成功");
-                 setToken(res.data.data.token);
-                 this.handleLogin(res.data.data);
-                 Cookies.set("jxyex-username", this.form.mobile, { expires: 7 });
-                 this.$router.push({
-                   name: "home"
-                 });
-               } else {
-                 this.$Message.warning(res.data.msg);
-               }
-
-               this.loading = false;
-             }).catch(err => {
-               this.loading = false;
-             }) */
         } else {
 
         }

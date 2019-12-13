@@ -34,7 +34,6 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
 import { couponList } from '@/api/api'
 import config from '@/config'
 export default {
@@ -170,10 +169,6 @@ export default {
         pageSize: this.pageData.pageSize,
         type: this.formItem.type// 类型
       }
-      _request.http(this, '/admin/coupon/list', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
-      })
     },
     // 搜索
     onSearch () {
@@ -191,13 +186,6 @@ export default {
         title: '提示',
         content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
         onOk: () => {
-          _request.http(this, '/admin/coupon/switch', {
-            id: id,
-            status: status == 'OPEN' ? 'CLOSE' : 'OPEN'
-          }).then(res => {
-            this.$Message.success('操作成功')
-            this.getData()
-          })
         },
         onCancel: () => {
           this.$Message.info('已取消')

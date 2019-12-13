@@ -87,8 +87,9 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import config from '@/config'
+import { imgLoadUrl } from '@/api/api'
+import { goodsfindList, goodsremove } from '@/api/goods'
+import { classfindList } from '@/api/district'
 export default {
   name: 'discountCoupon',
   data () {
@@ -101,6 +102,7 @@ export default {
       return obj[val]
     }
     return {
+      imgLoadUrl,
       formItem: {
         classId: '',
         name: ''
@@ -210,11 +212,6 @@ export default {
       imgList: []
     }
   },
-  computed: {
-    imgLoadUrl () {
-      return process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
-    }
-  },
   methods: {
     // 获取商品列表
     getData () {
@@ -224,18 +221,26 @@ export default {
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize
       }
-      _request.http(this, '/admin/goods/findList', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      goodsfindList(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 获取商品分类
     getClass () {
       this.cityList = [{ 'value': '', 'label': '全部' }]
-      _request.http(this, '/admin/goods/class/findList').then(res => {
-        res.data.data.forEach(element => {
-          this.cityList.push({ 'value': element.id, 'label': element.name })
-        })
+      classfindList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.cityList.push({ 'value': element.id, 'label': element.name })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 删除商品
@@ -244,11 +249,15 @@ export default {
         title: '提示',
         content: `确定要删除此商品吗？`,
         onOk: () => {
-          _request.http(this, '/admin/goods/remove', {
+          goodsremove({
             id: id
           }).then(res => {
-            this.$Message.success('删除成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('删除成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {
@@ -269,7 +278,6 @@ export default {
       this.title = row.name
       this.rowDetails = row
       this.imgList = JSON.parse(row.images)
-      console.log(this.imgList)
       // this.getDetailsData()
     },
     // 搜索
@@ -358,13 +366,13 @@ export default {
         margin: 10px 10px 10px 0;
       }
       /* .border {
-                                                          display: inline-block;
-                                                          width: 10px;
-                                                          height: 10px;
-                                                          background: #2d8cf0;
-                                                          border-radius: 50%;
-                                                          margin-right: 20px;
-                                                        } */
+                                                                    display: inline-block;
+                                                                    width: 10px;
+                                                                    height: 10px;
+                                                                    background: #2d8cf0;
+                                                                    border-radius: 50%;
+                                                                    margin-right: 20px;
+                                                                  } */
     }
   }
 </style>

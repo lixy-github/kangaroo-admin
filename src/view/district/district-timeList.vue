@@ -27,7 +27,7 @@
         <FormItem label="时间：">
           <TimePicker v-model="formItem.time" format="HH:mm" placeholder="时:分"></TimePicker>
         </FormItem>
-        <FormItem label="区域：">
+        <FormItem label="区域：" v-if="title == '添加区域时段'">
           <RadioGroup v-model="formItem.scope">
             <Radio label="RUSH">抢购区</Radio>
             <Radio label="BATCH">批发区</Radio>
@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
+import { templatefindList, templateadd, templatemodify, templateremove } from '@/api/district'
 export default {
   name: 'goodsClassify',
   data () {
@@ -127,10 +127,14 @@ export default {
   methods: {
     // 获取
     getData () {
-      _request.http(this, '/admin/rushpay/time/template/findList', {
+      templatefindList({
         scope: this.scope// RUSH,//抢购  BATCH,//批发
       }).then(res => {
-        this.tableData = res.data.data
+        if (res.data.code == '0') {
+          this.tableData = res.data.data
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 搜索
@@ -168,25 +172,35 @@ export default {
       this.hours = parseInt(this.formItem.time.split(':')[0]) > 9 ? this.formItem.time.split(':')[0] : this.formItem.time.split(':')[0].toString().substring(1, 2)
       this.min = parseInt(this.formItem.time.split(':')[1]) > 9 ? this.formItem.time.split(':')[1] : this.formItem.time.split(':')[1].toString().substring(1, 2)
       if (this.title == '添加区域时段') {
-        _request.http(this, '/admin/rushpay/time/template/add', {
+        templateadd({
           hours: this.hours,
           min: this.min,
           scope: this.formItem.scope
         }).then(res => {
-          this.modal = false
-          this.$Message.success('添加成功')
-          this.getData()
+          if (res.data.code == '0') {
+            this.modal = false
+            this.$Message.success('添加成功')
+            this.getData()
+          } else {
+            this.modal = false
+            this.$Message.error(res.data.msg)
+          }
         })
       } else {
-        _request.http(this, '/admin/rushpay/time/template/modify', {
+        templatemodify({
           id: this.rowId,
           hours: this.hours,
           min: this.min,
-          scope: this.formItem.scope
+          scope: ''
         }).then(res => {
-          this.modal = false
-          this.$Message.success('修改成功')
-          this.getData()
+          if (res.data.code == '0') {
+            this.modal = false
+            this.$Message.success('修改成功')
+            this.getData()
+          } else {
+            this.modal = false
+            this.$Message.error(res.data.msg)
+          }
         })
       }
     },
@@ -196,11 +210,15 @@ export default {
         title: '提示',
         content: `确定要删除此区域时段吗？`,
         onOk: () => {
-          _request.http(this, '/admin/rushpay/time/template/remove', {
+          templateremove({
             id: id
           }).then(res => {
-            this.$Message.success('删除成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('删除成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {

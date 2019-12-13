@@ -38,8 +38,7 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
-import config from '@/config'
+import { goodsfindListByPage, templatefindList, classfindList, goodsremove } from '@/api/district'
 export default {
   name: 'discountCoupon',
   data () {
@@ -205,25 +204,35 @@ export default {
         pageSize: this.pageData.pageSize
 
       }
-      _request.http(this, '/admin/rushpay/goods/findListByPage', _data).then(res => {
-        this.tableData = res.data.data.dataList
-        this.pageData.total = res.data.data.total
+      goodsfindListByPage(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
-      _request.http(this, '/admin/rushpay/time/template/findList', {
-        scope: this.scope// RUSH,//抢购  BATCH,//批发
-      }).then(res => {
-        res.data.data.forEach(element => {
-          this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
-        })
+      templatefindList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 获取商品分类
     getClass () {
       this.cityList = [{ 'value': '', 'label': '全部' }]
-      _request.http(this, '/admin/goods/class/findList').then(res => {
-        res.data.data.forEach(element => {
-          this.cityList.push({ 'value': element.id, 'label': element.name })
-        })
+      classfindList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.cityList.push({ 'value': element.id, 'label': element.name })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 下架商品
@@ -232,11 +241,15 @@ export default {
         title: '提示',
         content: `确定要下架此商品吗？`,
         onOk: () => {
-          _request.http(this, '/admin/rushpay/goods/remove', {
+          goodsremove({
             id: id
           }).then(res => {
-            this.$Message.success('下架成功')
-            this.getData()
+            if (res.data.code == '0') {
+              this.$Message.success('下架成功')
+              this.getData()
+            } else {
+              this.$Message.error(res.data.msg)
+            }
           })
         },
         onCancel: () => {

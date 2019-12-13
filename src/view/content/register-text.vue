@@ -9,8 +9,8 @@
   </div>
 </template>
 <script>
-import _request from '@/utils/request'
 import wangEditor from '@/components/wangEditor/wangEditor'
+import { registerAgreementread, registerAgreementupdate } from '@/api/content'
 export default {
   name: 'discountCoupon',
   components: {
@@ -26,15 +26,23 @@ export default {
   methods: {
     // 获取
     getData () {
-      _request.http(this, '/admin/contentBanner/registerAgreement/read').then(res => {
-        this.formItem.content = res.data.data.configVal
+      registerAgreementread().then(res => {
+        if (res.data.code == '0') {
+          this.formItem.content = res.data.data.configVal
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     },
     // 保存
     handleSubmit () {
-      _request.http(this, '/admin/contentBanner/registerAgreement/update', this.formItem).then(res => {
-        this.$Message.success('操作成功')
-        this.getData()
+      registerAgreementupdate({ content: this.formItem.content }).then(res => {
+        if (res.data.code == '0') {
+          this.$Message.success('操作成功')
+          this.getData()
+        } else {
+          this.$Message.error(res.data.msg)
+        }
       })
     }
   },
