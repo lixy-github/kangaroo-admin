@@ -23,9 +23,9 @@
       <FormItem label="可抢数量：" prop="num">
         <Input v-model="formValidate.num" placeholder="请输入可抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <!-- <FormItem label="已抢数量：" prop="name">
+      <FormItem label="已抢数量：" prop="alreadyNum">
         <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
-      </FormItem> -->
+      </FormItem>
       <!--  :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'" -->
       <FormItem label="赠券：" prop="coupon" v-if="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'">
         <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -84,6 +84,7 @@ export default {
         maxBuyNoDay: '',
         maxBuyNoMonth: '',
         num: '',
+        alreadyNum: '',
         postage: '',
         price: '',
         scope: '',
@@ -231,6 +232,7 @@ export default {
               maxBuyNoDay: this.formValidate.maxBuyNoDay,
               maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
               num: this.formValidate.num,
+              alreadyNum: this.formValidate.alreadyNum,
               postage: this.formValidate.postage,
               price: this.formValidate.price,
               // scope: this.formValidate.scope,
@@ -258,6 +260,7 @@ export default {
               maxBuyNoDay: this.formValidate.maxBuyNoDay,
               maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
               num: this.formValidate.num,
+              alreadyNum: this.formValidate.alreadyNum,
               postage: this.formValidate.postage,
               price: this.formValidate.price,
               scope: this.formValidate.scope,
@@ -316,6 +319,7 @@ export default {
           maxBuyNoDay: data.maxBuyNoDay,
           maxBuyNoMonth: data.maxBuyNoMonth,
           num: data.num,
+          alreadyNum: data.alreadyNum,
           postage: data.postage,
           price: data.price,
           scope: data.scope,
@@ -336,7 +340,8 @@ export default {
           price: '',
           scope: '',
           stock: '',
-          timeid: ''
+          timeid: '',
+          alreadyNum: ''
         }
       }
     }

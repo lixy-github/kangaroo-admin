@@ -5,6 +5,7 @@
         <Col span="3" style="width: 250px">
         <FormItem label="时间段" prop="name">
           <Select v-model="formItem.timeid">
+            <Option value="">全部</Option>
             <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
@@ -13,9 +14,7 @@
         <FormItem label="区域">
           <Select v-model="formItem.scope">
             <Option value="">全部</Option>
-            <Option value="RUSH">抢购区</Option>
-            <Option value="BATCH">批发区</Option>
-            <Option value="RUSH_FIRST">消费区</Option>
+            <Option v-for="item in scopeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         </Col>
@@ -39,6 +38,7 @@
 </template>
 <script>
 import { goodsfindListByPage, templatefindList, classfindList, goodsremove } from '@/api/district'
+import constants from '@/utils/constants'
 export default {
   name: 'discountCoupon',
   data () {
@@ -55,6 +55,7 @@ export default {
         timeid: '',
         scope: ''
       },
+      scopeList: constants.scopeData,
       timeList: [],
       title: '',
       rowId: '',
