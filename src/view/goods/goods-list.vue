@@ -288,7 +288,7 @@ export default {
     // 切换页码
     changePage (current) {
       this.pageData.pageIndex = current
-      this.tableData = this.mockTableData()
+      this.tableData = this.getData()
     },
     HandlClose (flag) {
       this.detailsIsShow = flag
@@ -366,13 +366,13 @@ export default {
         margin: 10px 10px 10px 0;
       }
       /* .border {
-                                                                    display: inline-block;
-                                                                    width: 10px;
-                                                                    height: 10px;
-                                                                    background: #2d8cf0;
-                                                                    border-radius: 50%;
-                                                                    margin-right: 20px;
-                                                                  } */
+                                                                      display: inline-block;
+                                                                      width: 10px;
+                                                                      height: 10px;
+                                                                      background: #2d8cf0;
+                                                                      border-radius: 50%;
+                                                                      margin-right: 20px;
+                                                                    } */
     }
   }
 </style>

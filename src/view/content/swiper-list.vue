@@ -153,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                    props: {
-                      type: 'primary',
-                      size: 'small'
-                    },
-                    style: {
-                      marginRight: '5px',
-                    },
-                    on: {
-                      click: () => {
-                        this.edit(row)
+                      props: {
+                        type: 'primary',
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px',
+                      },
+                      on: {
+                        click: () => {
+                          this.edit(row)
+                        }
                       }
-                    }
-                  }, '编辑'), */
+                    }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',
@@ -222,7 +222,7 @@ export default {
     // 切换页码
     changePage (current) {
       this.pageData.pageIndex = current
-      this.tableData = this.mockTableData()
+      this.tableData = this.getData()
     },
     getGoodsList () {
       goodsfindList().then(res => {
@@ -289,19 +289,19 @@ export default {
             })
           } else {
             /* contentBannerupdate({
-                name: this.formValidate.name,
-                scope: this.formValidate.scope,
-                url: this.formValidate.url
-              }).then(res => {
-                if(res.data.code == '0') {
-                  this.modal = false
-                  this.$Message.success('添加成功')
-                  this.getData()
-                } else {
-                  this.modal = false
-                  this.$Message.error(res.data.msg);
-                }
-              }); */
+                  name: this.formValidate.name,
+                  scope: this.formValidate.scope,
+                  url: this.formValidate.url
+                }).then(res => {
+                  if(res.data.code == '0') {
+                    this.modal = false
+                    this.$Message.success('添加成功')
+                    this.getData()
+                  } else {
+                    this.modal = false
+                    this.$Message.error(res.data.msg);
+                  }
+                }); */
           }
         }
       })

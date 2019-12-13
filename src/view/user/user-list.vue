@@ -298,7 +298,7 @@ export default {
     // 切换页码
     changePage (current) {
       this.pageData.pageIndex = current
-      this.tableData = this.mockTableData()
+      this.tableData = this.getData()
     },
     // 查看资金
     view (row) {

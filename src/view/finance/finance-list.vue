@@ -67,27 +67,10 @@
         <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
       </div>
     </div>
-    <!-- 资金 -->
-    <Modal v-model="modal" title="发货">
-      <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
-        <FormItem label="快递单号：" prop="logisticsCode">
-          <Input v-model="formValidate.logisticsCode" placeholder="订单单号查询"></Input>
-        </FormItem>
-        <FormItem label="物流公司：" prop="logisticsName">
-          <Select v-model="formValidate.logisticsName" style="width:200px" filterable>
-            <Option v-for="item in logisticsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </FormItem>
-      </Form>
-      <div slot="footer">
-        <Button type="text" size="large" @click="modal = false">取消</Button>
-        <Button type="primary" size="large" @click="ok('formValidate')">确定</Button>
-      </div>
-    </Modal>
   </div>
 </template>
 <script>
-import { orderlist, logistics, orderSend } from '@/api/order'
+import { orderlist } from '@/api/order'
 export default {
   name: 'discountCoupon',
   data () {
@@ -116,19 +99,6 @@ export default {
       return obj[val]
     }
     return {
-      formValidate: {
-        logisticsCode: '',
-        logisticsName: ''
-      },
-      ruleValidate: {
-        logisticsCode: [
-          { required: true, message: '请输入快递单号', trigger: 'blur' }
-        ],
-        logisticsName: [
-          { required: true, message: '请选择物理公司', trigger: 'change' }
-        ]
-      },
-      logisticsList: [],
       formItem: {
         time: '',
         goodsName: '',
@@ -139,6 +109,7 @@ export default {
         phone: '',
         userPhone: ''
       },
+      detailsIsShow: false,
       title: '',
       rowId: '',
       tableData: [],
@@ -207,7 +178,7 @@ export default {
         },
         {
           title: '操作',
-          // align: 'center',
+          align: 'center',
           minWidth: 150,
           render: (h, params) => {
             const row = params.row
@@ -224,7 +195,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.orderSend(row.id)
+                    this.edit(row.id, status)
                   }
                 }
               }, '发货')
@@ -237,9 +208,7 @@ export default {
         pages: 0, // 总页数
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
-      },
-      modal: false,
-      model1: ''
+      }
     }
   },
   methods: {
@@ -269,13 +238,6 @@ export default {
         }
       })
     },
-    getlogistics () {
-      logistics().then(res => {
-        res.data.data.forEach(element => {
-          this.logisticsList.push({ 'value': element.code, 'label': element.name })
-        })
-      })
-    },
     // 搜索
     onSearch () {
       this.pageData.pageIndex = 1
@@ -287,43 +249,20 @@ export default {
       this.tableData = this.getData()
     },
     // 开始/结束
-    orderSend (id) {
-      this.rowId = id
-      this.modal = true
-      /* this.$Modal.confirm({
-          title: '提示',
-          content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
-          onOk: () => {
-          },
-          onCancel: () => {
-            this.$Message.info('已取消')
-          }
-        }) */
-    },
-    ok (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          orderSend({
-            id: this.rowId,
-            logisticsCode: this.formValidate.logisticsCode,
-            logisticsName: this.formValidate.logisticsName
-          }).then(res => {
-            if (res.data.code == '0') {
-              this.modal = false
-              this.$Message.success('操作成功')
-              this.getData()
-            } else {
-              this.modal = false
-              this.$Message.error(res.data.msg)
-            }
-          })
+    edit (id, status) {
+      this.$Modal.confirm({
+        title: '提示',
+        content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
+        onOk: () => {
+        },
+        onCancel: () => {
+          this.$Message.info('已取消')
         }
       })
     }
   },
   mounted () {
     this.getData()
-    this.getlogistics()
   }
 }
 </script>

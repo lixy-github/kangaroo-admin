@@ -27,39 +27,3 @@ export const indexCount = (data) => {
     method: 'post'
   })
 }
-
-// 优惠券列表
-export const couponList = (data) => {
-  return Axios.request({
-    url: '/admin/coupon/list',
-    data: data,
-    method: 'post'
-  })
-}
-
-// 添加优惠券
-export const couponAdd = (data) => {
-  return Axios.request({
-    url: '/admin/coupon/add',
-    data: data,
-    method: 'post'
-  })
-}
-// 获取注册协议
-export const registerAgreementread = (data) => {
-  return Axios.request({
-    url: '/admin/contentBanner/registerAgreement/read',
-    data: data,
-    method: 'post'
-  })
-}
-// 修改注册协议
-export const registerAgreementupdate = (data) => {
-  return Axios.request({
-    url: '/admin/contentBanner/registerAgreement/update',
-    data: data,
-    method: 'post'
-  })
-}
-
-/* 商品 */

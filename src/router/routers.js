@@ -267,5 +267,26 @@ export default [{
     component: () => import('@/view/content/register-text.vue')
   }
   ]
+},
+  //   财务管理
+{
+  path: '/finance',
+  name: 'finance',
+  component: Main,
+  meta: {
+    title: '财务管理',
+    icon: 'ios-list-box-outline',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'finance-list',
+    name: 'finance-list',
+    meta: {
+      title: '财务记录'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/finance/finance-list.vue')
+  }]
 }
 ]
