@@ -18,6 +18,11 @@
           </Select>
         </FormItem>
         </Col>
+        <Col span="3" style="width: 300px">
+        <FormItem label="商品Id">
+          <Input v-model="formItem.id" placeholder="商品Id查询"></Input>
+        </FormItem>
+        </Col>
         <Col span="1" offset="1" style="width: 200px">
         <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
         <Button type="primary" @click="addBtn" style="margin-right:20px;">添加上架商品</Button>
@@ -46,14 +51,17 @@ export default {
       var obj = {
         'RUSH': '抢购区',
         'BATCH': '批发区',
-        'RUSH_FIRST': '消费区'
+        'ALLDAY': '全天消费区',
+        'RUSH_FIRST': '抢购优享区',
+        'BATCH_FIRST': '批发优享区'
       }
       return obj[val]
     }
     return {
       formItem: {
         timeid: '',
-        scope: ''
+        scope: '',
+        id: ''
       },
       scopeList: constants.scopeData,
       timeList: [],
@@ -61,6 +69,12 @@ export default {
       rowId: '',
       tableData: [],
       tableColumns: [
+        {
+          title: 'id',
+          align: 'center',
+          key: 'rushid',
+          minWidth: 120
+        },
         {
           title: '商品名称',
           align: 'center',
@@ -127,7 +141,7 @@ export default {
         {
           title: '区域',
           align: 'center',
-          minWidth: 85,
+          minWidth: 100,
           render: (h, p) => {
             return h('div', {}, transScope(p.row.scope))
           }
@@ -197,13 +211,12 @@ export default {
   methods: {
     // 获取商品列表
     getData () {
-      this.timeList = []
       let _data = {
         scope: this.formItem.scope,
         timeid: this.formItem.timeid,
         pageIndex: this.pageData.pageIndex,
-        pageSize: this.pageData.pageSize
-
+        pageSize: this.pageData.pageSize,
+        id: this.formItem.id
       }
       goodsfindListByPage(_data).then(res => {
         if (res.data.code == '0') {
@@ -213,23 +226,14 @@ export default {
           this.$Message.error(res.data.msg)
         }
       })
+    },
+    // 获取时间段
+    gettime () {
+      this.timeList = []
       templatefindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {
             this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
-          })
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-    },
-    // 获取商品分类
-    getClass () {
-      this.cityList = [{ 'value': '', 'label': '全部' }]
-      classfindList().then(res => {
-        if (res.data.code == '0') {
-          res.data.data.forEach(element => {
-            this.cityList.push({ 'value': element.id, 'label': element.name })
           })
         } else {
           this.$Message.error(res.data.msg)
@@ -282,7 +286,7 @@ export default {
   },
   mounted () {
     this.getData()
-    this.getClass()
+    this.gettime()
   }
 }
 </script>

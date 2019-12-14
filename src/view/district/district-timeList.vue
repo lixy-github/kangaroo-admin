@@ -169,12 +169,10 @@ export default {
         this.$Message.info('请选择时间')
         return
       }
-      this.hours = parseInt(this.formItem.time.split(':')[0]) > 9 ? this.formItem.time.split(':')[0] : this.formItem.time.split(':')[0].toString().substring(1, 2)
-      this.min = parseInt(this.formItem.time.split(':')[1]) > 9 ? this.formItem.time.split(':')[1] : this.formItem.time.split(':')[1].toString().substring(1, 2)
       if (this.title == '添加区域时段') {
         templateadd({
-          hours: this.hours,
-          min: this.min,
+          hours: this.formItem.time.split(':')[0],
+          min: this.formItem.time.split(':')[1],
           scope: this.formItem.scope
         }).then(res => {
           if (res.data.code == '0') {
@@ -189,9 +187,9 @@ export default {
       } else {
         templatemodify({
           id: this.rowId,
-          hours: this.hours,
-          min: this.min,
-          scope: ''
+          hours: this.formItem.time.split(':')[0],
+          min: this.formItem.time.split(':')[1],
+          scope: this.formItem.scope
         }).then(res => {
           if (res.data.code == '0') {
             this.modal = false

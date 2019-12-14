@@ -14,8 +14,8 @@
       <FormItem label="商品价格：" prop="price">
         <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="消费券价格：" prop="consumerPrice" v-if="formValidate.scope != 'RUSH' && formValidate.scope != 'RUSH_FIRST'">
-        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      <FormItem label="消费券价格：" prop="consumerPrice">
+        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'"></Input>
       </FormItem>
       <FormItem label="库存：" prop="stock">
         <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -26,9 +26,8 @@
       <FormItem label="已抢数量：" prop="alreadyNum">
         <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <!--  :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'" -->
-      <FormItem label="赠券：" prop="coupon" v-if="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'">
-        <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      <FormItem label="赠券：" prop="coupon">
+        <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'"></Input>
       </FormItem>
       <FormItem label="邮费：" prop="postage">
         <Input v-model="formValidate.postage" placeholder="请输入邮费" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -42,8 +41,9 @@
       <FormItem label="每月可抢购数量：" prop="maxBuyNoMonth">
         <Input v-model="formValidate.maxBuyNoMonth" placeholder="请输入每月可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="时间段：" prop="timeid" v-if="formValidate.scope != 'ALLDAY'">
-        <Select v-model="formValidate.timeid" style="width:300px">
+      <!--  prop="timeid" -->
+      <FormItem label="时间段：">
+        <Select v-model="formValidate.timeid" style="width:300px" :disabled="formValidate.scope == 'ALLDAY'">
           <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>
@@ -103,8 +103,8 @@ export default {
           { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
         ],
         consumerPrice: [
-          { required: true, message: '请输入消费券价格', trigger: 'blur' },
-          { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
+          { required: true, message: '请输入消费券价格', trigger: 'blur' }
+          // { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
         ],
         stock: [
           { required: true, message: '请输入商品库存', trigger: 'blur' },
@@ -115,8 +115,8 @@ export default {
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         alreadyNum: [
-          { required: true, message: '请输入商品已抢数量', trigger: 'blur' },
-          { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+          { required: true, message: '请输入商品已抢数量', trigger: 'blur' }
+          // { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         coupon: [
           { required: true, message: '请输入赠券', trigger: 'blur' }
@@ -151,24 +151,24 @@ export default {
       switch (val) {
         // 抢购
         case 'RUSH':
-          this.formValidate.consumerPrice = ''
+          this.formValidate.consumerPrice = '0'
           break
           // 批发
         case 'BATCH':
-          this.formValidate.coupon = ''
+          this.formValidate.coupon = '0'
           break
           // 全天消费
         case 'ALLDAY':
-          this.formValidate.coupon = ''
-          this.formValidate.timeid = ''
+          this.formValidate.coupon = '0'
+          this.formValidate.timeid = null
           break
           // 抢购优享
         case 'RUSH_FIRST':
-          this.formValidate.consumerPrice = ''
+          this.formValidate.consumerPrice = '0'
           break
           // 批发优享
         case 'BATCH_FIRST':
-          this.formValidate.coupon = ''
+          this.formValidate.coupon = '0'
           break
       }
     },
@@ -225,6 +225,7 @@ export default {
           if (this.$route.params.content) {
             // 修改
             let _data = {
+              id: this.formValidate.id,
               consumerPrice: this.formValidate.consumerPrice,
               coupon: this.formValidate.coupon,
               goodsId: this.formValidate.goodsId,
@@ -235,11 +236,10 @@ export default {
               alreadyNum: this.formValidate.alreadyNum,
               postage: this.formValidate.postage,
               price: this.formValidate.price,
-              // scope: this.formValidate.scope,
+              scope: this.formValidate.scope,
               stock: this.formValidate.stock,
               timeid: this.formValidate.timeid
             }
-
             goodsmodify(_data).then(res => {
               if (res.data.code == '0') {
                 this.$Message.success('修改成功')
@@ -312,19 +312,19 @@ export default {
         let data = JSON.parse(this.$route.params.content)
         this.formValidate = {
           id: data.rushid,
-          consumerPrice: data.consumerPrice,
-          coupon: data.coupon,
+          consumerPrice: data.consumerPrice.toString(),
+          coupon: data.coupon.toString(),
           goodsId: data.goodsid.toString(),
-          maxBuyNo: data.maxBuyNo,
-          maxBuyNoDay: data.maxBuyNoDay,
-          maxBuyNoMonth: data.maxBuyNoMonth,
-          num: data.num,
-          alreadyNum: data.alreadyNum,
-          postage: data.postage,
-          price: data.price,
-          scope: data.scope,
-          stock: data.stock,
-          timeid: data.timeid.toString()
+          maxBuyNo: data.maxBuyNo.toString(),
+          maxBuyNoDay: data.maxBuyNoDay.toString(),
+          maxBuyNoMonth: data.maxBuyNoMonth.toString(),
+          num: data.num.toString(),
+          alreadyNum: data.alreadyNum.toString(),
+          postage: data.postage.toString(),
+          price: data.price.toString(),
+          scope: data.scope.toString(),
+          stock: data.stock.toString(),
+          timeid: data.timeid ? data.timeid.toString() : null
         }
       } else {
         this.scoperead = false

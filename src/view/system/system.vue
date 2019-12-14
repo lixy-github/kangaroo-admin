@@ -1,0 +1,175 @@
+<template>
+  <div>
+    <Form :model="formItem" :label-width="80">
+      <Row style="padding-bottom: 20px;">
+        <Col span="3" style="width: 250px">
+        <FormItem label="用户Id">
+          <Input v-model="formItem.userId" placeholder="用户Id查询"></Input>
+        </FormItem>
+        </Col>
+        <Col span="3" style="width: 250px">
+        <FormItem label="类型">
+          <Select v-model="formItem.type">
+            <Option value="">全部</Option>
+            <Option value="RECHARGE">充值</Option>
+            <Option value="WITHDRAW">提现</Option>
+            <Option value="CONSIGNMENT">寄售</Option>
+            <Option value="BUY">购买</Option>
+            <Option value="REBATE">返佣</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span="3" style="width: 250px">
+        <FormItem label="金额类型">
+          <Select v-model="formItem.moneyType">
+            <Option value="">全部</Option>
+            <Option value="MONEY">人民币</Option>
+            <Option value="CONSUMPTION">消费券</Option>
+            <Option value="DISCOUNT">优惠券</Option>
+          </Select>
+        </FormItem>
+        </Col>
+        <Col span="1" offset="1" style="width: 200px">
+        <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
+        </Col>
+      </Row>
+    </Form>
+    <!-- 表格 -->
+    <Table :columns="tableColumns" :data="tableData" size="small" ref="table" stripe>
+    </Table>
+    <!-- 分页 -->
+    <div style="margin: 10px;overflow: hidden">
+      <div style="float: right;">
+        <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { sysfindList } from '@/api/config'
+export default {
+  name: 'discountCoupon',
+  data () {
+    var transmoneyType = (val) => {
+      var obj = {
+        'MONEY': '人民币',
+        'CONSUMPTION': '消费券',
+        'DISCOUNT': '优惠券'
+      }
+      return obj[val]
+    }
+    /* 类型 */
+    var transType = (val) => {
+      var obj = {
+        'RECHARGE': '充值',
+        'WITHDRAW': '提现',
+        'CONSIGNMENT': '寄售',
+        'BUY': '购买',
+        'REBATE': '返佣'
+      }
+      return obj[val]
+    }
+    return {
+      formItem: {
+        time: '',
+        userId: '',
+        type: '',
+        moneyType: ''
+      },
+      detailsIsShow: false,
+      title: '',
+      rowId: '',
+      tableData: [],
+      tableColumns: [
+        {
+          title: '用户Id',
+          align: 'center',
+          minWidth: 50,
+          key: 'userId'
+        },
+        {
+          title: '操作金额',
+          align: 'center',
+          minWidth: 150,
+          key: 'money'
+        },
+        {
+          title: '变动前金额',
+          align: 'center',
+          minWidth: 150,
+          key: 'beforeMoney'
+        },
+        {
+          title: '变动后金额',
+          align: 'center',
+          key: 'afterMoney',
+          minWidth: 100
+        },
+        {
+          title: '金额类型',
+          align: 'center',
+          key: 'moneyType',
+          minWidth: 80,
+          render: (h, p) => {
+            return h('div', {}, transmoneyType(p.row.moneyType))
+          }
+        },
+        {
+          title: '类型',
+          align: 'center',
+          key: 'type',
+          minWidth: 80,
+          render: (h, p) => {
+            return h('div', {}, transType(p.row.type))
+          }
+        },
+        {
+          title: '时间',
+          align: 'center',
+          key: 'createDate',
+          minWidth: 150
+        }
+      ],
+      pageData: {
+        total: 0, // 总共多少数据
+        pages: 0, // 总页数
+        pageIndex: 1, // 当前页
+        pageSize: 15 // 每页数据条数
+      }
+    }
+  },
+  methods: {
+    // 获取
+    getData () {
+      let _data = {
+        pageIndex: this.pageData.pageIndex,
+        pageSize: this.pageData.pageSize
+        // configKey: this.formItem.userId,
+      }
+      sysfindList(_data).then(res => {
+        if (res.data.code == '0') {
+          this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
+        } else {
+          this.$Message.error(res.data.msg)
+        }
+      })
+    },
+    // 搜索
+    onSearch () {
+      this.pageData.pageIndex = 1
+      this.getData()
+    },
+    // 切换页码
+    changePage (current) {
+      this.pageData.pageIndex = current
+      this.tableData = this.getData()
+    }
+  },
+  mounted () {
+    this.getData()
+  }
+}
+</script>
+<style lang="less">
+</style>

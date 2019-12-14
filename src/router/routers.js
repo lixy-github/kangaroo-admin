@@ -275,7 +275,7 @@ export default [{
   component: Main,
   meta: {
     title: '财务管理',
-    icon: 'ios-list-box-outline',
+    icon: 'logo-usd',
     showAlways: true
     // access: ['会员管理', '会员列表', '商家审核']
   },
@@ -287,6 +287,27 @@ export default [{
       // access: ['会员列表']
     },
     component: () => import('@/view/finance/finance-list.vue')
+  }]
+},
+  //   系统配置
+{
+  path: '/system',
+  name: 'system',
+  component: Main,
+  meta: {
+    title: '系统配置',
+    icon: 'md-cog',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'system-list',
+    name: 'system-list',
+    meta: {
+      title: '系统配置'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/system/system.vue')
   }]
 }
 ]

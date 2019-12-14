@@ -15,6 +15,11 @@
           <Input v-model="formItem.name" placeholder="商品名称查询"></Input>
         </FormItem>
         </Col>
+        <Col span="3" style="width: 300px">
+        <FormItem label="商品Id">
+          <Input v-model="formItem.id" placeholder="商品Id查询"></Input>
+        </FormItem>
+        </Col>
         <Col span="1" offset="1" style="width: 200px">
         <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
         <Button type="primary" @click="addBtn" style="margin-right:20px;">添加商品</Button>
@@ -105,7 +110,8 @@ export default {
       imgLoadUrl,
       formItem: {
         classId: '',
-        name: ''
+        name: '',
+        id: ''
       },
       cityList: [],
       detailsIsShow: false,
@@ -113,6 +119,12 @@ export default {
       rowId: '',
       tableData: [],
       tableColumns: [
+        {
+          title: '商品Id',
+          align: 'center',
+          key: 'id',
+          minWidth: 60
+        },
         {
           title: '商品名称',
           align: 'center',
@@ -218,6 +230,7 @@ export default {
       let _data = {
         classId: this.formItem.classId,
         name: this.formItem.name,
+        id: this.formItem.id,
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize
       }
@@ -366,13 +379,13 @@ export default {
         margin: 10px 10px 10px 0;
       }
       /* .border {
-                                                                      display: inline-block;
-                                                                      width: 10px;
-                                                                      height: 10px;
-                                                                      background: #2d8cf0;
-                                                                      border-radius: 50%;
-                                                                      margin-right: 20px;
-                                                                    } */
+                                                                            display: inline-block;
+                                                                            width: 10px;
+                                                                            height: 10px;
+                                                                            background: #2d8cf0;
+                                                                            border-radius: 50%;
+                                                                            margin-right: 20px;
+                                                                          } */
     }
   }
 </style>
