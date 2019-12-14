@@ -104,7 +104,7 @@ export default {
           title: '优惠券名称',
           align: 'center',
           key: 'name',
-          minWidth: 100
+          minWidth: 120
         },
         {
           title: '面值',
@@ -116,9 +116,31 @@ export default {
           title: '描述',
           align: 'center',
           minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, p.row.detail ? p.row.detail : '--')
+          render: (h, params) => {
+            let texts = params.row.detail
+            if (params.row.detail != null) {
+              if (params.row.detail.length > 5) {
+                texts = params.row.detail.slice(0, 5) + '...' // 进行数字截取
+              } else {
+                texts = params.row.detail
+              }
+            }
+            return h('div', [
+              h('Tooltip', {
+                props: {
+                  placement: 'top',
+                  transfer: true
+                }
+              }, [texts, h('span', {
+                slot: 'content',
+                style: {
+                  whiteSpace: 'normal'
+                }
+              }, params.row.detail)
+              ])
+            ])
           }
+
         },
         {
           title: '未使用图片',
@@ -349,7 +371,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .modelTitle {
     height: 42px;
     box-sizing: border-box;

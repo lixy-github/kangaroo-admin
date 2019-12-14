@@ -9,3 +9,12 @@ export const sysfindList = (data) => {
     method: 'post'
   })
 }
+
+// 编辑配置
+export const sysmodify = (data) => {
+  return Axios.request({
+    url: '/admin//config/sys/modify',
+    data: data,
+    method: 'post'
+  })
+}

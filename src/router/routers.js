@@ -206,6 +206,37 @@ export default [{
     component: () => import('@/view/order/order-list.vue')
   }]
 },
+  //   发货管理
+{
+  path: '/shipments',
+  name: 'shipments',
+  component: Main,
+  meta: {
+    title: '发货管理',
+    icon: 'ios-archive-outline',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'shipments-list',
+    name: 'shipments-list',
+    meta: {
+      title: '待发货列表'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/shipments/shipments-list.vue')
+  },
+  {
+    path: 'shipments-already',
+    name: 'shipments-already',
+    meta: {
+      title: '已发货列表'
+      // access: ['会员列表']
+    },
+    component: () => import('@/view/shipments/shipments-already.vue')
+  }
+  ]
+},
   //   会员管理
 {
   path: '/user',

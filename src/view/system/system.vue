@@ -1,39 +1,5 @@
 <template>
   <div>
-    <Form :model="formItem" :label-width="80">
-      <Row style="padding-bottom: 20px;">
-        <Col span="3" style="width: 250px">
-        <FormItem label="用户Id">
-          <Input v-model="formItem.userId" placeholder="用户Id查询"></Input>
-        </FormItem>
-        </Col>
-        <Col span="3" style="width: 250px">
-        <FormItem label="类型">
-          <Select v-model="formItem.type">
-            <Option value="">全部</Option>
-            <Option value="RECHARGE">充值</Option>
-            <Option value="WITHDRAW">提现</Option>
-            <Option value="CONSIGNMENT">寄售</Option>
-            <Option value="BUY">购买</Option>
-            <Option value="REBATE">返佣</Option>
-          </Select>
-        </FormItem>
-        </Col>
-        <Col span="3" style="width: 250px">
-        <FormItem label="金额类型">
-          <Select v-model="formItem.moneyType">
-            <Option value="">全部</Option>
-            <Option value="MONEY">人民币</Option>
-            <Option value="CONSUMPTION">消费券</Option>
-            <Option value="DISCOUNT">优惠券</Option>
-          </Select>
-        </FormItem>
-        </Col>
-        <Col span="1" offset="1" style="width: 200px">
-        <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
-        </Col>
-      </Row>
-    </Form>
     <!-- 表格 -->
     <Table :columns="tableColumns" :data="tableData" size="small" ref="table" stripe>
     </Table>
@@ -43,91 +9,98 @@
         <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
       </div>
     </div>
+    <!-- 编辑 -->
+    <Modal v-model="modal" title="编辑">
+      <Form :model="formItem" :label-width="80">
+        <FormItem label="Value：">
+          <Input v-model="formItem.configVal" placeholder="请输入配置值"></Input>
+        </FormItem>
+        <FormItem label="描述：">
+          <Input v-model="formItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入描述"></Input>
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button type="text" size="large" @click="modal = false">取消</Button>
+        <Button type="primary" size="large" @click="ok">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
-import { sysfindList } from '@/api/config'
+import { sysfindList, sysmodify } from '@/api/config'
 export default {
   name: 'discountCoupon',
   data () {
-    var transmoneyType = (val) => {
-      var obj = {
-        'MONEY': '人民币',
-        'CONSUMPTION': '消费券',
-        'DISCOUNT': '优惠券'
-      }
-      return obj[val]
-    }
-    /* 类型 */
-    var transType = (val) => {
-      var obj = {
-        'RECHARGE': '充值',
-        'WITHDRAW': '提现',
-        'CONSIGNMENT': '寄售',
-        'BUY': '购买',
-        'REBATE': '返佣'
-      }
-      return obj[val]
-    }
     return {
       formItem: {
-        time: '',
-        userId: '',
-        type: '',
-        moneyType: ''
+        id: '',
+        configKey: '',
+        configVal: '',
+        remark: ''
       },
       detailsIsShow: false,
       title: '',
-      rowId: '',
       tableData: [],
       tableColumns: [
         {
-          title: '用户Id',
+          title: '#',
+          type: 'index',
           align: 'center',
-          minWidth: 50,
-          key: 'userId'
+          minWidth: 50
         },
         {
-          title: '操作金额',
-          align: 'center',
-          minWidth: 150,
-          key: 'money'
-        },
-        {
-          title: '变动前金额',
+          title: 'Key',
           align: 'center',
           minWidth: 150,
-          key: 'beforeMoney'
+          key: 'configKey'
         },
         {
-          title: '变动后金额',
+          title: 'Value',
           align: 'center',
-          key: 'afterMoney',
-          minWidth: 100
+          minWidth: 150,
+          key: 'configVal'
         },
         {
-          title: '金额类型',
+          title: '描述',
           align: 'center',
-          key: 'moneyType',
-          minWidth: 80,
-          render: (h, p) => {
-            return h('div', {}, transmoneyType(p.row.moneyType))
-          }
+          minWidth: 150,
+          key: 'remark'
         },
         {
-          title: '类型',
+          title: '创建时间',
+          align: 'center',
+          minWidth: 150,
+          key: 'createDate'
+        },
+        {
+          title: '最新修改时间',
+          align: 'center',
+          minWidth: 150,
+          key: 'updateDate'
+        },
+        {
+          title: '操作',
           align: 'center',
           key: 'type',
           minWidth: 80,
           render: (h, p) => {
-            return h('div', {}, transType(p.row.type))
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.edit(p.row)
+                  }
+                }
+              }, '编辑')
+            ])
           }
-        },
-        {
-          title: '时间',
-          align: 'center',
-          key: 'createDate',
-          minWidth: 150
         }
       ],
       pageData: {
@@ -135,7 +108,8 @@ export default {
         pages: 0, // 总页数
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
-      }
+      },
+      modal: false
     }
   },
   methods: {
@@ -164,6 +138,26 @@ export default {
     changePage (current) {
       this.pageData.pageIndex = current
       this.tableData = this.getData()
+    },
+    edit (row) {
+      this.modal = true
+      this.formItem = {
+        id: row.id,
+        configKey: row.configKey,
+        configVal: row.configVal,
+        remark: row.remark
+      }
+    },
+    ok () {
+      sysmodify(this.formItem).then(res => {
+        if (res.data.code == '0') {
+          this.modal = false
+          this.$Message.success('修改成功')
+          this.getData()
+        } else {
+          this.$Message.error(res.data.msg)
+        }
+      })
     }
   },
   mounted () {

@@ -70,11 +70,11 @@
     <!-- 资金 -->
     <Modal v-model="modal" title="发货">
       <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
-        <FormItem label="快递单号：" prop="logisticsCode">
-          <Input v-model="formValidate.logisticsCode" placeholder="订单单号查询"></Input>
+        <FormItem label="物流单号：" prop="logisticsNo">
+          <Input v-model="formValidate.logisticsNo" placeholder="订单单号查询"></Input>
         </FormItem>
-        <FormItem label="物流公司：" prop="logisticsName">
-          <Select v-model="formValidate.logisticsName" style="width:200px" filterable>
+        <FormItem label="物流公司：" prop="logisticsCode">
+          <Select v-model="formValidate.logisticsCode" style="width:200px" filterable @on-change="logisticsChange">
             <Option v-for="item in logisticsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
@@ -117,14 +117,15 @@ export default {
     }
     return {
       formValidate: {
+        logisticsNo: '',
         logisticsCode: '',
         logisticsName: ''
       },
       ruleValidate: {
-        logisticsCode: [
+        logisticsNo: [
           { required: true, message: '请输入快递单号', trigger: 'blur' }
         ],
-        logisticsName: [
+        logisticsCode: [
           { required: true, message: '请选择物理公司', trigger: 'change' }
         ]
       },
@@ -146,19 +147,19 @@ export default {
         {
           title: '收货人姓名',
           align: 'center',
-          minWidth: 150,
+          minWidth: 130,
           key: 'name'
         },
         {
           title: '收货人电话',
           align: 'center',
-          minWidth: 150,
+          minWidth: 110,
           key: 'phone'
         },
         {
           title: '订单单号',
           align: 'center',
-          minWidth: 150,
+          minWidth: 200,
           key: 'orderNo'
         },
         {
@@ -174,7 +175,7 @@ export default {
           title: '订单类型',
           align: 'center',
           key: 'orderType',
-          minWidth: 80,
+          minWidth: 100,
           render: (h, p) => {
             return h('div', {}, transType(p.row.orderType))
           }
@@ -183,22 +184,22 @@ export default {
           title: '购买数量',
           align: 'center',
           key: 'buyCount',
-          minWidth: 80
+          minWidth: 90
         },
-        {
-          title: '封面图',
-          align: 'center',
-          key: 'price',
-          minWidth: 80,
-          render: (h, p) => {
-            return h('img', {
-              attrs: {
-                src: p.row.imageUsable,
-                style: 'height:40px;margin-top:5px;'
-              }
-            }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-          }
-        },
+        /* {
+            title: '封面图',
+            align: 'center',
+            key: 'price',
+            minWidth: 80,
+            render: (h, p) => {
+              return h('img', {
+                attrs: {
+                  src: p.row.imageUsable,
+                  style: 'height:40px;margin-top:5px;'
+                }
+              }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
+            }
+          }, */
         {
           title: '创建时间',
           align: 'center',
@@ -208,7 +209,7 @@ export default {
         {
           title: '操作',
           // align: 'center',
-          minWidth: 150,
+          minWidth: 80,
           render: (h, params) => {
             const row = params.row
             const text = ''
@@ -238,8 +239,7 @@ export default {
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
       },
-      modal: false,
-      model1: ''
+      modal: false
     }
   },
   methods: {
@@ -286,19 +286,18 @@ export default {
       this.pageData.pageIndex = current
       this.tableData = this.getData()
     },
+    logisticsChange (val) {
+      console.log(val)
+      this.logisticsList.forEach(element => {
+        if (val === element.value) {
+          this.formValidate.logisticsName = element.label
+        }
+      })
+    },
     // 开始/结束
     orderSend (id) {
       this.rowId = id
       this.modal = true
-      /* this.$Modal.confirm({
-          title: '提示',
-          content: `确定要${status == 'OPEN' ? '结束' : '开始'}此优惠券吗？`,
-          onOk: () => {
-          },
-          onCancel: () => {
-            this.$Message.info('已取消')
-          }
-        }) */
     },
     ok (name) {
       this.$refs[name].validate((valid) => {
@@ -306,7 +305,8 @@ export default {
           orderSend({
             id: this.rowId,
             logisticsCode: this.formValidate.logisticsCode,
-            logisticsName: this.formValidate.logisticsName
+            logisticsName: this.formValidate.logisticsName,
+            logisticsNo: this.formValidate.logisticsNo
           }).then(res => {
             if (res.data.code == '0') {
               this.modal = false
