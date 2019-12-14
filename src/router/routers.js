@@ -63,15 +63,15 @@ export default [{
   meta: {
     title: '优惠券管理',
     icon: 'ios-barcode-outline',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['优惠券管理', '分页查看优惠券', '添加优惠券']
   },
   children: [{
     path: 'coupon-list',
     name: 'coupon-list',
     meta: {
-      title: '优惠券列表'
-      // access: ['会员列表']
+      title: '优惠券列表',
+      access: ['分页查看优惠券']
     },
     component: () => import('@/view/discountCoupon/coupon-list.vue')
   },
@@ -80,7 +80,8 @@ export default [{
     name: 'coupon-add',
     meta: {
       //    hideInMenu: true,
-      title: '添加优惠券'
+      title: '添加优惠券',
+      access: ['添加优惠券']
     },
     component: () => import('@/view/discountCoupon/coupon-add.vue')
   }
@@ -94,15 +95,15 @@ export default [{
   meta: {
     title: '商品管理',
     icon: 'ios-cart-outline',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['商品库', '商品模块', '商品分类']
   },
   children: [{
     path: 'goods-list',
     name: 'goods-list',
     meta: {
-      //    hideInMenu: true,
       title: '商品列表'
+      // access: ['商品模块']
     },
     component: () => import('@/view/goods/goods-list.vue')
   },
@@ -128,8 +129,8 @@ export default [{
     path: 'goods-classify',
     name: 'goods-classify',
     meta: {
-      title: '商品分类'
-      // access: ['会员列表']
+      title: '商品分类',
+      access: ['商品分类']
     },
     component: () => import('@/view/goods/goods-classify.vue')
   }
@@ -144,15 +145,15 @@ export default [{
   meta: {
     title: '区域管理',
     icon: 'md-grid',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['区域管理', '时间段管理', '区域商品']
   },
   children: [{
     path: 'goods-putaway',
     name: 'goods-putaway',
     meta: {
-      title: '商品上架'
-      // access: ['会员列表']
+      title: '商品上架',
+      access: ['区域商品']
     },
     component: () => import('@/view/district/goods-putaway.vue')
   },
@@ -178,8 +179,8 @@ export default [{
     path: 'district-timeList',
     name: 'district-timeList',
     meta: {
-      title: '区域时段'
-      // access: ['会员列表']
+      title: '区域时段',
+      access: ['时间段管理']
     },
     component: () => import('@/view/district/district-timeList.vue')
   }
@@ -245,15 +246,15 @@ export default [{
   meta: {
     title: '会员管理',
     icon: 'md-person',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['会员管理', '用户模块', '用户等级模块']
   },
   children: [{
     path: 'user-list',
     name: 'user-list',
     meta: {
-      title: '用户列表'
-      // access: ['会员列表']
+      title: '用户列表',
+      access: ['用户模块']
     },
     component: () => import('@/view/user/user-list.vue')
   },
@@ -261,8 +262,8 @@ export default [{
     path: 'user-level',
     name: 'user-level',
     meta: {
-      title: '用户等级'
-      // access: ['会员列表']
+      title: '用户等级',
+      access: ['用户等级模块']
     },
     component: () => import('@/view/user/user-level.vue')
   }
@@ -276,15 +277,15 @@ export default [{
   meta: {
     title: '内容管理',
     icon: 'ios-map',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['内容管理', '轮播图管理', '注册协议管理', '其他内容']
   },
   children: [{
     path: 'swiper-list',
     name: 'swiper-list',
     meta: {
-      title: '轮播图管理'
-      // access: ['会员列表']
+      title: '轮播图管理',
+      access: ['轮播图管理']
     },
     component: () => import('@/view/content/swiper-list.vue')
   },
@@ -292,8 +293,8 @@ export default [{
     path: 'register-text',
     name: 'register-text',
     meta: {
-      title: '注册协议'
-      // access: ['会员列表']
+      title: '注册协议',
+      access: ['注册协议管理']
     },
     component: () => import('@/view/content/register-text.vue')
   }
@@ -331,14 +332,88 @@ export default [{
     showAlways: true
     // access: ['会员管理', '会员列表', '商家审核']
   },
+  children: [
+    /* {
+        path: 'system-list',
+        name: 'system-list',
+        meta: {
+          title: '系统配置',
+          // access: ['会员列表']
+        },
+        component: () => import('@/view/system/system.vue')
+      }, */
+    {
+      path: 'consign-list',
+      name: 'consign-list',
+      meta: {
+        title: '寄售返佣配置'
+        // access: ['会员列表']
+      },
+      component: () => import('@/view/system/consign-list.vue')
+    }
+  ]
+},
+  // 权限
+{
+  path: '/power',
+  name: 'power',
+  component: Main,
+  meta: {
+    title: '权限管理',
+    icon: 'ios-lock',
+    // access: ["权限管理", "角色管理", "用户管理"],
+    showAlways: true
+  },
   children: [{
-    path: 'system-list',
-    name: 'system-list',
+    path: 'role',
+    name: 'role',
     meta: {
-      title: '系统配置'
-      // access: ['会员列表']
+      title: '角色管理'
+      // access: ["角色管理"]
     },
-    component: () => import('@/view/system/system.vue')
+    component: () => import('@/view/power/role.vue')
+  },
+  {
+    path: 'admin-list',
+    name: 'admin-list',
+    meta: {
+      title: '用户管理'
+      // access: ["用户管理"]
+    },
+    component: () => import('@/view/power/admin-list.vue')
+  }
+  ]
+},
+{
+  path: '/add-role-href',
+  name: 'add-role-href',
+  component: Main,
+  meta: {
+    hideInMenu: true
+  },
+  children: [{
+    path: 'add-role',
+    name: 'add-role',
+    meta: {
+      title: '新增角色'
+    },
+    component: () => import('@/view/power/add-role.vue')
+  }]
+},
+{
+  path: '/edit-role-href',
+  name: 'edit-role-href',
+  component: Main,
+  meta: {
+    hideInMenu: true
+  },
+  children: [{
+    path: 'edit-role',
+    name: 'edit-role',
+    meta: {
+      title: '修改角色'
+    },
+    component: () => import('@/view/power/edit-role.vue')
   }]
 }
 ]
