@@ -102,8 +102,8 @@ export default [{
     path: 'goods-list',
     name: 'goods-list',
     meta: {
-      title: '商品列表'
-      // access: ['商品模块']
+      title: '商品列表',
+      access: ['商品模块']
     },
     component: () => import('@/view/goods/goods-list.vue')
   },
@@ -308,15 +308,15 @@ export default [{
   meta: {
     title: '财务管理',
     icon: 'logo-usd',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['财务管理', '资产明细']
   },
   children: [{
     path: 'finance-list',
     name: 'finance-list',
     meta: {
-      title: '财务记录'
-      // access: ['会员列表']
+      title: '资产明细',
+      access: ['资产明细']
     },
     component: () => import('@/view/finance/finance-list.vue')
   }]
@@ -329,25 +329,25 @@ export default [{
   meta: {
     title: '系统配置',
     icon: 'md-cog',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['系统配置', '寄售返佣配置', '商家审核']
   },
   children: [
     /* {
-        path: 'system-list',
-        name: 'system-list',
-        meta: {
-          title: '系统配置',
-          // access: ['会员列表']
-        },
-        component: () => import('@/view/system/system.vue')
-      }, */
+          path: 'system-list',
+          name: 'system-list',
+          meta: {
+            title: '系统配置',
+            // access: ['会员列表']
+          },
+          component: () => import('@/view/system/system.vue')
+        }, */
     {
       path: 'consign-list',
       name: 'consign-list',
       meta: {
-        title: '寄售返佣配置'
-        // access: ['会员列表']
+        title: '寄售返佣配置',
+        access: ['寄售返佣配置']
       },
       component: () => import('@/view/system/consign-list.vue')
     }
@@ -361,15 +361,15 @@ export default [{
   meta: {
     title: '权限管理',
     icon: 'ios-lock',
-    // access: ["权限管理", "角色管理", "用户管理"],
+    access: ['权限管理', '角色管理', '用户管理'],
     showAlways: true
   },
   children: [{
     path: 'role',
     name: 'role',
     meta: {
-      title: '角色管理'
-      // access: ["角色管理"]
+      title: '角色管理',
+      access: ['角色管理']
     },
     component: () => import('@/view/power/role.vue')
   },
@@ -377,8 +377,8 @@ export default [{
     path: 'admin-list',
     name: 'admin-list',
     meta: {
-      title: '用户管理'
-      // access: ["用户管理"]
+      title: '用户管理',
+      access: ['用户管理']
     },
     component: () => import('@/view/power/admin-list.vue')
   }

@@ -100,7 +100,7 @@ export default {
       let _data = {
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize,
-        configKey: 'CONSIGNMENT_BROKERAGE_PROPORTION,CITY_PROPORTION,PROVINCE_PROPORTION'
+        configKey: 'USER_PROPORTION,CITY_PROPORTION,PROVINCE_PROPORTION'
       }
       sysfindList(_data).then(res => {
         if (res.data.data.code == '0') {
