@@ -14,7 +14,7 @@ Axios.interceptors.request.use(
     if (getToken()) {
       config.headers.common['admintoken'] = getToken()
     }
-    if (config.url.indexOf('/admin/') > -1) {
+    if (config.url.indexOf('/admin/') > -1 || config.url.indexOf('/api/') > -1) {
       config.headers.MTOKEN = getToken()
     }
     if (config.method === 'post') {

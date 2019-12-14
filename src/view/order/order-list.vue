@@ -20,6 +20,7 @@
             <Option value="SUCCESS_CONSIGNMENT">寄售成功</Option>
             <Option value="ALREADY_SHIP">已发货</Option>
             <Option value="ALREADY_RECEIPT">已收货</Option>
+            <Option value="REDEMPTION_SUCCESS">换购成功</Option>
           </Select>
         </FormItem>
         </Col>
@@ -67,11 +68,11 @@
         <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
       </div>
     </div>
-    <!-- 资金 -->
+    <!-- 发货 -->
     <Modal v-model="modal" title="发货">
       <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
         <FormItem label="物流单号：" prop="logisticsNo">
-          <Input v-model="formValidate.logisticsNo" placeholder="订单单号查询"></Input>
+          <Input v-model="formValidate.logisticsNo" placeholder="快递单号查询"></Input>
         </FormItem>
         <FormItem label="物流公司：" prop="logisticsCode">
           <Select v-model="formValidate.logisticsCode" style="width:200px" filterable @on-change="logisticsChange">
@@ -84,10 +85,19 @@
         <Button type="primary" size="large" @click="ok('formValidate')">确定</Button>
       </div>
     </Modal>
+    <!-- 查看物流 -->
+    <Modal v-model="modal1" title="物流信息">
+      <Timeline>
+        <TimelineItem v-for="item in tracesList">
+          <p class="time">{{item.acceptTime}}</p>
+          <p class="content">{{item.acceptStation}}</p>
+        </TimelineItem>
+      </Timeline>
+    </Modal>
   </div>
 </template>
 <script>
-import { orderlist, logistics, orderSend } from '@/api/order'
+import { orderlist, logistics, orderSend, logisticsFirmTrack } from '@/api/order'
 export default {
   name: 'discountCoupon',
   data () {
@@ -102,7 +112,8 @@ export default {
         'BIG_CONSIGNMENT': '大排序寄售',
         'SUCCESS_CONSIGNMENT': '寄售成功',
         'ALREADY_SHIP': '已发货',
-        'ALREADY_RECEIPT': '已收货'
+        'ALREADY_RECEIPT': '已收货',
+        'REDEMPTION_SUCCESS': '换购成功'
       }
       return obj[val]
     }
@@ -187,19 +198,19 @@ export default {
           minWidth: 90
         },
         /* {
-            title: '封面图',
-            align: 'center',
-            key: 'price',
-            minWidth: 80,
-            render: (h, p) => {
-              return h('img', {
-                attrs: {
-                  src: p.row.imageUsable,
-                  style: 'height:40px;margin-top:5px;'
-                }
-              }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-            }
-          }, */
+              title: '封面图',
+              align: 'center',
+              key: 'price',
+              minWidth: 80,
+              render: (h, p) => {
+                return h('img', {
+                  attrs: {
+                    src: p.row.imageUsable,
+                    style: 'height:40px;margin-top:5px;'
+                  }
+                }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
+              }
+            }, */
         {
           title: '创建时间',
           align: 'center',
@@ -225,10 +236,26 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.orderSend(row.id)
+                    this.orderSendBtn(row.id)
                   }
                 }
-              }, '发货')
+              }, '发货'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px',
+                  display: row.orderStatus == 'ALREADY_SHIP' ? 'block' : 'none'
+                },
+                on: {
+                  click: () => {
+                    this.look(row.id)
+                  }
+                }
+              }, '物流信息')
+
             ])
           }
         }
@@ -239,7 +266,9 @@ export default {
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
       },
-      modal: false
+      modal: false,
+      modal1: false,
+      tracesList: []
     }
   },
   methods: {
@@ -287,7 +316,6 @@ export default {
       this.tableData = this.getData()
     },
     logisticsChange (val) {
-      console.log(val)
       this.logisticsList.forEach(element => {
         if (val === element.value) {
           this.formValidate.logisticsName = element.label
@@ -295,7 +323,7 @@ export default {
       })
     },
     // 开始/结束
-    orderSend (id) {
+    orderSendBtn (id) {
       this.rowId = id
       this.modal = true
     },
@@ -318,6 +346,21 @@ export default {
             }
           })
         }
+      })
+    },
+    look (id) {
+      logisticsFirmTrack({
+        orderId: id
+      }).then(res => {
+        if (res.data.code == '0') {
+          this.modal1 = true
+          this.tracesList = res.data.data.tracesList
+        } else {
+          this.modal = false
+          this.$Message.error(res.data.msg)
+        }
+      }).catch(() => {
+        this.$Message.error('获取失败')
       })
     }
   },

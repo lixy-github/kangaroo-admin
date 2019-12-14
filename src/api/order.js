@@ -27,3 +27,12 @@ export const orderSend = (data) => {
     params: data
   })
 }
+
+// 查看物流
+export const logisticsFirmTrack = (data) => {
+  return Axios.request({
+    method: 'get',
+    url: '/api/logistics/logisticsFirmTrack',
+    params: data
+  })
+}
