@@ -41,14 +41,14 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   function (response) {
     if (response.data.code == '401') {
-      localStorage.clear()
+      /* localStorage.clear()
       Cookies.remove('jxyex-token')
       alert('登录已过期，请重新登录')
       if (process.env.NODE_ENV == 'production') {
         window.location.href = '/macc/index.html#/login'
       } else {
         window.location.href = '/'
-      }
+      } */
     } else {
       return response
     }

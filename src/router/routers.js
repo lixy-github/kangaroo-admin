@@ -334,14 +334,14 @@ export default [{
   },
   children: [
     /* {
-          path: 'system-list',
-          name: 'system-list',
-          meta: {
-            title: '系统配置',
-            // access: ['会员列表']
-          },
-          component: () => import('@/view/system/system.vue')
-        }, */
+            path: 'system-list',
+            name: 'system-list',
+            meta: {
+              title: '系统配置',
+              // access: ['会员列表']
+            },
+            component: () => import('@/view/system/system.vue')
+          }, */
     {
       path: 'consign-list',
       name: 'consign-list',

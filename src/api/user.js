@@ -81,3 +81,12 @@ export const userLevelupdate = (data) => {
     method: 'post'
   })
 }
+
+// 用户收货地址
+export const useraddrList = (data) => {
+  return Axios.request({
+    url: '/admin/user/addr/list',
+    data: data,
+    method: 'post'
+  })
+}
