@@ -12,15 +12,15 @@
           <Select v-model="formItem.orderStatus">
             <Option value="">全部</Option>
             <Option value="UNPAID">未支付</Option>
-            <Option value="CLOSED">已关闭</Option>
             <Option value="ALREADY_PAID">已支付</Option>
             <Option value="WAIT_SHIP">待发货</Option>
+            <Option value="ALREADY_SHIP">已发货</Option>
+            <Option value="ALREADY_RECEIPT">已收货</Option>
             <Option value="SMALL_CONSIGNMENT">小排序寄售</Option>
             <Option value="BIG_CONSIGNMENT">大排序寄售</Option>
             <Option value="SUCCESS_CONSIGNMENT">寄售成功</Option>
-            <Option value="ALREADY_SHIP">已发货</Option>
-            <Option value="ALREADY_RECEIPT">已收货</Option>
             <Option value="REDEMPTION_SUCCESS">换购成功</Option>
+            <Option value="CLOSED">已关闭</Option>
           </Select>
         </FormItem>
         </Col>
@@ -198,19 +198,19 @@ export default {
           minWidth: 90
         },
         /* {
-              title: '封面图',
-              align: 'center',
-              key: 'price',
-              minWidth: 80,
-              render: (h, p) => {
-                return h('img', {
-                  attrs: {
-                    src: p.row.imageUsable,
-                    style: 'height:40px;margin-top:5px;'
-                  }
-                }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-              }
-            }, */
+                title: '封面图',
+                align: 'center',
+                key: 'price',
+                minWidth: 80,
+                render: (h, p) => {
+                  return h('img', {
+                    attrs: {
+                      src: p.row.imageUsable,
+                      style: 'height:40px;margin-top:5px;'
+                    }
+                  }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
+                }
+              }, */
         {
           title: '创建时间',
           align: 'center',

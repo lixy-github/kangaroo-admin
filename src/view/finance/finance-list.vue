@@ -16,6 +16,7 @@
             <Option value="CONSIGNMENT">寄售</Option>
             <Option value="BUY">购买</Option>
             <Option value="REBATE">返佣</Option>
+            <Option value="ORDERTIMECOUNT">订单取消</Option>
           </Select>
         </FormItem>
         </Col>
@@ -65,7 +66,8 @@ export default {
         'WITHDRAW': '提现',
         'CONSIGNMENT': '寄售',
         'BUY': '购买',
-        'REBATE': '返佣'
+        'REBATE': '返佣',
+        'ORDERTIMECOUNT': '订单取消'
       }
       return obj[val]
     }
@@ -91,7 +93,14 @@ export default {
           title: '操作金额',
           align: 'center',
           minWidth: 150,
-          key: 'money'
+          key: 'money',
+          render: (h, p) => {
+            return h('div', {
+              style: {
+                color: p.row.money > 0 ? 'green' : 'red'
+              }
+            }, p.row.money)
+          }
         },
         {
           title: '变动前金额',

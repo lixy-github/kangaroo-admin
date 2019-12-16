@@ -87,6 +87,8 @@
       <p>
         <span>{{userData.nickName+'账户现有资金：'}}</span>
         <span style="font-weight: bold;font-size: 15px;">{{userData.account+'元'}}</span>
+        <span>，消费券余额：</span>
+        <span style="font-weight: bold;font-size: 15px;">{{userData.coupon+'元'}}</span>
       </p>
     </Modal>
   </div>
@@ -336,7 +338,7 @@ export default {
     editRisk (row) {
       this.rowId = row.id
       this.riskModal = true
-      this.controlRt = row.controlRt
+      this.controlRt = row.controlRt.toString()
     },
     riskOk () {
       if (this.controlRt == '') {

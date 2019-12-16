@@ -90,7 +90,8 @@ export default {
               h('Button', {
                 props: {
                   size: 'small',
-                  type: 'success'
+                  type: 'success',
+                  disabled: params.row.mobile == 'admin'
                 },
                 style: {
                   marginRight: '10px'

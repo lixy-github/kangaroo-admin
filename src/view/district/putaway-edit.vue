@@ -43,7 +43,7 @@
       </FormItem>
       <!--  prop="timeid" -->
       <FormItem label="时间段：">
-        <Select v-model="formValidate.timeid" style="width:300px" :disabled="formValidate.scope == 'ALLDAY'">
+        <Select v-model="formValidate.timeid" style="width:300px" :disabled="formValidate.scope != 'BATCH' && formValidate.scope != 'RUSH'">
           <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>
@@ -165,10 +165,12 @@ export default {
           // 抢购优享
         case 'RUSH_FIRST':
           this.formValidate.consumerPrice = '0'
+          this.formValidate.timeid = null
           break
           // 批发优享
         case 'BATCH_FIRST':
           this.formValidate.coupon = '0'
+          this.formValidate.timeid = null
           break
       }
     },

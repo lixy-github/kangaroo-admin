@@ -14,7 +14,7 @@ const scopeData = [{
 }, {
   value: 'BATCH_FIRST',
   label: '批发优享区'
-} ]
+}]
 
 export default {
   scopeData

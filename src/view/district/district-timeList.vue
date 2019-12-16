@@ -9,6 +9,8 @@
             <Option value="">全部</Option>
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
+            <!-- <Option value="RUSH_FIRST">抢购优享区</Option>
+            <Option value="BATCH_FIRST">批发优享区</Option> -->
           </Select>
         </FormItem>
         </Col>
@@ -31,6 +33,8 @@
           <RadioGroup v-model="formItem.scope">
             <Radio label="RUSH">抢购区</Radio>
             <Radio label="BATCH">批发区</Radio>
+            <!-- <Radio label="RUSH_FIRST">抢购优享区</Radio>
+            <Radio label="BATCH_FIRST">批发优享区</Radio> -->
           </RadioGroup>
         </FormItem>
       </Form>
