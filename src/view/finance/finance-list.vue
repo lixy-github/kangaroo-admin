@@ -32,6 +32,7 @@
         </Col>
         <Col span="1" offset="1" style="width: 200px">
         <Button type="primary" @click="onSearch" style="margin-right:20px;">搜索</Button>
+        <!-- <Export :ajax="recordfindList" :params="exParmas" :map="{data:'data.data.dataList',count:'data.data.total'}" fileName="资产明细" :filter="exFilter" :columns="tableColumns"></Export> -->
         </Col>
       </Row>
     </Form>
@@ -47,9 +48,13 @@
   </div>
 </template>
 <script>
+import Export from '@/components/export/export.vue'
 import { recordfindList } from '@/api/finance'
 export default {
   name: 'discountCoupon',
+  components: {
+    Export
+  },
   data () {
     var transmoneyType = (val) => {
       var obj = {
@@ -78,6 +83,12 @@ export default {
         type: '',
         moneyType: ''
       },
+      recordfindList,
+      exParmas: {},
+      exFilter: {
+        moneyType: transmoneyType,
+        type: transType
+      },
       detailsIsShow: false,
       title: '',
       rowId: '',
@@ -93,14 +104,14 @@ export default {
           title: '操作金额',
           align: 'center',
           minWidth: 150,
-          key: 'money',
-          render: (h, p) => {
-            return h('div', {
-              style: {
-                color: p.row.money > 0 ? 'green' : 'red'
-              }
-            }, p.row.money)
-          }
+          key: 'money'
+          /* render: (h, p) => {
+              return h('div', {
+                style: {
+                  color: p.row.money > 0 ? 'green' : 'red'
+                }
+              }, p.row.money)
+            } */
         },
         {
           title: '变动前金额',
@@ -161,6 +172,7 @@ export default {
         type: this.formItem.type,
         moneyType: this.formItem.moneyType
       }
+      this.exParmas = _data
       recordfindList(_data).then(res => {
         if (res.data.code == '0') {
           this.tableData = res.data.data.dataList
@@ -181,7 +193,7 @@ export default {
       this.tableData = this.getData()
     }
   },
-  mounted () {
+  created () {
     this.getData()
   }
 }
