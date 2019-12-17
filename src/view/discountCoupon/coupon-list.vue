@@ -150,7 +150,7 @@ export default {
             return h('img', {
               attrs: {
                 src: p.row.imageUsable,
-                style: 'height:40px;margin-top:5px;'
+                style: 'width:100px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }
@@ -163,7 +163,7 @@ export default {
             return h('img', {
               attrs: {
                 src: p.row.imageDisable,
-                style: 'height:40px;margin-top:5px;'
+                style: 'width:100px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }

@@ -22,9 +22,18 @@ export const menuList = () => {
 // 首页数据
 export const indexCount = (data) => {
   return Axios.request({
-    url: '/admin/charge/indexCount',
-    data: data,
-    method: 'post'
+    url: '/admin/order/userAdminIndexSales',
+    params: data,
+    method: 'get'
+  })
+}
+
+// 首页数据
+export const adminIndex = (data) => {
+  return Axios.request({
+    url: '/admin/order/userAdminIndex',
+    params: data,
+    method: 'get'
   })
 }
 
