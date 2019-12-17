@@ -110,17 +110,20 @@ export default {
           title: '面值',
           align: 'center',
           key: 'price',
-          minWidth: 80
+          minWidth: 80,
+          render: (h, p) => {
+            return h('div', {}, p.row.price / 100)
+          }
         },
         {
           title: '描述',
           align: 'center',
-          minWidth: 100,
+          minWidth: 150,
           render: (h, params) => {
             let texts = params.row.detail
             if (params.row.detail != null) {
-              if (params.row.detail.length > 5) {
-                texts = params.row.detail.slice(0, 5) + '...' // 进行数字截取
+              if (params.row.detail.length > 10) {
+                texts = params.row.detail.slice(0, 10) + '...' // 进行数字截取
               } else {
                 texts = params.row.detail
               }
@@ -145,12 +148,12 @@ export default {
         {
           title: '未使用图片',
           align: 'center',
-          minWidth: 120,
+          minWidth: 100,
           render: (h, p) => {
             return h('img', {
               attrs: {
                 src: p.row.imageUsable,
-                style: 'width:100px;margin-top:5px;'
+                style: 'width:80px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }
@@ -158,12 +161,12 @@ export default {
         {
           title: '已失效图片',
           align: 'center',
-          minWidth: 120,
+          minWidth: 100,
           render: (h, p) => {
             return h('img', {
               attrs: {
                 src: p.row.imageDisable,
-                style: 'width:100px;margin-top:5px;'
+                style: 'width:80px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }
@@ -178,13 +181,13 @@ export default {
           title: '领取数量',
           align: 'center',
           key: 'alreadyNumber',
-          minWidth: 100
+          minWidth: 85
         },
         {
           title: '开始/结束',
           align: 'center',
           key: 'status',
-          minWidth: 120,
+          minWidth: 90,
           render: (h, p) => {
             return h('div', {}, transStatus(p.row.status))
           }
@@ -337,6 +340,7 @@ export default {
       this.HandlClose(true)
       this.title = row.name
       this.rowId = row.id
+      this.detailTableData = []
       this.getDetailsData()
     },
     // 领取详情列表

@@ -129,8 +129,8 @@ export default {
   methods: {
     // 图片上传
     /* onRemove() {
-            this.formValidate.img = ''
-          }, */
+              this.formValidate.img = ''
+            }, */
     onSuccess (r, file, list) {
       this.formValidate.imageUsable = r.data.url
     },
@@ -145,7 +145,6 @@ export default {
     },
     // 新增/修改
     handleSubmit (name) {
-      console.log(this.formValidate.startDate)
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (this.formValidate.type != 'COUNT') {
@@ -161,7 +160,7 @@ export default {
             startDate: this.formValidate.type == 'COUNT' ? '' : this.formValidate.startDate + this.formValidate.startTime,
             name: this.formValidate.name,
             number: this.formValidate.number,
-            price: this.formValidate.price,
+            price: this.formValidate.price * 100, // 单位：分
             type: this.formValidate.type,
             status: this.formValidate.status,
             imageUsable: this.formValidate.imageUsable,

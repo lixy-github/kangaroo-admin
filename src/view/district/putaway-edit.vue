@@ -237,7 +237,7 @@ export default {
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
               postage: this.formValidate.postage,
-              price: this.formValidate.price,
+              price: this.formValidate.price * 100, // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
               timeid: this.formValidate.timeid
@@ -264,7 +264,7 @@ export default {
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
               postage: this.formValidate.postage,
-              price: this.formValidate.price,
+              price: this.formValidate.price * 100, // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
               timeid: this.formValidate.timeid
@@ -323,7 +323,7 @@ export default {
           num: data.num.toString(),
           alreadyNum: data.alreadyNum.toString(),
           postage: data.postage.toString(),
-          price: data.price.toString(),
+          price: (data.price / 100).toString(),
           scope: data.scope.toString(),
           stock: data.stock.toString(),
           timeid: data.timeid ? data.timeid.toString() : null

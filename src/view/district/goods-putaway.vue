@@ -73,19 +73,24 @@ export default {
           title: 'id',
           align: 'center',
           key: 'rushid',
-          minWidth: 120
+          minWidth: 120,
+          fixed: 'left'
         },
         {
           title: '商品名称',
           align: 'center',
           key: 'name',
-          minWidth: 120
+          minWidth: 120,
+          fixed: 'left'
         },
         {
           title: '商品价格',
           align: 'center',
           key: 'price',
-          minWidth: 90
+          minWidth: 90,
+          render: (h, p) => {
+            return h('div', {}, p.row.price / 100)
+          }
         },
         {
           title: '消费券价格',
@@ -162,6 +167,7 @@ export default {
           title: '操作',
           align: 'center',
           minWidth: 150,
+          fixed: 'right',
           render: (h, params) => {
             const row = params.row
             const status = row.status
