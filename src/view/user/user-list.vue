@@ -22,9 +22,9 @@
         <Col span="3" style="width: 250px">
         <FormItem label="风控">
           <Select v-model="formItem.controlRt" clearable>
-            <Option value="0">0%</Option>
-            <Option value="-1">50%</Option>
-            <Option value="100">100%</Option>
+            <Option value="0">必不中</Option>
+            <Option value="-1">普通</Option>
+            <Option value="100">必中</Option>
           </Select>
         </FormItem>
         </Col>
@@ -69,11 +69,11 @@
     <!-- 风控 -->
     <Modal v-model="riskModal" title="设置风控">
       <Form :label-width="80">
-        <FormItem label="分控：">
+        <FormItem label="风控：">
           <Select v-model="controlRt" style="width:200px">
-            <Option value="0">0%</Option>
-            <Option value="-1">50%</Option>
-            <Option value="100">100%</Option>
+            <Option value="0">必不中</Option>
+            <Option value="-1">普通</Option>
+            <Option value="100">必中</Option>
           </Select>
         </FormItem>
       </Form>
@@ -108,9 +108,9 @@ export default {
     }
     var transControlRt = (val) => {
       var obj = {
-        '0': '0%',
-        '-1': '50%',
-        '100': '100%'
+        '0': '必不中',
+        '-1': '普通',
+        '100': '必中'
       }
       return obj[val]
     }
