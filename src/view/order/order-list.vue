@@ -197,20 +197,6 @@ export default {
           key: 'buyCount',
           minWidth: 90
         },
-        /* {
-                  title: '封面图',
-                  align: 'center',
-                  key: 'price',
-                  minWidth: 80,
-                  render: (h, p) => {
-                    return h('img', {
-                      attrs: {
-                        src: p.row.imageUsable,
-                        style: 'height:40px;margin-top:5px;'
-                      }
-                    }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-                  }
-                }, */
         {
           title: '创建时间',
           align: 'center',
@@ -274,7 +260,6 @@ export default {
   methods: {
     // 获取
     getData () {
-      console.log(this.formItem.time)
       let startDate = this.formItem.time[0]
       let endDate = this.formItem.time[1]
       let _data = {
@@ -372,14 +357,13 @@ export default {
       this.formItem.orderStatus = ''
     }
     if (this.$route.query.type) {
-      const myDate = new Date()
-      const year = myDate.getFullYear()
-      const month = myDate.getMonth() + 1
-      const day = myDate.getDate()
-      this.formItem.time = [`${year}-${month}-${day}`, `${year}-${month}-${day}`]
+      /* const myDate = new Date()
+        const year = myDate.getFullYear()
+        const month = myDate.getMonth() + 1
+        const day = myDate.getDate()
+        this.formItem.time = [`${year}-${month}-${day}`, `${year}-${month}-${day}`]; */
       this.formItem.orderType = this.$route.query.type
     } else {
-      this.formItem.time = ''
       this.formItem.orderType = ''
     }
     this.getData()
