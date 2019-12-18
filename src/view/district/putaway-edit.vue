@@ -152,10 +152,12 @@ export default {
         // 抢购
         case 'RUSH':
           this.formValidate.consumerPrice = '0'
+          this.getTimeList('RUSH')
           break
           // 批发
         case 'BATCH':
           this.formValidate.coupon = '0'
+          this.getTimeList('RUSH')
           break
           // 全天消费
         case 'ALLDAY':
@@ -202,10 +204,8 @@ export default {
       this.formValidate.images.push(image)
     },
     handleSuccess (res, file) {
-      console.log(res)
       this.imageUrl = res.data
       this.hasImage = true
-      console.log(file)
     },
     /* ***************** */
     // 封面图上传
@@ -286,7 +286,6 @@ export default {
     },
     getGoodsList () {
       this.goodsList = []
-      this.timeList = []
       let _data = {
         pageIndex: 1,
         pageSize: 2000
@@ -295,15 +294,6 @@ export default {
         if (res.data.code == '0') {
           res.data.data.dataList.forEach(element => {
             this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-          })
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-      templatefindList().then(res => {
-        if (res.data.code == '0') {
-          res.data.data.forEach(element => {
-            this.timeList.push({ 'value': element.id.toString(), 'label': element.hours + ':' + element.min })
           })
         } else {
           this.$Message.error(res.data.msg)
@@ -328,6 +318,7 @@ export default {
           stock: data.stock.toString(),
           timeid: data.timeid ? data.timeid.toString() : null
         }
+        this.getTimeList(data.scope.toString())
       } else {
         this.scoperead = false
         this.formValidate = {
@@ -346,6 +337,20 @@ export default {
           alreadyNum: ''
         }
       }
+    },
+    getTimeList (scope) {
+      this.timeList = []
+      templatefindList({
+        scope: scope// RUSH,//抢购  BATCH,//批发
+      }).then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.timeList.push({ 'value': element.id.toString(), 'label': element.hours + ':' + element.min })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
+      })
     }
   },
   mounted () {

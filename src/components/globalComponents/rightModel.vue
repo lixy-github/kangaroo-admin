@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rightmodel">
     <transition name="bounce">
       <div class="addChannelList" v-if="isShow" :style="{width:width?width:'580px'}">
         <slot name="list"></slot>
@@ -27,6 +27,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  // .rightmodel {
+  //   transition: width 0.3s;
+  // }
   .addChannelList {
     position: fixed;
     right: 0;

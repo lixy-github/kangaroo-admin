@@ -94,7 +94,6 @@ export default {
         if (res.data.code = '0') {
           this.formItem = res.data.data.authRole
           res.data.data.menuList.forEach(val => {
-            console.log(val.selected)
             if (val.selected == 'selected') {
               val.checkAll = true
             } else {

@@ -82,7 +82,8 @@ export default {
           title: 'id',
           align: 'center',
           key: 'id',
-          minWidth: 50
+          minWidth: 50,
+          fixed: 'left'
         },
         {
           title: '开始时间',
@@ -104,7 +105,8 @@ export default {
           title: '优惠券名称',
           align: 'center',
           key: 'name',
-          minWidth: 120
+          minWidth: 120,
+          fixed: 'left'
         },
         {
           title: '面值',
@@ -122,8 +124,8 @@ export default {
           render: (h, params) => {
             let texts = params.row.detail
             if (params.row.detail != null) {
-              if (params.row.detail.length > 10) {
-                texts = params.row.detail.slice(0, 10) + '...' // 进行数字截取
+              if (params.row.detail.length > 8) {
+                texts = params.row.detail.slice(0, 8) + '...' // 进行数字截取
               } else {
                 texts = params.row.detail
               }
@@ -153,7 +155,7 @@ export default {
             return h('img', {
               attrs: {
                 src: p.row.imageUsable,
-                style: 'width:80px;margin-top:5px;'
+                style: 'height:26px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }
@@ -166,7 +168,7 @@ export default {
             return h('img', {
               attrs: {
                 src: p.row.imageDisable,
-                style: 'width:80px;margin-top:5px;'
+                style: 'height:26px;margin-top:5px;'
               }
             }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
           }
@@ -196,6 +198,7 @@ export default {
           title: '操作',
           align: 'center',
           minWidth: 150,
+          fixed: 'right',
           render: (h, params) => {
             const row = params.row
             const status = row.status

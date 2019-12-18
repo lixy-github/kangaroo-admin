@@ -83,20 +83,26 @@
       </div>
     </Modal>
     <!-- 资金 -->
-    <Modal v-model="moneyModal" title="资金详情" @on-ok="moneyModal = false">
+    <!-- <Modal v-model="moneyModal" title="资金详情" @on-ok="moneyModal = false">
       <p>
         <span>{{userData.nickName+'账户现有资金：'}}</span>
         <span style="font-weight: bold;font-size: 15px;">{{userData.account+'元'}}</span>
         <span>，消费券余额：</span>
         <span style="font-weight: bold;font-size: 15px;">{{userData.coupon+'元'}}</span>
       </p>
-    </Modal>
+    </Modal> -->
+    <!-- 用户详情 -->
+    <UserInfo v-if="moneyModal" :rowData="rowData" @closeRight="closeRight"></UserInfo>
   </div>
 </template>
 <script>
 import { userlist, agentLevelList, userinfo, agentLevelupdate, controlupdate } from '@/api/user'
+import UserInfo from './common/user-info'
 export default {
   name: 'discountCoupon',
+  components: {
+    UserInfo
+  },
   data () {
     var transLevel = (val) => {
       var obj = {
@@ -124,7 +130,6 @@ export default {
         parentId: '',
         phone: ''
       },
-      userData: [],
       controlRt: '',
       agentLevel: '',
       agentLevelList: [],
@@ -146,19 +151,22 @@ export default {
           title: '手机号',
           align: 'center',
           key: 'phone',
-          minWidth: 100
+          minWidth: 110
         },
         {
           title: '昵称',
           align: 'center',
           key: 'nickName',
-          minWidth: 80
+          minWidth: 100
         },
         {
           title: '上级Id',
           align: 'center',
           key: 'parentId',
-          minWidth: 80
+          minWidth: 80,
+          render: (h, p) => {
+            return h('div', {}, p.row.parentId ? p.row.parentId : '--')
+          }
         },
         {
           title: '风控',
@@ -178,7 +186,7 @@ export default {
         {
           title: '代理级别',
           align: 'center',
-          minWidth: 80,
+          minWidth: 90,
           render: (h, p) => {
             return h('div', {}, transLevel(p.row.agentLevel))
           }
@@ -186,13 +194,13 @@ export default {
         {
           title: '注册日期',
           align: 'center',
-          key: 'crateDate',
-          minWidth: 80
+          key: 'createDate',
+          minWidth: 150
         },
         {
           title: '操作',
           align: 'center',
-          minWidth: 200,
+          minWidth: 220,
           render: (h, params) => {
             const row = params.row
             const status = row.status
@@ -239,7 +247,7 @@ export default {
                     this.view(row)
                   }
                 }
-              }, '资金')
+              }, '详情')
             ])
           }
         }
@@ -249,7 +257,8 @@ export default {
         pages: 0, // 总页数
         pageIndex: 1, // 当前页
         pageSize: 15 // 每页数据条数
-      }
+      },
+      rowData: {}
     }
   },
   methods: {
@@ -302,16 +311,10 @@ export default {
       this.pageData.pageIndex = current
       this.tableData = this.getData()
     },
-    // 查看资金
+    // 查看领取详情
     view (row) {
-      userinfo({ id: row.id }).then(res => {
-        if (res.data.code == '0') {
-          this.moneyModal = true
-          this.userData = res.data.data
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
+      this.moneyModal = true
+      this.rowData = row
     },
     // 设置代理级别
     editAgentLevel (row) {
@@ -358,13 +361,59 @@ export default {
           this.$Message.error(res.data.msg)
         }
       })
+    },
+    closeRight (flag) {
+      this.moneyModal = flag
     }
   },
-  mounted () {
+  created () {
     this.getData()
     this.getagentLevel()
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
+  .modelTitle {
+    height: 42px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #ebebeb;
+    color: #333333;
+    text-align: left;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
+    > i {
+      cursor: pointer;
+      line-height: 24px !important;
+      color: #444444;
+    }
+  }
+  .content {
+    padding-left: 10px;
+    box-sizing: border-box;
+    h2 {
+      font-size: 15px;
+      color: #333333;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 90%;
+      margin: 0 auto;
+      border: 1px solid #c4c4c4;
+      border-right: none;
+      border-bottom: none;
+      td,
+      th {
+        border-right: 1px solid #c4c4c4;
+        border-bottom: 1px solid #c4c4c4;
+      }
+      tr {
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+  }
 </style>

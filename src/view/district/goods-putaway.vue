@@ -73,14 +73,14 @@ export default {
           title: 'id',
           align: 'center',
           key: 'rushid',
-          minWidth: 120,
+          minWidth: 60,
           fixed: 'left'
         },
         {
           title: '商品名称',
           align: 'center',
           key: 'name',
-          minWidth: 120,
+          minWidth: 200,
           fixed: 'left'
         },
         {

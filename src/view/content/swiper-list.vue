@@ -8,7 +8,7 @@
             <Option value="">全部</Option>
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
-            <Option value="RUSH_FIRST">消费区</Option>
+            <Option value="ALLDAY">消费区</Option>
           </Select>
         </FormItem>
         </Col>
@@ -35,16 +35,16 @@
     <!-- 编辑轮播图 -->
     <Modal v-model="modal" :title="title">
       <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
-        <FormItem label="商品：" prop="name">
-          <Select v-model="formValidate.name" style="width:300px">
-            <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </FormItem>
         <FormItem label="商品区域：" prop="scope">
-          <Select v-model="formValidate.scope" style="width:300px">
+          <Select v-model="formValidate.scope" style="width:300px" @on-change="scopeChange">
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
             <Option value="ALLDAY">消费区</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="商品：" prop="name">
+          <Select v-model="formValidate.name" style="width:300px" :disabled="!formValidate.scope">
+            <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         <FormItem label="图片：" prop="url">
@@ -153,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                        props: {
-                          type: 'primary',
-                          size: 'small'
-                        },
-                        style: {
-                          marginRight: '5px',
-                        },
-                        on: {
-                          click: () => {
-                            this.edit(row)
+                          props: {
+                            type: 'primary',
+                            size: 'small'
+                          },
+                          style: {
+                            marginRight: '5px',
+                          },
+                          on: {
+                            click: () => {
+                              this.edit(row)
+                            }
                           }
-                        }
-                      }, '编辑'), */
+                        }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',
@@ -224,8 +224,11 @@ export default {
       this.pageData.pageIndex = current
       this.tableData = this.getData()
     },
-    getGoodsList () {
-      goodsfindList().then(res => {
+    getGoodsList (scope) {
+      this.goodsList = []
+      goodsfindList({
+        scope: scope
+      }).then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {
             this.goodsList.push({ 'value': element.rushid.toString(), 'label': element.name })
@@ -289,19 +292,19 @@ export default {
             })
           } else {
             /* contentBannerupdate({
-                    name: this.formValidate.name,
-                    scope: this.formValidate.scope,
-                    url: this.formValidate.url
-                  }).then(res => {
-                    if(res.data.code == '0') {
-                      this.modal = false
-                      this.$Message.success('添加成功')
-                      this.getData()
-                    } else {
-                      this.modal = false
-                      this.$Message.error(res.data.msg);
-                    }
-                  }); */
+                      name: this.formValidate.name,
+                      scope: this.formValidate.scope,
+                      url: this.formValidate.url
+                    }).then(res => {
+                      if(res.data.code == '0') {
+                        this.modal = false
+                        this.$Message.success('添加成功')
+                        this.getData()
+                      } else {
+                        this.modal = false
+                        this.$Message.error(res.data.msg);
+                      }
+                    }); */
           }
         }
       })
@@ -317,11 +320,13 @@ export default {
       if (this.$refs.upload.fileList.length > 0) {
         this.$refs.upload.fileList.splice(0, 1)
       }
+    },
+    scopeChange (val) {
+      this.getGoodsList(val)
     }
   },
   mounted () {
     this.getData()
-    this.getGoodsList()
   }
 }
 </script>

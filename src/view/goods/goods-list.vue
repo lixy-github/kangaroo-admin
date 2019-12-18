@@ -82,7 +82,7 @@
             <li>
               <span class="border"></span>
               <span class="lable">商品描述：</span>
-              <div v-html="rowDetails.description"></div>
+              <div v-html="rowDetails.description" style="width:80%"></div>
             </li>
 
           </ul>
@@ -379,13 +379,13 @@ export default {
         margin: 10px 10px 10px 0;
       }
       /* .border {
-                                                                            display: inline-block;
-                                                                            width: 10px;
-                                                                            height: 10px;
-                                                                            background: #2d8cf0;
-                                                                            border-radius: 50%;
-                                                                            margin-right: 20px;
-                                                                          } */
+                                                                              display: inline-block;
+                                                                              width: 10px;
+                                                                              height: 10px;
+                                                                              background: #2d8cf0;
+                                                                              border-radius: 50%;
+                                                                              margin-right: 20px;
+                                                                            } */
     }
   }
 </style>

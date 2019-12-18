@@ -236,7 +236,7 @@ export default {
     remove (id) {
       this.$Modal.confirm({
         title: '提示',
-        content: '您确定要删除该项吗？',
+        content: '您确定要删除此用户吗？',
         onOk: () => {
           deleteUser({ id: id }).then(res => {
             if (res.data.code == '0') {

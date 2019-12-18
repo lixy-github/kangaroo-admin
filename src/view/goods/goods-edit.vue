@@ -10,7 +10,7 @@
         </Select>
       </FormItem>
       <FormItem label="轮播图：" prop="images">
-        <div class="demo-upload-list" v-for="(item,index) in formValidate.images" :key="index">
+        <div class="demo-upload-list" v-for="(item,index) in formValidate.images" :key="index" style="width:60px">
           <img :src="item.url"/>
           <div class="demo-upload-list-cover">
             <Icon type="ios-trash-outline" @click.native="handleRemoveList(index)"></Icon>
@@ -29,7 +29,7 @@
         </Upload>
       </FormItem>
       <FormItem label="商品属性：" prop="feilds">
-        <Input v-model="formValidate.feilds" placeholder="请输入商品属性" style="width:300px"></Input>
+        <Input v-model="formValidate.feilds" type="textarea" :autosize="true" placeholder="请输入商品属性" style="width:300px"></Input>
       </FormItem>
       <FormItem label="售货服务：" prop="afterService">
         <Input v-model="formValidate.afterService" placeholder="请输入售货服务" style="width:300px"></Input>

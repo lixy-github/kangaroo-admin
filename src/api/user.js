@@ -90,3 +90,21 @@ export const useraddrList = (data) => {
     method: 'post'
   })
 }
+
+// 查看会员的所有深度下级
+export const allChildren = (data) => {
+  return Axios.request({
+    url: '/admin/user/allChildren',
+    data: data,
+    method: 'post'
+  })
+}
+
+// 用户最近12个月的销量统计
+export const userSalesAccount = (data) => {
+  return Axios.request({
+    url: '/admin/user/userSalesAccount',
+    params: data,
+    method: 'get'
+  })
+}

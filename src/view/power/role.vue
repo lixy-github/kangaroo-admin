@@ -79,11 +79,11 @@ export default {
     remove (id) {
       this.$Modal.confirm({
         title: '提示',
-        content: '您确定要删除该项吗？',
+        content: '您确定要删除此角色吗？',
         onOk: () => {
           deleteRole({ id: id }).then(res => {
-            if (res.data.code == '0') {
-              this.$Message.success('操作成功')
+            if (res.data.code == '500') {
+              this.$Message.success('删除成功')
               this.showTable()
             } else {
               this.$Message.warning(res.data.msg)
