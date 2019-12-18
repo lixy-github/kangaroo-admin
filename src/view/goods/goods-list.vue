@@ -59,7 +59,7 @@
             <li>
               <span class="border"></span>
               <span class="lable">商品属性：</span>
-              <span>{{rowDetails.feilds}}</span>
+              <span style="width:80%">{{rowDetails.feilds}}</span>
             </li>
             <li>
               <span class="border"></span>
@@ -69,7 +69,7 @@
             <li>
               <span class="border"></span>
               <span class="lable">轮播图：</span>
-              <div class="imgListBox">
+              <div class="imgListBox" style="width:80%">
                 <img :src="item.url" alt="" v-for="item in imgList">
               </div>
 
@@ -82,7 +82,7 @@
             <li>
               <span class="border"></span>
               <span class="lable">商品描述：</span>
-              <div v-html="rowDetails.description" style="width:80%"></div>
+              <div v-html="rowDetails.description" style="width:80%" class="desGoods"></div>
             </li>
 
           </ul>
@@ -316,7 +316,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .modelTitle {
     height: 42px;
     box-sizing: border-box;
@@ -344,18 +344,18 @@ export default {
     li {
       font-size: 15px;
       width: 100%;
-      // padding: 10px 0;
-      // box-sizing: border-box;
-      // margin-bottom: 20px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid #ebebeb;
       border-right: 1px solid #ebebeb;
+      /deep/ .desGoods {
+        img {
+          display: block;
+          max-width: 300px !important;
+        }
+      }
       span {
         display: inline-block;
-        // height: 20px;
-        // line-height: 20px;
-        // background: #ebebeb;
         padding: 10px 4px;
         &:nth-child(2) {
           color: #333333;
@@ -378,14 +378,6 @@ export default {
         height: 100px;
         margin: 10px 10px 10px 0;
       }
-      /* .border {
-                                                                              display: inline-block;
-                                                                              width: 10px;
-                                                                              height: 10px;
-                                                                              background: #2d8cf0;
-                                                                              border-radius: 50%;
-                                                                              margin-right: 20px;
-                                                                            } */
     }
   }
 </style>

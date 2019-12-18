@@ -195,7 +195,7 @@ export default {
                 this.$Message.success('添加成功')
                 this.getData()
               } else {
-                this.modal = false
+                // this.modal = false
                 this.$Message.error(res.data.msg)
               }
             })
@@ -210,7 +210,7 @@ export default {
                 this.$Message.success('修改成功')
                 this.getData()
               } else {
-                this.modal = false
+                // this.modal = false
                 this.$Message.error(res.data.msg)
               }
             })
