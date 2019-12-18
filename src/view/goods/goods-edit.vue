@@ -5,7 +5,7 @@
         <Input v-model="formValidate.name" placeholder="请输入商品名称" style="width:300px"></Input>
       </FormItem>
       <FormItem label="商品分类：" prop="classId">
-        <Select v-model="formValidate.classId" style="width:300px">
+        <Select v-model="formValidate.classId" style="width:300px" filterable>
           <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>

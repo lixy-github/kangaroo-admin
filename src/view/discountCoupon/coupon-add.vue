@@ -41,13 +41,17 @@
         <Input v-model="formValidate.name" placeholder="请输入优惠券名称"></Input>
       </FormItem>
       <FormItem label="优惠券面值：" prop="price">
-        <Input v-model="formValidate.price" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券面值"></Input>
+        <Input v-model="formValidate.price" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券面值">
+        <span slot="append">元</span>
+        </Input>
       </FormItem>
       <FormItem label="优惠券描述：" prop="detail">
         <Input v-model="formValidate.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入优惠券描述"></Input>
       </FormItem>
       <FormItem label="发放量：" prop="number">
-        <Input v-model="formValidate.number" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券发放量"></Input>
+        <Input v-model="formValidate.number" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" placeholder="请输入优惠券发放量">
+        <span slot="append">张</span>
+        </Input>
       </FormItem>
       <FormItem label="优惠券可用图片：" prop="imageUsable">
         <img style="height: 50px" v-if="formValidate.imageUsable" :src="formValidate.imageUsable" alt />
@@ -129,8 +133,8 @@ export default {
   methods: {
     // 图片上传
     /* onRemove() {
-              this.formValidate.img = ''
-            }, */
+                this.formValidate.img = ''
+              }, */
     onSuccess (r, file, list) {
       this.formValidate.imageUsable = r.data.url
     },

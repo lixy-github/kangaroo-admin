@@ -12,10 +12,13 @@
         </Select>
       </FormItem>
       <FormItem label="商品价格：" prop="price">
-        <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+        <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))">
+        <span slot="append">元</span>
+        </Input>
       </FormItem>
       <FormItem label="消费券价格：" prop="consumerPrice">
-        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'"></Input>
+        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'">
+        </Input>
       </FormItem>
       <FormItem label="库存：" prop="stock">
         <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
