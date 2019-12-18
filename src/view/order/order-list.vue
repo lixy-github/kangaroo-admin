@@ -327,7 +327,6 @@ export default {
               this.$Message.success('操作成功')
               this.getData()
             } else {
-              this.modal = false
               this.$Message.error(res.data.msg)
             }
           })
@@ -342,7 +341,6 @@ export default {
           this.modal1 = true
           this.tracesList = res.data.data.tracesList
         } else {
-          this.modal = false
           this.$Message.error(res.data.msg)
         }
       }).catch(() => {
@@ -358,10 +356,10 @@ export default {
     }
     if (this.$route.query.type) {
       /* const myDate = new Date()
-        const year = myDate.getFullYear()
-        const month = myDate.getMonth() + 1
-        const day = myDate.getDate()
-        this.formItem.time = [`${year}-${month}-${day}`, `${year}-${month}-${day}`]; */
+          const year = myDate.getFullYear()
+          const month = myDate.getMonth() + 1
+          const day = myDate.getDate()
+          this.formItem.time = [`${year}-${month}-${day}`, `${year}-${month}-${day}`]; */
       this.formItem.orderType = this.$route.query.type
     } else {
       this.formItem.orderType = ''

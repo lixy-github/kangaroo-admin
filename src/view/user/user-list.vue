@@ -332,7 +332,6 @@ export default {
           this.$Message.success('操作成功')
           this.getData()
         } else {
-          this.modal = false
           this.$Message.error(res.data.msg)
         }
       })

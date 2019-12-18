@@ -8,7 +8,7 @@
             <Option value="">全部</Option>
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
-            <Option value="ALLDAY">消费区</Option>
+            <!-- <Option value="ALLDAY">消费区</Option> -->
           </Select>
         </FormItem>
         </Col>
@@ -39,7 +39,7 @@
           <Select v-model="formValidate.scope" style="width:300px" @on-change="scopeChange">
             <Option value="RUSH">抢购区</Option>
             <Option value="BATCH">批发区</Option>
-            <Option value="ALLDAY">消费区</Option>
+            <!-- <Option value="ALLDAY">消费区</Option> -->
           </Select>
         </FormItem>
         <FormItem label="商品：" prop="name">
@@ -71,8 +71,8 @@ export default {
     var transScope = (val) => {
       var obj = {
         'RUSH': '抢购区',
-        'BATCH': '批发区',
-        'ALLDAY': '消费区'
+        'BATCH': '批发区'
+        // 'ALLDAY': '消费区'
       }
       return obj[val]
     }
@@ -153,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                          props: {
-                            type: 'primary',
-                            size: 'small'
-                          },
-                          style: {
-                            marginRight: '5px',
-                          },
-                          on: {
-                            click: () => {
-                              this.edit(row)
+                            props: {
+                              type: 'primary',
+                              size: 'small'
+                            },
+                            style: {
+                              marginRight: '5px',
+                            },
+                            on: {
+                              click: () => {
+                                this.edit(row)
+                              }
                             }
-                          }
-                        }, '编辑'), */
+                          }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',
@@ -286,25 +286,9 @@ export default {
                 this.$Message.success('添加成功')
                 this.getData()
               } else {
-                this.modal = false
                 this.$Message.error(res.data.msg)
               }
             })
-          } else {
-            /* contentBannerupdate({
-                      name: this.formValidate.name,
-                      scope: this.formValidate.scope,
-                      url: this.formValidate.url
-                    }).then(res => {
-                      if(res.data.code == '0') {
-                        this.modal = false
-                        this.$Message.success('添加成功')
-                        this.getData()
-                      } else {
-                        this.modal = false
-                        this.$Message.error(res.data.msg);
-                      }
-                    }); */
           }
         }
       })

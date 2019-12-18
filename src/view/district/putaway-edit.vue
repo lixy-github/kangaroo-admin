@@ -2,7 +2,7 @@
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
       <FormItem label="商品：" prop="goodsId">
-        <Select v-model="formValidate.goodsId" style="width:300px">
+        <Select v-model="formValidate.goodsId" style="width:300px" filterable>
           <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>
