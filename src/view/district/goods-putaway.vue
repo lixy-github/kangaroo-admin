@@ -49,10 +49,10 @@ export default {
   data () {
     var transScope = (val) => {
       var obj = {
-        'RUSH': '抢购区',
+        'RUSH': '甄选区',
         'BATCH': '批发区',
         'ALLDAY': '全天消费区',
-        'RUSH_FIRST': '抢购优享区',
+        'RUSH_FIRST': '甄选优享区',
         'BATCH_FIRST': '批发优享区'
       }
       return obj[val]

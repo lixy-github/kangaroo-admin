@@ -64,7 +64,7 @@ export default {
       var obj = {
         'WAITING': '未开始',
         'OPEN': '进行中',
-        'CLOSE': '结束'
+        'CLOSE': '已结束'
       }
       return obj[val]
     }
