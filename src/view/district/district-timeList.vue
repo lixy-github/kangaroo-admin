@@ -7,7 +7,7 @@
         <FormItem label="区域">
           <Select v-model="scope">
             <Option value="">全部</Option>
-            <Option value="RUSH">抢购区</Option>
+            <Option value="RUSH">甄选区</Option>
             <Option value="BATCH">批发区</Option>
             <!-- <Option value="RUSH_FIRST">抢购优享区</Option>
             <Option value="BATCH_FIRST">批发优享区</Option> -->
@@ -31,7 +31,7 @@
         </FormItem>
         <FormItem label="区域：" v-if="title == '添加区域时段'">
           <RadioGroup v-model="formItem.scope">
-            <Radio label="RUSH">抢购区</Radio>
+            <Radio label="RUSH">甄选区</Radio>
             <Radio label="BATCH">批发区</Radio>
             <!-- <Radio label="RUSH_FIRST">抢购优享区</Radio>
             <Radio label="BATCH_FIRST">批发优享区</Radio> -->
@@ -84,7 +84,7 @@ export default {
           key: 'scope',
           minWidth: 150,
           render: (h, params) => {
-            return h('div', {}, params.row.scope == 'RUSH' ? '抢购区' : '批发区')
+            return h('div', {}, params.row.scope == 'RUSH' ? '甄选区' : '批发区')
           }
         },
         {

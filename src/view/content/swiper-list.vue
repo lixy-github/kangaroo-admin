@@ -6,7 +6,7 @@
         <FormItem label="区域">
           <Select v-model="formItem.scope">
             <Option value="">全部</Option>
-            <Option value="RUSH">抢购区</Option>
+            <Option value="RUSH">甄选区</Option>
             <Option value="BATCH">批发区</Option>
             <!-- <Option value="ALLDAY">消费区</Option> -->
           </Select>
@@ -37,7 +37,7 @@
       <Form :label-width="100" :model="formValidate" ref="formValidate" :rules="ruleValidate">
         <FormItem label="商品区域：" prop="scope">
           <Select v-model="formValidate.scope" style="width:300px" @on-change="scopeChange">
-            <Option value="RUSH">抢购区</Option>
+            <Option value="RUSH">甄选区</Option>
             <Option value="BATCH">批发区</Option>
             <!-- <Option value="ALLDAY">消费区</Option> -->
           </Select>
@@ -70,7 +70,7 @@ export default {
   data () {
     var transScope = (val) => {
       var obj = {
-        'RUSH': '抢购区',
+        'RUSH': '甄选区',
         'BATCH': '批发区'
         // 'ALLDAY': '消费区'
       }
@@ -153,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                            props: {
-                              type: 'primary',
-                              size: 'small'
-                            },
-                            style: {
-                              marginRight: '5px',
-                            },
-                            on: {
-                              click: () => {
-                                this.edit(row)
+                              props: {
+                                type: 'primary',
+                                size: 'small'
+                              },
+                              style: {
+                                marginRight: '5px',
+                              },
+                              on: {
+                                click: () => {
+                                  this.edit(row)
+                                }
                               }
-                            }
-                          }, '编辑'), */
+                            }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',

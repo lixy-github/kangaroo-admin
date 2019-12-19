@@ -1,10 +1,15 @@
 <template>
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
-      <FormItem label="商品：" prop="goodsId">
-        <Select v-model="formValidate.goodsId" style="width:300px" filterable :disabled="scoperead">
+      <FormItem label="商品：" prop="goodsId" v-if="!scoperead">
+        <Cascader :data="goodsList" :load-data="loadData" style="width:300px" v-model="formValidate.goodsId" filterable></Cascader>
+        <!-- <Select v-model="formValidate.goodsId" filterable :disabled="scoperead">
           <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
+        </Select> -->
+      </FormItem>
+      <FormItem label="商品：" v-if="scoperead">
+        <Input v-model="goodsName" style="width:300px"  :disabled="scoperead">
+        </Input>
       </FormItem>
       <FormItem label="商品区域：" prop="scope">
         <Select v-model="formValidate.scope" style="width:300px" @on-change="scopeChange" :disabled="scoperead">
@@ -46,7 +51,6 @@
       <FormItem label="每月可抢购数量：" prop="maxBuyNoMonth">
         <Input v-model="formValidate.maxBuyNoMonth" placeholder="请输入每月可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <!--  prop="timeid" -->
       <FormItem label="时间段：">
         <Select v-model="formValidate.timeid" style="width:300px" :disabled="formValidate.scope != 'BATCH' && formValidate.scope != 'RUSH'">
           <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -60,8 +64,7 @@
   </div>
 </template>
 <script>
-import { imgLoadUrl } from '@/api/api'
-import { goodsmodify, goodsadd, templatefindList, goodsfindList } from '@/api/district'
+import { goodsmodify, goodsadd, templatefindList, goodsfindList, classfindList } from '@/api/district'
 import wangEditor from '@/components/wangEditor/wangEditor'
 import constants from '@/utils/constants'
 export default {
@@ -70,23 +73,17 @@ export default {
   },
   data () {
     return {
+      goodsName: '',
       useCouponsNum: '0.00',
       couponsNum: '0.00',
       scoperead: false,
       scopeList: constants.scopeData,
       goodsList: [],
       timeList: [],
-      /*  */
-      imgLoadUrl,
-      imageUrl: '',
-      hasImage: false,
-      showImageUrl: '',
-      // imageUrlList: [],
-      /* **************** */
       formValidate: {
         consumerPrice: '',
         coupon: '',
-        goodsId: '',
+        goodsId: [],
         maxBuyNo: '',
         maxBuyNoDay: '',
         maxBuyNoMonth: '',
@@ -100,7 +97,7 @@ export default {
       },
       ruleValidate: {
         goodsId: [
-          { required: true, message: '请选择商品', trigger: 'change' }
+          { required: true, type: 'array', message: '请选择商品', trigger: 'change' }
         ],
         scope: [
           { required: true, message: '请选择商品区域', trigger: 'change' }
@@ -130,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-              { required: true, message: '请输入邮费', trigger: 'blur' }
-            ], */
+                { required: true, message: '请输入邮费', trigger: 'blur' }
+              ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -147,9 +144,7 @@ export default {
         timeid: [
           { required: true, message: '请选择时间段', trigger: 'change' }
         ]
-      },
-      cityList: [],
-      msgCN: ''
+      }
     }
   },
   methods: {
@@ -166,7 +161,7 @@ export default {
         case 'BATCH':
           this.formValidate.coupon = '0'
           this.couponsNum = '0.00'
-          this.getTimeList('RUSH')
+          this.getTimeList('BATCH')
           break
           // 全天消费
         case 'ALLDAY':
@@ -185,50 +180,6 @@ export default {
           this.couponsNum = '0.00'
           this.formValidate.timeid = null
           break
-      }
-    },
-    handleMaxSize (file) {
-      this.$Notice.warning({
-        title: '图片大小限制',
-        desc: '文件 ' + file.name + '太大,不能超过 2M.'
-      })
-    },
-    upload () {
-      this.loadingStatus = true
-      setTimeout(() => {
-        this.file = null
-        this.loadingStatus = false
-        this.$Message.success('Success')
-      }, 1500)
-    },
-    handleRemove () {
-      this.imageUrl = ''
-      this.hasImage = false
-    },
-    handleRemoveList (index) {
-      // 删除
-      this.formValidate.images.splice(index, 1)
-    },
-
-    handleSuccessList (res, file) {
-      let image = { url: res.data.url }
-      this.formValidate.images.push(image)
-    },
-    handleSuccess (res, file) {
-      this.imageUrl = res.data
-      this.hasImage = true
-    },
-    /* ***************** */
-    // 封面图上传
-    coverImgonRemove () {
-      this.formValidate.coverImg = ''
-    },
-    onSuccess (r, file, list) {
-      this.formValidate.coverImg = r.data.url
-    },
-    beforeUpload () {
-      if (this.$refs.upload.fileList.length > 0) {
-        this.$refs.upload.fileList.splice(0, 1)
       }
     },
     // 新增/修改
@@ -268,7 +219,7 @@ export default {
             let _data = {
               consumerPrice: this.formValidate.consumerPrice,
               coupon: this.formValidate.coupon,
-              goodsId: this.formValidate.goodsId,
+              goodsId: this.formValidate.goodsId[1],
               maxBuyNo: this.formValidate.maxBuyNo,
               maxBuyNoDay: this.formValidate.maxBuyNoDay,
               maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
@@ -295,16 +246,77 @@ export default {
     handleReset (name) {
       this.$refs[name].resetFields()
     },
-    getGoodsList () {
-      this.goodsList = []
+    loadData (item, callback) {
+      item.loading = true
       let _data = {
         pageIndex: 1,
-        pageSize: 2000
+        pageSize: 2000,
+        classId: item.value
       }
-      goodsfindList().then(res => {
+      goodsfindList(_data).then(res => {
         if (res.data.code == '0') {
           res.data.data.dataList.forEach(element => {
-            this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+            item.children.push({ 'value': element.id.toString(), 'label': element.name })
+            item.loading = false
+            callback()
+          })
+        } else {
+          item.loading = false
+          callback()
+          this.$Message.error(res.data.msg)
+        }
+      })
+      /* setTimeout(() => {
+           if(item.value === 'beijing') {
+            item.children = [
+              {
+                value: 'talkingdata',
+                label: 'TalkingData'
+              },
+              {
+                value: 'baidu',
+                label: '百度'
+              },
+              {
+                value: 'sina',
+                label: '新浪'
+              }
+            ];
+          } else if(item.value === 'hangzhou') {
+            item.children = [
+              {
+                value: 'ali',
+                label: '阿里巴巴'
+              },
+              {
+                value: '163',
+                label: '网易'
+              }
+            ];
+          }
+          item.loading = false;
+          callback();
+        }, 1000); */
+    },
+    getGoodsList () {
+      /* this.goodsList = []
+        let _data = {
+          pageIndex: 1,
+          pageSize: 2000
+        }
+        goodsfindList().then(res => {
+          if (res.data.code == '0') {
+            res.data.data.dataList.forEach(element => {
+              this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+            })
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        }) */
+      classfindList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.goodsList.push({ 'value': element.id, 'label': element.name, 'children': [], loading: false })
           })
         } else {
           this.$Message.error(res.data.msg)
@@ -313,6 +325,7 @@ export default {
       if (this.$route.params.content) {
         this.scoperead = true
         let data = JSON.parse(this.$route.params.content)
+        this.getTimeList(data.scope.toString())
         this.formValidate = {
           id: data.rushid,
           consumerPrice: data.consumerPrice.toString(),
@@ -329,13 +342,14 @@ export default {
           stock: data.stock.toString(),
           timeid: data.timeid ? data.timeid.toString() : null
         }
-        this.getTimeList(data.scope.toString())
+        this.goodsName = data.name
+        console.log(this.formValidate.timeid)
       } else {
         this.scoperead = false
         this.formValidate = {
           consumerPrice: '',
           coupon: '',
-          goodsId: '',
+          goodsId: [],
           maxBuyNo: '',
           maxBuyNoDay: '',
           maxBuyNoMonth: '',
