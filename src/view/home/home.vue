@@ -8,6 +8,7 @@
         </Badge>
         <Badge :count="orderNum">
           <Button @click="orderListBtn">待发货订单数</Button>
+          <!-- <Button @click="ceshi">测试</Button> -->
         </Badge>
       </i-col>
     </Row>
@@ -35,7 +36,7 @@
 import InforCard from '_c/info-card'
 import CountTo from '_c/count-to'
 import { ChartPie, ChartBar } from '_c/charts'
-import { indexCount, adminIndex } from '@/api/api'
+import { indexCount, adminIndex, hello } from '@/api/api'
 import Tabs from './common/tabs'
 
 export default {
@@ -121,6 +122,11 @@ export default {
         query: {
           status: 'WAIT_SHIP'
         }
+      })
+    },
+    ceshi () {
+      hello('{}').then(res => {
+      }).catch(function (error) {
       })
     },
     orderBtn () {

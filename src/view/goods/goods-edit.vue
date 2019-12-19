@@ -126,10 +126,8 @@ export default {
       this.formValidate.images.push(image)
     },
     handleSuccess (res, file) {
-      console.log(res)
       this.imageUrl = res.data
       this.hasImage = true
-      console.log(file)
     },
     /* ***************** */
     // 封面图上传

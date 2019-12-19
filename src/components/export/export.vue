@@ -117,7 +117,6 @@ export default {
     },
     // 处理参数
     transParams () {
-      console.log(this.params)
       this.params.pageSize = this.size
       // 删除无效key
       for (var i in this.params) {
@@ -140,7 +139,6 @@ export default {
       var sendData = JSON.parse(JSON.stringify(this.params))
       sendData.pageNumber = this.sendCount + 1
       this.ajax(sendData).then((r) => {
-        console.log(r)
         if (r.data.code == '0') {
           var data = eval('r.' + this.dataPlace)
           this.ajaxData = this.ajaxData.concat(data)

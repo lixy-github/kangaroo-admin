@@ -2,7 +2,7 @@
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
       <FormItem label="商品：" prop="goodsId">
-        <Select v-model="formValidate.goodsId" style="width:300px" filterable>
+        <Select v-model="formValidate.goodsId" style="width:300px" filterable :disabled="scoperead">
           <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </FormItem>
@@ -12,13 +12,18 @@
         </Select>
       </FormItem>
       <FormItem label="商品价格：" prop="price">
-        <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))">
+        <Input v-model="formValidate.price" placeholder="请输入商品价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" @on-blur="priceBlur">
         <span slot="append">元</span>
         </Input>
       </FormItem>
-      <FormItem label="消费券价格：" prop="consumerPrice">
-        <Input v-model="formValidate.consumerPrice" placeholder="请输入消费券价格" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'">
+      <FormItem label="用券：" prop="consumerPrice">
+        <Input v-model="formValidate.consumerPrice" placeholder="请输入可用券数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'" @on-blur="consumerBlur">
         </Input>
+        <span>&nbsp;&nbsp;用券数量是商品价格的{{useCouponsNum}}%</span>
+      </FormItem>
+      <FormItem label="赠券：" prop="coupon">
+        <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'" @on-blur="couponBlur"></Input>
+        <span>&nbsp;&nbsp;赠券数量是商品价格的{{couponsNum}}%</span>
       </FormItem>
       <FormItem label="库存：" prop="stock">
         <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -27,16 +32,13 @@
         <Input v-model="formValidate.num" placeholder="请输入可抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
       <FormItem label="已抢数量：" prop="alreadyNum">
-        <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+        <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" readonly></Input>
       </FormItem>
-      <FormItem label="赠券：" prop="coupon">
-        <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'"></Input>
-      </FormItem>
-      <FormItem label="邮费：" prop="postage">
+      <!-- <FormItem label="邮费：">
         <Input v-model="formValidate.postage" placeholder="请输入邮费" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
-      </FormItem>
-      <FormItem label="最大可抢购数量：" prop="maxBuyNo">
-        <Input v-model="formValidate.maxBuyNo" placeholder="请输入最大可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
+      </FormItem> -->
+      <FormItem label="限购：" prop="maxBuyNo">
+        <Input v-model="formValidate.maxBuyNo" placeholder="请输入限购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
       <FormItem label="每天可抢购数量：" prop="maxBuyNoDay">
         <Input v-model="formValidate.maxBuyNoDay" placeholder="请输入每天可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -68,6 +70,8 @@ export default {
   },
   data () {
     return {
+      useCouponsNum: '0.00',
+      couponsNum: '0.00',
       scoperead: false,
       scopeList: constants.scopeData,
       goodsList: [],
@@ -87,8 +91,8 @@ export default {
         maxBuyNoDay: '',
         maxBuyNoMonth: '',
         num: '',
-        alreadyNum: '',
-        postage: '',
+        alreadyNum: '0',
+        postage: '0',
         price: '',
         scope: '',
         stock: '',
@@ -106,8 +110,8 @@ export default {
           { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
         ],
         consumerPrice: [
-          { required: true, message: '请输入消费券价格', trigger: 'blur' }
-          // { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
+          { required: true, message: '请输入可用券数量', trigger: 'blur' },
+          { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         stock: [
           { required: true, message: '请输入商品库存', trigger: 'blur' },
@@ -122,14 +126,14 @@ export default {
           // { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         coupon: [
-          { required: true, message: '请输入赠券', trigger: 'blur' }
-          // { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+          { required: true, message: '请输入赠券', trigger: 'blur' },
+          { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
-        postage: [
-          { required: true, message: '请输入邮费', trigger: 'blur' }
-        ],
+        /* postage: [
+            { required: true, message: '请输入邮费', trigger: 'blur' }
+          ], */
         maxBuyNo: [
-          { required: true, message: '请输入最大可抢购数量', trigger: 'blur' },
+          { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         maxBuyNoDay: [
@@ -155,11 +159,13 @@ export default {
         // 抢购
         case 'RUSH':
           this.formValidate.consumerPrice = '0'
+          this.useCouponsNum = '0.00'
           this.getTimeList('RUSH')
           break
           // 批发
         case 'BATCH':
           this.formValidate.coupon = '0'
+          this.couponsNum = '0.00'
           this.getTimeList('RUSH')
           break
           // 全天消费
@@ -170,11 +176,13 @@ export default {
           // 抢购优享
         case 'RUSH_FIRST':
           this.formValidate.consumerPrice = '0'
+          this.useCouponsNum = '0.00'
           this.formValidate.timeid = null
           break
           // 批发优享
         case 'BATCH_FIRST':
           this.formValidate.coupon = '0'
+          this.couponsNum = '0.00'
           this.formValidate.timeid = null
           break
       }
@@ -239,7 +247,7 @@ export default {
               maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
-              postage: this.formValidate.postage,
+              postage: '0',
               price: this.formValidate.price * 100, // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
@@ -266,7 +274,7 @@ export default {
               maxBuyNoMonth: this.formValidate.maxBuyNoMonth,
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
-              postage: this.formValidate.postage,
+              postage: '0',
               price: this.formValidate.price * 100, // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
@@ -332,12 +340,12 @@ export default {
           maxBuyNoDay: '',
           maxBuyNoMonth: '',
           num: '',
-          postage: '',
+          postage: '0',
           price: '',
           scope: '',
           stock: '',
           timeid: '',
-          alreadyNum: ''
+          alreadyNum: '0'
         }
       }
     },
@@ -354,6 +362,27 @@ export default {
           this.$Message.error(res.data.msg)
         }
       })
+    },
+    // 商品价格
+    priceBlur () {
+      this.consumerBlur()
+      this.couponBlur()
+    },
+    // 用券百分比
+    consumerBlur () {
+      if (this.formValidate.price) {
+        this.useCouponsNum = this.$public.MathRound((this.formValidate.consumerPrice / this.formValidate.price) * 100)
+      } else {
+        this.useCouponsNum = '0.00'
+      }
+    },
+    // 赠券百分比
+    couponBlur () {
+      if (this.formValidate.price) {
+        this.couponsNum = this.$public.MathRound((this.formValidate.coupon / this.formValidate.price) * 100)
+      } else {
+        this.couponsNum = '0.00'
+      }
     }
   },
   mounted () {

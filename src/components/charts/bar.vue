@@ -26,7 +26,6 @@ export default {
         countType: type
       }).then(res => {
         if (res.data.code == '0') {
-          // console.log(res.data.data.monthMap)
           this.barDatati = res.data.data.monthMap
           this.salesList = res.data.data.salesList
         } else {

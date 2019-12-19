@@ -80,7 +80,6 @@ export default {
     handleLogin ({
       commit
     }, data) {
-      console.log(data)
       return new Promise((resolve, reject) => {
         let arr = []
         data.forEach(val => {

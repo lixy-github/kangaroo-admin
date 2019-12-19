@@ -4,7 +4,6 @@
     <Tabs type="card" :animated="false" @on-click="tabClick">
       <TabPane :label="item.label" v-for="(item,index) in tabData" :key="index">
         <h3>{{item.label}}销量排名</h3>
-        <!-- 展示10条 -->
         <ul class="tabUl">
           <li v-for="(item,index) in salesList" :key="index" v-if="index < listLength">
             <span class="num">{{index + 1}}</span>
@@ -14,14 +13,6 @@
           <li class="lookMore" @click="lookMoreBtn" v-if="lookMore">查看更多</li>
           <li class="lookMore" v-else>暂无更多</li>
         </ul>
-        <!-- <ul class="tabUl" v-else>
-          <li v-for="(item,index) in salesList" :key="index">
-            <span class="num">{{index + 1}}</span>
-            <span>{{item.goodsName}}</span>
-            <span>{{item.countBuyCount}}件</span>
-          </li>
-        </ul> -->
-
       </TabPane>
     </Tabs>
     </Col>
@@ -73,26 +64,6 @@ export default {
       }
       this.lookMore = !this.lookMore
     }
-    /* getdata() {
-        let _this = this;
-        indexCount().then(function(response) {
-          if(response.data.code == 200) {
-          } else {
-            _this.$Message.error("获取数据失败");
-          }
-        }).catch(function(error) {
-          console.log(error);
-        });
-      } */
-  },
-  watch: {
-    /* salesList() {
-        // listIsShow
-        if(this.salesList.length > 10) {
-
-        }
-        console.log(this.salesList.length)
-      } */
   }
 }
 </script>

@@ -58,6 +58,11 @@ Public.timestampToTime = function (timestamp) {
   s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds())
   return Y + M + D + h + m + s
 }
+// 四舍五入保留两位
+Public.MathRound = function (num) {
+  let roundNum = num.toFixed(2)
+  return roundNum
+}
 
 // 编辑器配置
 Public.UEconfig = {

@@ -270,7 +270,6 @@ export default {
     },
     // 编辑
     edit (row) {
-      console.log(row)
       this.$router.push({
         name: 'putaway-edit',
         params: { content: JSON.stringify(row) }

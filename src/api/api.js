@@ -125,3 +125,11 @@ export const deleteRole = (data) => {
     data: data
   })
 }
+
+export const hello = (data) => {
+  return Axios.request({
+    url: '/applet/login/hello',
+    params: data,
+    method: 'get'
+  })
+}
