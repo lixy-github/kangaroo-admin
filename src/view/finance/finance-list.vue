@@ -14,9 +14,10 @@
             <Option value="RECHARGE">充值</Option>
             <Option value="WITHDRAW">提现</Option>
             <Option value="CONSIGNMENT">寄售</Option>
-            <Option value="BUY">购买</Option>
+            <Option value="BUY">人民币购买</Option>
             <Option value="REBATE">返佣</Option>
             <Option value="ORDERTIMECOUNT">订单取消</Option>
+            <Option value="BUY_COUNPN">消费券购买</Option>
           </Select>
         </FormItem>
         </Col>
@@ -26,7 +27,7 @@
             <Option value="">全部</Option>
             <Option value="MONEY">人民币</Option>
             <Option value="CONSUMPTION">消费券</Option>
-            <Option value="DISCOUNT">优惠券</Option>
+            <!-- <Option value="DISCOUNT">优惠券</Option> -->
           </Select>
         </FormItem>
         </Col>
@@ -59,8 +60,8 @@ export default {
     var transmoneyType = (val) => {
       var obj = {
         'MONEY': '人民币',
-        'CONSUMPTION': '消费券',
-        'DISCOUNT': '优惠券'
+        'CONSUMPTION': '消费券'
+        // 'DISCOUNT': '优惠券'
       }
       return obj[val]
     }
@@ -70,9 +71,10 @@ export default {
         'RECHARGE': '充值',
         'WITHDRAW': '提现',
         'CONSIGNMENT': '寄售',
-        'BUY': '购买',
+        'BUY': '人民币购买',
         'REBATE': '返佣',
-        'ORDERTIMECOUNT': '订单取消'
+        'ORDERTIMECOUNT': '订单取消',
+        'BUY_COUNPN': '消费券购买'
       }
       return obj[val]
     }
@@ -104,14 +106,14 @@ export default {
           title: '操作金额',
           align: 'center',
           minWidth: 150,
-          key: 'money'
-          /* render: (h, p) => {
-              return h('div', {
-                style: {
-                  color: p.row.money > 0 ? 'green' : 'red'
-                }
-              }, p.row.money)
-            } */
+          key: 'money',
+          render: (h, p) => {
+            return h('div', {
+              style: {
+                // color: p.row.money > 0 ? 'green' : 'red'
+              }
+            }, p.row.moneyType == 'MONEY' ? p.row.money / 100 : p.row.money)
+          }
         },
         {
           title: '变动前金额',

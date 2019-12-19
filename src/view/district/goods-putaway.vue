@@ -93,10 +93,16 @@ export default {
           }
         },
         {
-          title: '消费券价格',
+          title: '用券',
           align: 'center',
           key: 'consumerPrice',
           minWidth: 100
+        },
+        {
+          title: '赠券',
+          align: 'center',
+          key: 'coupon',
+          minWidth: 80
         },
         {
           title: '库存',
@@ -117,10 +123,22 @@ export default {
           minWidth: 75
         },
         {
-          title: '赠券',
+          title: '限购',
           align: 'center',
-          key: 'coupon',
-          minWidth: 80
+          key: 'maxBuyNo',
+          minWidth: 110
+        },
+        {
+          title: '每天可抢数量',
+          align: 'center',
+          key: 'maxBuyNoDay',
+          minWidth: 110
+        },
+        {
+          title: '每月可抢数量',
+          align: 'center',
+          key: 'maxBuyNoMonth',
+          minWidth: 110
         },
         {
           title: '邮费',
@@ -128,12 +146,7 @@ export default {
           key: 'postage',
           minWidth: 80
         },
-        {
-          title: '最大可抢数量',
-          align: 'center',
-          key: 'maxBuyNo',
-          minWidth: 110
-        },
+
         {
           title: '时间段',
           align: 'center',
@@ -150,18 +163,6 @@ export default {
           render: (h, p) => {
             return h('div', {}, transScope(p.row.scope))
           }
-        },
-        {
-          title: '每天可抢数量',
-          align: 'center',
-          key: 'maxBuyNoDay',
-          minWidth: 110
-        },
-        {
-          title: '每月可抢数量',
-          align: 'center',
-          key: 'maxBuyNoMonth',
-          minWidth: 110
         },
         {
           title: '操作',

@@ -106,8 +106,8 @@ export default {
           { required: true, message: '请选择商品区域', trigger: 'change' }
         ],
         price: [
-          { required: true, message: '请输入商品价格', trigger: 'blur' },
-          { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
+          { required: true, message: '请输入商品价格', trigger: 'blur' }
+          // { pattern: /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/, message: '价格不能小于0', trigger: 'blur' }
         ],
         consumerPrice: [
           { required: true, message: '请输入可用券数量', trigger: 'blur' },
@@ -130,8 +130,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-            { required: true, message: '请输入邮费', trigger: 'blur' }
-          ], */
+              { required: true, message: '请输入邮费', trigger: 'blur' }
+            ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -248,7 +248,7 @@ export default {
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
               postage: '0',
-              price: this.formValidate.price * 100, // 商品价格单位：分
+              price: (this.formValidate.price * 100).toString(), // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
               timeid: this.formValidate.timeid
@@ -275,7 +275,7 @@ export default {
               num: this.formValidate.num,
               alreadyNum: this.formValidate.alreadyNum,
               postage: '0',
-              price: this.formValidate.price * 100, // 商品价格单位：分
+              price: (this.formValidate.price * 100).toString(), // 商品价格单位：分
               scope: this.formValidate.scope,
               stock: this.formValidate.stock,
               timeid: this.formValidate.timeid
@@ -365,12 +365,18 @@ export default {
     },
     // 商品价格
     priceBlur () {
-      this.consumerBlur()
-      this.couponBlur()
+      if (this.formValidate.consumerPrice && this.formValidate.coupon) {
+        this.consumerBlur()
+        this.couponBlur()
+      } else if (this.formValidate.coupon) {
+        this.couponBlur()
+      } else if (this.formValidate.consumerPrice) {
+        this.consumerBlur()
+      }
     },
     // 用券百分比
     consumerBlur () {
-      if (this.formValidate.price) {
+      if (this.formValidate.price && this.formValidate.price > 0) {
         this.useCouponsNum = this.$public.MathRound((this.formValidate.consumerPrice / this.formValidate.price) * 100)
       } else {
         this.useCouponsNum = '0.00'
@@ -378,7 +384,7 @@ export default {
     },
     // 赠券百分比
     couponBlur () {
-      if (this.formValidate.price) {
+      if (this.formValidate.price && this.formValidate.price > 0) {
         this.couponsNum = this.$public.MathRound((this.formValidate.coupon / this.formValidate.price) * 100)
       } else {
         this.couponsNum = '0.00'

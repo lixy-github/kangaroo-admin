@@ -68,19 +68,19 @@ export default {
       return [
         {
           title: '日支付额',
-          icon: 'ios-aperture',
+          icon: 'logo-usd',
           count: this.blockData.sumMoney,
           color: '#19be6b'
         },
         {
           title: '日新增会员量',
-          icon: 'md-aperture',
+          icon: 'md-person-add',
           count: this.blockData.countUser,
           color: '#ff9900'
         },
         {
           title: '日下单数',
-          icon: 'md-exit',
+          icon: 'md-cart',
           count: this.blockData.countOrder,
           color: '#ed4014'
         }
