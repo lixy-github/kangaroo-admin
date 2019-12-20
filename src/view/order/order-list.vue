@@ -254,7 +254,8 @@ export default {
       },
       modal: false,
       modal1: false,
-      tracesList: []
+      tracesList: [],
+      yesNoNowDay: ''
     }
   },
   methods: {
@@ -273,7 +274,8 @@ export default {
         orderStatus: this.formItem.orderStatus, // 订单状态
         orderType: this.formItem.orderType, // 订单类型
         phone: this.formItem.phone, // 收货人电话
-        userPhone: this.formItem.userPhone// 手机号
+        userPhone: this.formItem.userPhone, // 手机号
+        yesNoNowDay: this.yesNoNowDay
       }
       orderlist(_data).then(res => {
         if (res.data.code == '0') {
@@ -294,10 +296,12 @@ export default {
     // 搜索
     onSearch () {
       this.pageData.pageIndex = 1
+      this.yesNoNowDay = ''
       this.getData()
     },
     // 切换页码
     changePage (current) {
+      this.yesNoNowDay = ''
       this.pageData.pageIndex = current
       this.tableData = this.getData()
     },
@@ -355,12 +359,8 @@ export default {
       this.formItem.orderStatus = ''
     }
     if (this.$route.query.type) {
-      /* const myDate = new Date()
-          const year = myDate.getFullYear()
-          const month = myDate.getMonth() + 1
-          const day = myDate.getDate()
-          this.formItem.time = [`${year}-${month}-${day}`, `${year}-${month}-${day}`]; */
       this.formItem.orderType = this.$route.query.type
+      this.yesNoNowDay = 'Y'
     } else {
       this.formItem.orderType = ''
     }
