@@ -43,6 +43,7 @@ Axios.interceptors.response.use(
     if (response.data.code == '401') {
       localStorage.clear()
       Cookies.remove('jxyex-token')
+      Cookies.remove('orderStatus')
       alert('登录已过期，请重新登录')
       if (process.env.NODE_ENV == 'production') {
         window.location.href = '/manager/index.html#/login'

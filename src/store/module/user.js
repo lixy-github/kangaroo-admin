@@ -86,6 +86,9 @@ export default {
           arr.push(val.menuName)
           if (val.children && val.children.length) {
             val.children.forEach(cd => {
+              if (cd.menuName == '订单列表') {
+                Cookies.set('orderStatus', 1)
+              }
               arr.push(cd.menuName)
             })
           }
@@ -109,6 +112,7 @@ export default {
         Cookies.remove('access')
         Cookies.remove('userId')
         Cookies.remove('jxyex-username')
+        Cookies.remove('orderStatus')
         localStorage.tagNaveList = []
         resolve()
       })
