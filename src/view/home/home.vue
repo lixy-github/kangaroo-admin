@@ -33,124 +33,124 @@
   </div>
 </template>
 <script>
-  import InforCard from '_c/info-card'
-  import CountTo from '_c/count-to'
-  import { ChartPie, ChartBar } from '_c/charts'
-  import { indexCount, adminIndex, hello } from '@/api/api'
-  import Tabs from './common/tabs'
-  import Cookies from 'js-cookie'
+import InforCard from '_c/info-card'
+import CountTo from '_c/count-to'
+import { ChartPie, ChartBar } from '_c/charts'
+import { indexCount, adminIndex, hello } from '@/api/api'
+import Tabs from './common/tabs'
+import Cookies from 'js-cookie'
 
-  export default {
-    name: 'home',
-    components: {
-      InforCard,
-      CountTo,
-      ChartPie,
-      ChartBar,
-      Tabs
-    },
-    data() {
-      return {
-        salesList: [],
-        blockData: {
-          sumMoney: 0,
-          countUser: 0,
-          countOrder: 0
-        },
-        orderNum: 0,
-        sumBuyCount: 0,
-        barDatati: {
+export default {
+  name: 'home',
+  components: {
+    InforCard,
+    CountTo,
+    ChartPie,
+    ChartBar,
+    Tabs
+  },
+  data () {
+    return {
+      salesList: [],
+      blockData: {
+        sumMoney: 0,
+        countUser: 0,
+        countOrder: 0
+      },
+      orderNum: 0,
+      sumBuyCount: 0,
+      barDatati: {
 
-        }
       }
-    },
-    computed: {
-      inforCardData() {
-        return [
-          {
-            title: '日支付额',
-            icon: 'logo-usd',
-            count: this.blockData.sumMoney,
-            color: '#19be6b'
-          },
-          {
-            title: '日新增会员量',
-            icon: 'md-person-add',
-            count: this.blockData.countUser,
-            color: '#ff9900'
-          },
-          {
-            title: '日下单数',
-            icon: 'md-cart',
-            count: this.blockData.countOrder,
-            color: '#ed4014'
-          }
-        ]
-      }
-    },
-    methods: {
-      getdata(type) {
-        indexCount({
-          countType: type
-        }).then(res => {
-          if(res.data.code == '0') {
-            this.barDatati = res.data.data.monthMap
-            this.salesList = res.data.data.salesList
-          } else {
-            this.$Message.error('获取数据失败')
-          }
-        }).catch(function(error) {
-        })
-        adminIndex().then(res => {
-          if(res.data.code == '0') {
-            let _data = res.data.data
-            this.blockData = {
-              sumMoney: _data.sumMoney,
-              countUser: _data.countUser,
-              countOrder: _data.countOrder
-            }
-            this.orderNum = _data.orderNum
-            this.sumBuyCount = _data.sumBuyCount
-          } else {
-            this.$Message.error('获取数据失败')
-          }
-        }).catch(function(error) {
-        })
-      },
-      orderListBtn() {
-        if(Cookies.get('orderStatus') === '1') {
-          this.$router.push({
-            name: 'order-list',
-            query: {
-              status: 'WAIT_SHIP'
-            }
-          })
-        } else {
-          this.$Message.info('抱歉，您无访问订单列表权限')
-        }
-      },
-      ceshi() {
-        hello('{}').then(res => {
-        }).catch(function(error) {
-        })
-      },
-      orderBtn() {
-        if(Cookies.get('orderStatus') === '1') {
-          this.$router.push({
-            name: 'order-list',
-            query: {
-              type: 'CONSIGNMENT'
-            }
-          })
-        } else {
-          this.$Message.info('抱歉，您无访问订单列表权限')
-        }
-      }
-    },
-    created() {
-      this.getdata('day')
     }
+  },
+  computed: {
+    inforCardData () {
+      return [
+        {
+          title: '日支付额',
+          icon: 'logo-usd',
+          count: this.blockData.sumMoney,
+          color: '#19be6b'
+        },
+        {
+          title: '日新增会员量',
+          icon: 'md-person-add',
+          count: this.blockData.countUser,
+          color: '#ff9900'
+        },
+        {
+          title: '日下单数',
+          icon: 'md-cart',
+          count: this.blockData.countOrder,
+          color: '#ed4014'
+        }
+      ]
+    }
+  },
+  methods: {
+    getdata (type) {
+      indexCount({
+        countType: type
+      }).then(res => {
+        if (res.data.code == '0') {
+          this.barDatati = res.data.data.monthMap
+          this.salesList = res.data.data.salesList
+        } else {
+          this.$Message.error('获取数据失败')
+        }
+      }).catch(function (error) {
+      })
+      adminIndex().then(res => {
+        if (res.data.code == '0') {
+          let _data = res.data.data
+          this.blockData = {
+            sumMoney: _data.sumMoney,
+            countUser: _data.countUser,
+            countOrder: _data.countOrder
+          }
+          this.orderNum = _data.orderNum
+          this.sumBuyCount = _data.sumBuyCount
+        } else {
+          this.$Message.error('获取数据失败')
+        }
+      }).catch(function (error) {
+      })
+    },
+    orderListBtn () {
+      if (Cookies.get('orderStatus') === '1') {
+        this.$router.push({
+          name: 'order-list',
+          query: {
+            status: 'WAIT_SHIP'
+          }
+        })
+      } else {
+        this.$Message.info('抱歉，您无访问订单列表权限')
+      }
+    },
+    ceshi () {
+      hello('{}').then(res => {
+      }).catch(function (error) {
+      })
+    },
+    orderBtn () {
+      if (Cookies.get('orderStatus') === '1') {
+        this.$router.push({
+          name: 'order-list',
+          query: {
+            type: 'CONSIGNMENT'
+          }
+        })
+      } else {
+        this.$Message.info('抱歉，您无访问订单列表权限')
+      }
+    }
+  },
+  created () {
+    this.getdata('day')
   }
+}
 </script>
 <style lang="less">
   .count-style {
