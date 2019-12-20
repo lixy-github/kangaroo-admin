@@ -194,50 +194,50 @@ export default [{
   meta: {
     title: '订单管理',
     icon: 'ios-list-box-outline',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
+    showAlways: true,
+    access: ['订单管理', '订单列表']
   },
   children: [{
     path: 'order-list',
     name: 'order-list',
     meta: {
-      title: '订单列表'
-      // access: ['会员列表']
+      title: '订单列表',
+      access: ['订单列表']
     },
     component: () => import('@/view/order/order-list.vue')
   }]
 },
   //   发货管理
-{
-  path: '/shipments',
-  name: 'shipments',
-  component: Main,
-  meta: {
-    title: '发货管理',
-    icon: 'ios-archive-outline',
-    showAlways: true
-    // access: ['会员管理', '会员列表', '商家审核']
-  },
-  children: [{
-    path: 'shipments-list',
-    name: 'shipments-list',
+  /* {
+    path: '/shipments',
+    name: 'shipments',
+    component: Main,
     meta: {
-      title: '待发货列表'
-      // access: ['会员列表']
+      title: '发货管理',
+      icon: 'ios-archive-outline',
+      showAlways: true
+      // access: ['会员管理', '会员列表', '商家审核']
     },
-    component: () => import('@/view/shipments/shipments-list.vue')
-  },
-  {
-    path: 'shipments-already',
-    name: 'shipments-already',
-    meta: {
-      title: '已发货列表'
-      // access: ['会员列表']
+    children: [{
+      path: 'shipments-list',
+      name: 'shipments-list',
+      meta: {
+        title: '待发货列表'
+        // access: ['会员列表']
+      },
+      component: () => import('@/view/shipments/shipments-list.vue')
     },
-    component: () => import('@/view/shipments/shipments-already.vue')
-  }
-  ]
-},
+    {
+      path: 'shipments-already',
+      name: 'shipments-already',
+      meta: {
+        title: '已发货列表'
+        // access: ['会员列表']
+      },
+      component: () => import('@/view/shipments/shipments-already.vue')
+    }
+    ]
+  }, */
   //   会员管理
 {
   path: '/user',
@@ -334,14 +334,14 @@ export default [{
   },
   children: [
     /* {
-            path: 'system-list',
-            name: 'system-list',
-            meta: {
-              title: '系统配置',
-              // access: ['会员列表']
-            },
-            component: () => import('@/view/system/system.vue')
-          }, */
+              path: 'system-list',
+              name: 'system-list',
+              meta: {
+                title: '系统配置',
+                // access: ['会员列表']
+              },
+              component: () => import('@/view/system/system.vue')
+            }, */
     {
       path: 'consign-list',
       name: 'consign-list',
