@@ -1,13 +1,13 @@
 <template>
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
-      <FormItem label="商品：" prop="goodsId" v-if="!scoperead">
+      <FormItem label="上架商品：" prop="goodsId" v-if="!scoperead">
         <Cascader :data="goodsList" :load-data="loadData" style="width:300px" v-model="formValidate.goodsId" filterable></Cascader>
         <!-- <Select v-model="formValidate.goodsId" filterable :disabled="scoperead">
           <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select> -->
       </FormItem>
-      <FormItem label="商品：" v-if="scoperead">
+      <FormItem label="上架商品：" v-if="scoperead">
         <Input v-model="goodsName" style="width:300px"  :disabled="scoperead">
         </Input>
       </FormItem>
@@ -21,14 +21,14 @@
         <span slot="append">元</span>
         </Input>
       </FormItem>
-      <FormItem label="用券：" prop="consumerPrice">
+      <FormItem label="用券数：" prop="consumerPrice">
         <Input v-model="formValidate.consumerPrice" placeholder="请输入可用券数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'" @on-blur="consumerBlur">
         </Input>
-        <span>&nbsp;&nbsp;用券数量是商品价格的{{useCouponsNum}}%</span>
+        <span>&nbsp;&nbsp;（用券数量是商品价格的{{useCouponsNum}}%）</span>
       </FormItem>
-      <FormItem label="赠券：" prop="coupon">
+      <FormItem label="赠券数：" prop="coupon">
         <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'" @on-blur="couponBlur"></Input>
-        <span>&nbsp;&nbsp;赠券数量是商品价格的{{couponsNum}}%</span>
+        <span>&nbsp;&nbsp;（赠券数量是商品价格的{{couponsNum}}%）</span>
       </FormItem>
       <FormItem label="库存：" prop="stock">
         <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -42,13 +42,13 @@
       <!-- <FormItem label="邮费：">
         <Input v-model="formValidate.postage" placeholder="请输入邮费" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem> -->
-      <FormItem label="限购：" prop="maxBuyNo">
+      <FormItem label="限购：">
         <Input v-model="formValidate.maxBuyNo" placeholder="请输入限购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="每天可抢购数量：" prop="maxBuyNoDay">
+      <FormItem label="最多可抢/天：">
         <Input v-model="formValidate.maxBuyNoDay" placeholder="请输入每天可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
-      <FormItem label="每月可抢购数量：" prop="maxBuyNoMonth">
+      <FormItem label="最多可抢/月：">
         <Input v-model="formValidate.maxBuyNoMonth" placeholder="请输入每月可抢购数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
       <FormItem label="时间段：">
@@ -127,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-                { required: true, message: '请输入邮费', trigger: 'blur' }
-              ], */
+                  { required: true, message: '请输入邮费', trigger: 'blur' }
+                ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -267,52 +267,52 @@ export default {
         }
       })
       /* setTimeout(() => {
-           if(item.value === 'beijing') {
-            item.children = [
-              {
-                value: 'talkingdata',
-                label: 'TalkingData'
-              },
-              {
-                value: 'baidu',
-                label: '百度'
-              },
-              {
-                value: 'sina',
-                label: '新浪'
-              }
-            ];
-          } else if(item.value === 'hangzhou') {
-            item.children = [
-              {
-                value: 'ali',
-                label: '阿里巴巴'
-              },
-              {
-                value: '163',
-                label: '网易'
-              }
-            ];
-          }
-          item.loading = false;
-          callback();
-        }, 1000); */
+             if(item.value === 'beijing') {
+              item.children = [
+                {
+                  value: 'talkingdata',
+                  label: 'TalkingData'
+                },
+                {
+                  value: 'baidu',
+                  label: '百度'
+                },
+                {
+                  value: 'sina',
+                  label: '新浪'
+                }
+              ];
+            } else if(item.value === 'hangzhou') {
+              item.children = [
+                {
+                  value: 'ali',
+                  label: '阿里巴巴'
+                },
+                {
+                  value: '163',
+                  label: '网易'
+                }
+              ];
+            }
+            item.loading = false;
+            callback();
+          }, 1000); */
     },
     getGoodsList () {
       /* this.goodsList = []
-        let _data = {
-          pageIndex: 1,
-          pageSize: 2000
-        }
-        goodsfindList().then(res => {
-          if (res.data.code == '0') {
-            res.data.data.dataList.forEach(element => {
-              this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-            })
-          } else {
-            this.$Message.error(res.data.msg)
+          let _data = {
+            pageIndex: 1,
+            pageSize: 2000
           }
-        }) */
+          goodsfindList().then(res => {
+            if (res.data.code == '0') {
+              res.data.data.dataList.forEach(element => {
+                this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+              })
+            } else {
+              this.$Message.error(res.data.msg)
+            }
+          }) */
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {

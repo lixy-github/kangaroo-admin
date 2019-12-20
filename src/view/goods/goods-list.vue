@@ -4,7 +4,7 @@
     <Form :model="formItem" :label-width="80">
       <Row style="padding-bottom: 20px;">
         <Col span="3" style="width: 250px">
-        <FormItem label="商品分类：" prop="name">
+        <FormItem label="商品分类" prop="name">
           <Select v-model="formItem.classId">
             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
