@@ -20,11 +20,11 @@
         </FormItem>
         </Col>
         <Col span="3" style="width: 250px">
-        <FormItem label="风控">
+        <FormItem label="调货">
           <Select v-model="formItem.controlRt" clearable>
-            <Option value="0">必不中</Option>
             <Option value="-1">普通</Option>
-            <Option value="100">必中</Option>
+            <Option value="0">降低成功率</Option>
+            <Option value="100">提升成功率</Option>
           </Select>
         </FormItem>
         </Col>
@@ -66,10 +66,10 @@
         <Button type="primary" size="large" @click="ok">确定</Button>
       </div>
     </Modal>
-    <!-- 风控 -->
-    <Modal v-model="riskModal" title="设置风控">
+    <!-- 调货 -->
+    <Modal v-model="riskModal" title="设置调货">
       <Form :label-width="80">
-        <FormItem label="风控：">
+        <FormItem label="调货：">
           <Select v-model="controlRt" style="width:200px">
             <Option value="0">必不中</Option>
             <Option value="-1">普通</Option>
@@ -114,9 +114,9 @@ export default {
     }
     var transControlRt = (val) => {
       var obj = {
-        '0': '必不中',
+        '0': '降低成功率',
         '-1': '普通',
-        '100': '必中'
+        '100': '提升成功率'
       }
       return obj[val]
     }
@@ -172,7 +172,7 @@ export default {
           }
         },
         {
-          title: '风控',
+          title: '调货',
           align: 'center',
           key: 'controlRt',
           minWidth: 80,
@@ -236,7 +236,7 @@ export default {
                     this.editRisk(row)
                   }
                 }
-              }, '设置风控'),
+              }, '设置调货'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -273,7 +273,7 @@ export default {
         pageIndex: this.pageData.pageIndex,
         pageSize: this.pageData.pageSize,
         agentLevel: this.formItem.agentLevel, // 代理类型
-        controlRt: this.formItem.controlRt, // 风控筛选
+        controlRt: this.formItem.controlRt, // 调货筛选
         endDate: endDate ? endDate + ' 23:59:59' : '',
         startDate: startDate ? startDate + ' 00:00:00' : '',
         id: this.formItem.id, // id
@@ -339,7 +339,7 @@ export default {
         }
       })
     },
-    // 设置风控
+    // 设置调货
     editRisk (row) {
       this.rowId = row.id
       this.riskModal = true
@@ -347,7 +347,7 @@ export default {
     },
     riskOk () {
       if (this.controlRt == '') {
-        this.$Message.info('请选择风控')
+        this.$Message.info('请选择调货')
         return
       }
       controlupdate({

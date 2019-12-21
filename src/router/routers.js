@@ -297,6 +297,15 @@ export default [{
       access: ['注册协议管理']
     },
     component: () => import('@/view/content/register-text.vue')
+  },
+  {
+    path: 'product-text',
+    name: 'product-text',
+    meta: {
+      title: '产品介绍',
+      access: ['其他内容']
+    },
+    component: () => import('@/view/content/product-text.vue')
   }
   ]
 },
@@ -334,14 +343,14 @@ export default [{
   },
   children: [
     /* {
-              path: 'system-list',
-              name: 'system-list',
-              meta: {
-                title: '系统配置',
-                // access: ['会员列表']
-              },
-              component: () => import('@/view/system/system.vue')
-            }, */
+                path: 'system-list',
+                name: 'system-list',
+                meta: {
+                  title: '系统配置',
+                  // access: ['会员列表']
+                },
+                component: () => import('@/view/system/system.vue')
+              }, */
     {
       path: 'consign-list',
       name: 'consign-list',

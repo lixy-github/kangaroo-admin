@@ -94,7 +94,7 @@ export default {
           minWidth: 100
         },
         {
-          title: '风控',
+          title: '调货',
           align: 'center',
           key: 'controlRt',
           minWidth: 80,

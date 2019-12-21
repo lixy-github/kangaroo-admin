@@ -191,7 +191,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .title {
     height: 42px;
     box-sizing: border-box;

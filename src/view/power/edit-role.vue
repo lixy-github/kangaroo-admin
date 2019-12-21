@@ -173,7 +173,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
   .border_d2 {
     width: 77%;
     line-height: 60px;

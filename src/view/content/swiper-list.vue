@@ -153,19 +153,19 @@ export default {
             const text = ''
             return h('div', [
               /* h('Button', {
-                              props: {
-                                type: 'primary',
-                                size: 'small'
-                              },
-                              style: {
-                                marginRight: '5px',
-                              },
-                              on: {
-                                click: () => {
-                                  this.edit(row)
+                                props: {
+                                  type: 'primary',
+                                  size: 'small'
+                                },
+                                style: {
+                                  marginRight: '5px',
+                                },
+                                on: {
+                                  click: () => {
+                                    this.edit(row)
+                                  }
                                 }
-                              }
-                            }, '编辑'), */
+                              }, '编辑'), */
               h('Button', {
                 props: {
                   type: 'error',
@@ -314,5 +314,5 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 </style>

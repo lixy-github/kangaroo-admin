@@ -152,8 +152,8 @@ export default {
   }
 }
 </script>
-<style lang="less">
-  .count-style {
+<style lang="less" scoped>
+  /deep/ .count-style {
     font-size: 28px;
   }
 </style>

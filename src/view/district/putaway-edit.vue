@@ -37,7 +37,7 @@
         <Input v-model="formValidate.num" placeholder="请输入可抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
       </FormItem>
       <FormItem label="已抢数量：" prop="alreadyNum">
-        <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" readonly></Input>
+        <Input v-model="formValidate.alreadyNum" placeholder="请输入已抢数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="true"></Input>
       </FormItem>
       <!-- <FormItem label="邮费：">
         <Input v-model="formValidate.postage" placeholder="请输入邮费" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -127,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-                  { required: true, message: '请输入邮费', trigger: 'blur' }
-                ], */
+                    { required: true, message: '请输入邮费', trigger: 'blur' }
+                  ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -267,52 +267,52 @@ export default {
         }
       })
       /* setTimeout(() => {
-             if(item.value === 'beijing') {
-              item.children = [
-                {
-                  value: 'talkingdata',
-                  label: 'TalkingData'
-                },
-                {
-                  value: 'baidu',
-                  label: '百度'
-                },
-                {
-                  value: 'sina',
-                  label: '新浪'
-                }
-              ];
-            } else if(item.value === 'hangzhou') {
-              item.children = [
-                {
-                  value: 'ali',
-                  label: '阿里巴巴'
-                },
-                {
-                  value: '163',
-                  label: '网易'
-                }
-              ];
-            }
-            item.loading = false;
-            callback();
-          }, 1000); */
+               if(item.value === 'beijing') {
+                item.children = [
+                  {
+                    value: 'talkingdata',
+                    label: 'TalkingData'
+                  },
+                  {
+                    value: 'baidu',
+                    label: '百度'
+                  },
+                  {
+                    value: 'sina',
+                    label: '新浪'
+                  }
+                ];
+              } else if(item.value === 'hangzhou') {
+                item.children = [
+                  {
+                    value: 'ali',
+                    label: '阿里巴巴'
+                  },
+                  {
+                    value: '163',
+                    label: '网易'
+                  }
+                ];
+              }
+              item.loading = false;
+              callback();
+            }, 1000); */
     },
     getGoodsList () {
       /* this.goodsList = []
-          let _data = {
-            pageIndex: 1,
-            pageSize: 2000
-          }
-          goodsfindList().then(res => {
-            if (res.data.code == '0') {
-              res.data.data.dataList.forEach(element => {
-                this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-              })
-            } else {
-              this.$Message.error(res.data.msg)
+            let _data = {
+              pageIndex: 1,
+              pageSize: 2000
             }
-          }) */
+            goodsfindList().then(res => {
+              if (res.data.code == '0') {
+                res.data.data.dataList.forEach(element => {
+                  this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+                })
+              } else {
+                this.$Message.error(res.data.msg)
+              }
+            }) */
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {

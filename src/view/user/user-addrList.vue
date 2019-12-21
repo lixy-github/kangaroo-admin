@@ -40,8 +40,8 @@
         <Button type="primary" size="large" @click="ok">确定</Button>
       </div>
     </Modal>
-    <!-- 风控 -->
-    <Modal v-model="riskModal" title="设置风控">
+    <!-- 调货 -->
+    <Modal v-model="riskModal" title="设置调货">
       <Form :label-width="80">
         <FormItem label="分控：">
           <Select v-model="controlRt" style="width:200px">
@@ -128,7 +128,7 @@ export default {
           minWidth: 80
         },
         {
-          title: '风控',
+          title: '调货',
           align: 'center',
           key: 'controlRt',
           minWidth: 80,
@@ -192,7 +192,7 @@ export default {
                     this.editRisk(row)
                   }
                 }
-              }, '设置风控'),
+              }, '设置调货'),
               h('Button', {
                 props: {
                   type: 'primary',
@@ -294,7 +294,7 @@ export default {
         }
       })
     },
-    // 设置风控
+    // 设置调货
     editRisk (row) {
       this.rowId = row.id
       this.riskModal = true
@@ -302,7 +302,7 @@ export default {
     },
     riskOk () {
       if (this.controlRt == '') {
-        this.$Message.info('请选择风控')
+        this.$Message.info('请选择调货')
         return
       }
       controlupdate({

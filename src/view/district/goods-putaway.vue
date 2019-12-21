@@ -296,7 +296,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .modelTitle {
     height: 42px;
     box-sizing: border-box;
