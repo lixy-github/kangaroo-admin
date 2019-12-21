@@ -127,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-                      { required: true, message: '请输入邮费', trigger: 'blur' }
-                    ], */
+                        { required: true, message: '请输入邮费', trigger: 'blur' }
+                      ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -267,52 +267,52 @@ export default {
         }
       })
       /* setTimeout(() => {
-                 if(item.value === 'beijing') {
-                  item.children = [
-                    {
-                      value: 'talkingdata',
-                      label: 'TalkingData'
-                    },
-                    {
-                      value: 'baidu',
-                      label: '百度'
-                    },
-                    {
-                      value: 'sina',
-                      label: '新浪'
-                    }
-                  ];
-                } else if(item.value === 'hangzhou') {
-                  item.children = [
-                    {
-                      value: 'ali',
-                      label: '阿里巴巴'
-                    },
-                    {
-                      value: '163',
-                      label: '网易'
-                    }
-                  ];
-                }
-                item.loading = false;
-                callback();
-              }, 1000); */
+                   if(item.value === 'beijing') {
+                    item.children = [
+                      {
+                        value: 'talkingdata',
+                        label: 'TalkingData'
+                      },
+                      {
+                        value: 'baidu',
+                        label: '百度'
+                      },
+                      {
+                        value: 'sina',
+                        label: '新浪'
+                      }
+                    ];
+                  } else if(item.value === 'hangzhou') {
+                    item.children = [
+                      {
+                        value: 'ali',
+                        label: '阿里巴巴'
+                      },
+                      {
+                        value: '163',
+                        label: '网易'
+                      }
+                    ];
+                  }
+                  item.loading = false;
+                  callback();
+                }, 1000); */
     },
     getGoodsList () {
       /* this.goodsList = []
-              let _data = {
-                pageIndex: 1,
-                pageSize: 2000
-              }
-              goodsfindList().then(res => {
-                if (res.data.code == '0') {
-                  res.data.data.dataList.forEach(element => {
-                    this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-                  })
-                } else {
-                  this.$Message.error(res.data.msg)
+                let _data = {
+                  pageIndex: 1,
+                  pageSize: 2000
                 }
-              }) */
+                goodsfindList().then(res => {
+                  if (res.data.code == '0') {
+                    res.data.data.dataList.forEach(element => {
+                      this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+                    })
+                  } else {
+                    this.$Message.error(res.data.msg)
+                  }
+                }) */
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {
@@ -325,22 +325,23 @@ export default {
       if (this.$route.params.content) {
         this.scoperead = true
         let data = JSON.parse(this.$route.params.content)
+        console.log(data)
         this.getTimeList(data.scope.toString())
         this.formValidate = {
           id: data.rushid,
-          consumerPrice: data.consumerPrice ? data.consumerPrice.toString() : '',
-          coupon: data.coupon ? data.coupon.toString() : '',
-          goodsId: data.goodsid ? data.goodsid.toString() : '',
-          maxBuyNo: data.maxBuyNo ? data.maxBuyNo.toString() : '',
-          maxBuyNoDay: data.maxBuyNoDay ? data.maxBuyNoDay.toString() : '',
-          maxBuyNoMonth: data.maxBuyNoMonth ? data.maxBuyNoMonth.toString() : '',
-          num: data.num ? data.num.toString() : '',
-          alreadyNum: data.alreadyNum ? data.alreadyNum.toString() : '',
-          postage: data.postage ? data.postage.toString() : '',
-          price: data.price ? (data.price / 100).toString() : '',
-          scope: data.scope ? data.scope.toString() : '',
-          stock: data.stock ? data.stock.toString() : '',
-          timeid: data.timeid ? data.timeid.toString() : null
+          consumerPrice: data.consumerPrice != null ? data.consumerPrice.toString() : '',
+          coupon: data.coupon != null ? data.coupon.toString() : '',
+          goodsId: data.goodsid != null ? data.goodsid.toString() : '',
+          maxBuyNo: data.maxBuyNo != null ? data.maxBuyNo.toString() : '',
+          maxBuyNoDay: data.maxBuyNoDay != null ? data.maxBuyNoDay.toString() : '',
+          maxBuyNoMonth: data.maxBuyNoMonth != null ? data.maxBuyNoMonth.toString() : '',
+          num: data.num != null ? data.num.toString() : '',
+          alreadyNum: data.alreadyNum != null ? data.alreadyNum.toString() : '',
+          postage: data.postage != null ? data.postage.toString() : '',
+          price: data.price != null ? (data.price / 100).toString() : '',
+          scope: data.scope != null ? data.scope.toString() : '',
+          stock: data.stock != null ? data.stock.toString() : '',
+          timeid: data.timeid != null ? data.timeid.toString() : null
         }
         this.goodsName = data.name
         console.log(this.formValidate.timeid)
