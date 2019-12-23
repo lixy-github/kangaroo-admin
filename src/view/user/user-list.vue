@@ -71,9 +71,9 @@
       <Form :label-width="80">
         <FormItem label="调货：">
           <Select v-model="controlRt" style="width:200px">
-            <Option value="0">必不中</Option>
             <Option value="-1">普通</Option>
-            <Option value="100">必中</Option>
+            <Option value="0">降低成功率</Option>
+            <Option value="100">提升成功率</Option>
           </Select>
         </FormItem>
       </Form>

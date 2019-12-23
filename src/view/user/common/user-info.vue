@@ -91,7 +91,10 @@ export default {
           title: '昵称',
           align: 'center',
           key: 'nickName',
-          minWidth: 100
+          minWidth: 100,
+          render: (h, p) => {
+            return h('div', {}, p.row.nickName ? p.row.nickName : '--')
+          }
         },
         {
           title: '调货',

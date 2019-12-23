@@ -116,7 +116,7 @@ export default {
         ],
         num: [
           { required: true, message: '请输入商品可抢数量', trigger: 'blur' },
-          { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
+          { pattern: /^([0-9]*)$/, message: '请输入大于0的整数', trigger: 'blur' }
         ],
         alreadyNum: [
           { required: true, message: '请输入商品已抢数量', trigger: 'blur' }
@@ -127,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-                        { required: true, message: '请输入邮费', trigger: 'blur' }
-                      ], */
+                          { required: true, message: '请输入邮费', trigger: 'blur' }
+                        ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -255,11 +255,17 @@ export default {
       }
       goodsfindList(_data).then(res => {
         if (res.data.code == '0') {
-          res.data.data.dataList.forEach(element => {
-            item.children.push({ 'value': element.id.toString(), 'label': element.name })
+          if (res.data.data.dataList.length != 0) {
+            res.data.data.dataList.forEach(element => {
+              item.children.push({ 'value': element.id.toString(), 'label': element.name })
+              item.loading = false
+              callback()
+            })
+          } else {
+            item.children.push({ 'value': '', 'label': '' })
             item.loading = false
             callback()
-          })
+          }
         } else {
           item.loading = false
           callback()
@@ -267,52 +273,52 @@ export default {
         }
       })
       /* setTimeout(() => {
-                   if(item.value === 'beijing') {
-                    item.children = [
-                      {
-                        value: 'talkingdata',
-                        label: 'TalkingData'
-                      },
-                      {
-                        value: 'baidu',
-                        label: '百度'
-                      },
-                      {
-                        value: 'sina',
-                        label: '新浪'
-                      }
-                    ];
-                  } else if(item.value === 'hangzhou') {
-                    item.children = [
-                      {
-                        value: 'ali',
-                        label: '阿里巴巴'
-                      },
-                      {
-                        value: '163',
-                        label: '网易'
-                      }
-                    ];
-                  }
-                  item.loading = false;
-                  callback();
-                }, 1000); */
+                     if(item.value === 'beijing') {
+                      item.children = [
+                        {
+                          value: 'talkingdata',
+                          label: 'TalkingData'
+                        },
+                        {
+                          value: 'baidu',
+                          label: '百度'
+                        },
+                        {
+                          value: 'sina',
+                          label: '新浪'
+                        }
+                      ];
+                    } else if(item.value === 'hangzhou') {
+                      item.children = [
+                        {
+                          value: 'ali',
+                          label: '阿里巴巴'
+                        },
+                        {
+                          value: '163',
+                          label: '网易'
+                        }
+                      ];
+                    }
+                    item.loading = false;
+                    callback();
+                  }, 1000); */
     },
     getGoodsList () {
       /* this.goodsList = []
-                let _data = {
-                  pageIndex: 1,
-                  pageSize: 2000
-                }
-                goodsfindList().then(res => {
-                  if (res.data.code == '0') {
-                    res.data.data.dataList.forEach(element => {
-                      this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-                    })
-                  } else {
-                    this.$Message.error(res.data.msg)
+                  let _data = {
+                    pageIndex: 1,
+                    pageSize: 2000
                   }
-                }) */
+                  goodsfindList().then(res => {
+                    if (res.data.code == '0') {
+                      res.data.data.dataList.forEach(element => {
+                        this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+                      })
+                    } else {
+                      this.$Message.error(res.data.msg)
+                    }
+                  }) */
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {

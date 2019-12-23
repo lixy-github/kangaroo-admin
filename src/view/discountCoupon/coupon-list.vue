@@ -86,6 +86,13 @@ export default {
           fixed: 'left'
         },
         {
+          title: '优惠券名称',
+          align: 'center',
+          key: 'name',
+          minWidth: 150,
+          fixed: 'left'
+        },
+        {
           title: '开始时间',
           align: 'center',
           minWidth: 150,
@@ -101,13 +108,7 @@ export default {
             return h('div', {}, p.row.endDate ? p.row.endDate : '--')
           }
         },
-        {
-          title: '优惠券名称',
-          align: 'center',
-          key: 'name',
-          minWidth: 120,
-          fixed: 'left'
-        },
+
         {
           title: '面值',
           align: 'center',
@@ -177,7 +178,7 @@ export default {
           title: '发放量',
           align: 'center',
           key: 'number',
-          minWidth: 80
+          minWidth: 100
         },
         {
           title: '领取数量',

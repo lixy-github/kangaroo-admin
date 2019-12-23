@@ -49,12 +49,12 @@
             <li>
               <span class="border"></span>
               <span class="lable">商品名称：</span>
-              <span>{{rowDetails.name}}</span>
+              <span style="width:80%">{{rowDetails.name}}</span>
             </li>
             <li>
               <span class="border"></span>
               <span class="lable">商品分类：</span>
-              <span>{{rowDetails.className}}</span>
+              <span style="width:80%">{{rowDetails.className}}</span>
             </li>
             <li>
               <span class="border"></span>
@@ -64,7 +64,7 @@
             <li>
               <span class="border"></span>
               <span class="lable">售货服务：</span>
-              <span>{{rowDetails.afterService}}</span>
+              <span style="width:80%">{{rowDetails.afterService}}</span>
             </li>
             <li>
               <span class="border"></span>
