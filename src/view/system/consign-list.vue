@@ -12,8 +12,8 @@
     <!-- 编辑 -->
     <Modal v-model="modal" title="编辑">
       <Form :model="formItem" :label-width="80">
-        <FormItem label="Value：">
-          <Input v-model="formItem.configVal" placeholder="请输入配置值"></Input>
+        <FormItem label="比例值：">
+          <Input v-model="formItem.configVal" placeholder="请输入比例值"></Input>
         </FormItem>
         <FormItem label="描述：">
           <Input v-model="formItem.remark" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入描述"></Input>
@@ -43,16 +43,19 @@ export default {
       tableData: [],
       tableColumns: [
         {
-          title: '#',
-          type: 'index',
+          title: 'id',
+          key: 'id',
           align: 'center',
           minWidth: 50
         },
         {
-          title: 'Value',
+          title: '比例值',
           align: 'center',
           minWidth: 150,
-          key: 'configVal'
+          key: 'configVal',
+          render: (h, p) => {
+            return h('div', {}, p.row.configVal + '%')
+          }
         },
         {
           title: '描述',
