@@ -109,6 +109,7 @@ export default {
         commit('setToken', '')
         commit('setAccess', [])
         Cookies.remove('token')
+        Cookies.remove('jxyex-token')
         Cookies.remove('access')
         Cookies.remove('userId')
         Cookies.remove('jxyex-username')
