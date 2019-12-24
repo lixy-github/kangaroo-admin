@@ -8,7 +8,6 @@
         </Badge>
         <Badge :count="orderNum">
           <Button @click="orderListBtn">待发货订单数</Button>
-          <!-- <Button @click="ceshi">测试</Button> -->
         </Badge>
       </i-col>
     </Row>
@@ -27,7 +26,7 @@
         </Card>
       </i-col>
       <i-col :md="8" :lg="8" style="margin-bottom: 20px;">
-        <Tabs @getdata="getdata" :salesList="salesList"></Tabs>
+        <Tabs @getList="getList" :salesList="salesList"></Tabs>
       </i-col>
     </Row>
   </div>
@@ -36,7 +35,7 @@
 import InforCard from '_c/info-card'
 import CountTo from '_c/count-to'
 import { ChartPie, ChartBar } from '_c/charts'
-import { indexCount, adminIndex, hello } from '@/api/api'
+import { indexCount, adminIndex, cylinderFigure } from '@/api/api'
 import Tabs from './common/tabs'
 import Cookies from 'js-cookie'
 
@@ -89,13 +88,24 @@ export default {
     }
   },
   methods: {
-    getdata (type) {
+    /* 排行榜 */
+    getList (type) {
       indexCount({
         countType: type
       }).then(res => {
         if (res.data.code == '0') {
-          this.barDatati = res.data.data.monthMap
           this.salesList = res.data.data.salesList
+        } else {
+          this.$Message.error('获取数据失败')
+        }
+      }).catch(function (error) {
+      })
+    },
+    // 图表
+    getdata () {
+      cylinderFigure().then(res => {
+        if (res.data.code == '0') {
+          this.barDatati = res.data.data.monthMap
         } else {
           this.$Message.error('获取数据失败')
         }
@@ -129,11 +139,6 @@ export default {
         this.$Message.info('抱歉，您无访问订单列表权限')
       }
     },
-    ceshi () {
-      hello('{}').then(res => {
-      }).catch(function (error) {
-      })
-    },
     orderBtn () {
       if (Cookies.get('orderStatus') === '1') {
         this.$router.push({
@@ -148,7 +153,8 @@ export default {
     }
   },
   created () {
-    this.getdata('day')
+    this.getdata()
+    this.getList('day')
   }
 }
 </script>

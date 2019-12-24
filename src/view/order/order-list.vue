@@ -156,9 +156,21 @@ export default {
       tableData: [],
       tableColumns: [
         {
+          title: '商品Id',
+          align: 'center',
+          minWidth: 70,
+          key: 'goodsId'
+        },
+        {
+          title: '商品名称',
+          align: 'center',
+          minWidth: 100,
+          key: 'goodsName'
+        },
+        {
           title: '收货人姓名',
           align: 'center',
-          minWidth: 130,
+          minWidth: 100,
           key: 'name'
         },
         {
@@ -166,6 +178,27 @@ export default {
           align: 'center',
           minWidth: 110,
           key: 'phone'
+        },
+        {
+          title: '收货地址',
+          align: 'center',
+          minWidth: 150,
+          key: 'address',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+                style: {
+                  display: 'inline-block',
+                  width: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                },
+                domProps: { title: params.row.address },
+                on: { click: (e) => { e.stopPropagation() } }
+              }, params.row.address)
+            ])
+          }
         },
         {
           title: '订单单号',

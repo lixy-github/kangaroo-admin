@@ -37,6 +37,15 @@ export const adminIndex = (data) => {
   })
 }
 
+// 首页数据
+export const cylinderFigure = (data) => {
+  return Axios.request({
+    url: '/admin/order/cylinderFigure',
+    params: data,
+    method: 'get'
+  })
+}
+
 // 新增角色
 export const addRole = (data) => {
   return Axios.request({
@@ -123,13 +132,5 @@ export const deleteRole = (data) => {
     method: 'post',
     url: '/admin/authrole/delete.htm',
     data: data
-  })
-}
-
-export const hello = (data) => {
-  return Axios.request({
-    url: '/applet/login/hello',
-    params: data,
-    method: 'get'
   })
 }

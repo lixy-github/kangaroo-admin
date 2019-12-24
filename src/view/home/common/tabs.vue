@@ -52,7 +52,7 @@ export default {
           this.countType = 'year'
           break
       }
-      this.$emit('getdata', this.countType)
+      this.$emit('getList', this.countType)
       this.lookMore = true
       this.listLength = 10
     },

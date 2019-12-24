@@ -123,29 +123,44 @@ export default {
           align: 'center',
           minWidth: 150,
           render: (h, params) => {
-            let texts = params.row.detail
-            if (params.row.detail != null) {
-              if (params.row.detail.length > 8) {
-                texts = params.row.detail.slice(0, 8) + '...' // 进行数字截取
-              } else {
-                texts = params.row.detail
-              }
-            }
             return h('div', [
-              h('Tooltip', {
-                props: {
-                  placement: 'top',
-                  transfer: true
-                }
-              }, [texts, h('span', {
-                slot: 'content',
+              h('span', {
                 style: {
-                  whiteSpace: 'normal'
-                }
+                  display: 'inline-block',
+                  width: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                },
+                domProps: { title: params.row.detail },
+                on: { click: (e) => { e.stopPropagation() } }
               }, params.row.detail)
-              ])
             ])
           }
+          /* render: (h, params) => {
+              let texts = params.row.detail
+              if (params.row.detail != null) {
+                if (params.row.detail.length > 8) {
+                  texts = params.row.detail.slice(0, 8) + '...' // 进行数字截取
+                } else {
+                  texts = params.row.detail
+                }
+              }
+              return h('div', [
+                h('Tooltip', {
+                  props: {
+                    placement: 'top',
+                    transfer: true
+                  }
+                }, [texts, h('span', {
+                  slot: 'content',
+                  style: {
+                    whiteSpace: 'normal'
+                  }
+                }, params.row.detail)
+                ])
+              ])
+            } */
 
         },
         {
