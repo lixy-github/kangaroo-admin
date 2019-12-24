@@ -12,18 +12,18 @@
     <Layout>
       <Header class="header-con">
         <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-          <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
-          <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
+          <user :message-unread-count="unreadCount" :user-avatar="userAvatar" />
+          <fullscreen v-model="isFullscreen" style="margin-right: 10px;" />
         </header-bar>
       </Header>
       <Content class="main-content-con">
         <Layout class="main-layout-con">
           <div class="tag-nav-wrapper">
-            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
+            <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag" />
           </div>
           <Content class="content-wrapper">
             <keep-alive :include="cacheList">
-              <router-view/>
+              <router-view />
             </keep-alive>
             <ABackTop :height="100" :bottom="80" :right="50" container=".content-wrapper"></ABackTop>
           </Content>
@@ -44,6 +44,7 @@ import { getNewTagList, routeEqual } from '@/libs/util'
 import routers from '@/router/routers'
 import minLogo from '@/assets/images/logo-min.png'
 import maxLogo from '@/assets/images/logo.png'
+import Cookies from 'js-cookie'
 import './main.less'
 export default {
   name: 'Main',
@@ -75,7 +76,7 @@ export default {
     },
     userAvatar () {
       // return this.$store.state.user.avatarImgPath
-      return "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg"
+      return 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg'
     },
     cacheList () {
       const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
@@ -160,8 +161,14 @@ export default {
   },
   mounted () {
     /**
-     * @description 初始化设置面包屑导航和标签导航
-     */
+       * @description 初始化设置面包屑导航和标签导航
+       */
+
+    this.menuList.forEach(element => {
+      if (element.name == 'order') {
+        Cookies.set('orderStatus', 1)
+      }
+    })
     this.setTagNavList()
     this.setHomeRoute(routers)
     const { name, params, query, meta } = this.$route
