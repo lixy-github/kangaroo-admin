@@ -158,20 +158,23 @@ export default {
         {
           title: '商品Id',
           align: 'center',
-          minWidth: 70,
-          key: 'goodsId'
+          minWidth: 80,
+          key: 'goodsId',
+          fixed: 'left'
         },
         {
           title: '商品名称',
           align: 'center',
           minWidth: 100,
-          key: 'goodsName'
+          key: 'goodsName',
+          fixed: 'left'
         },
         {
           title: '收货人姓名',
           align: 'center',
           minWidth: 100,
-          key: 'name'
+          key: 'name',
+          fixed: 'left'
         },
         {
           title: '收货人电话',
@@ -240,6 +243,7 @@ export default {
           title: '操作',
           // align: 'center',
           minWidth: 80,
+          fixed: 'right',
           render: (h, params) => {
             const row = params.row
             const text = ''
