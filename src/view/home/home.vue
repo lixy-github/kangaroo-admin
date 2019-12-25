@@ -115,7 +115,7 @@ export default {
         if (res.data.code == '0') {
           let _data = res.data.data
           this.blockData = {
-            sumMoney: _data.sumMoney,
+            sumMoney: Math.round(parseInt(_data.sumMoney) / 100),
             countUser: _data.countUser,
             countOrder: _data.countOrder
           }

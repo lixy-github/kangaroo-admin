@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import {
   getToken
 } from '@/libs/util'
+import store from '@/store'
 Axios.defaults.timeout = 10000 // 响应时间
 Axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro // 配置接口地址
 
@@ -41,7 +42,23 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   function (response) {
     if (response.data.code == '401') {
-      localStorage.clear()
+      store.commit('setFlag', true)
+      setTimeout(() => {
+        /* 只允许弹框弹一次 */
+        if (store.state.app.flag) {
+          localStorage.clear()
+          Cookies.remove('jxyex-token')
+          Cookies.remove('orderStatus')
+          alert('登录已过期，请重新登录')
+          if (process.env.NODE_ENV == 'production') {
+            window.location.href = '/manager/index.html#/login'
+          } else {
+            window.location.href = '/'
+          }
+        }
+        store.commit('setFlag', false)
+      }, 500)
+      /* localStorage.clear()
       Cookies.remove('jxyex-token')
       Cookies.remove('orderStatus')
       alert('登录已过期，请重新登录')
@@ -49,7 +66,7 @@ Axios.interceptors.response.use(
         window.location.href = '/manager/index.html#/login'
       } else {
         window.location.href = '/'
-      }
+      } */
     } else {
       return response
     }

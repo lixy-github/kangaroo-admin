@@ -16,8 +16,8 @@
             <Option value="WAIT_SHIP">待发货</Option>
             <Option value="ALREADY_SHIP">已发货</Option>
             <Option value="ALREADY_RECEIPT">已收货</Option>
-            <Option value="SMALL_CONSIGNMENT">小排序寄售</Option>
-            <Option value="BIG_CONSIGNMENT">大排序寄售</Option>
+            <Option value="SMALL_CONSIGNMENT">自营店寄售</Option>
+            <Option value="BIG_CONSIGNMENT">大卖场寄售</Option>
             <Option value="SUCCESS_CONSIGNMENT">寄售成功</Option>
             <Option value="REDEMPTION_SUCCESS">换购成功</Option>
             <Option value="CLOSED">已关闭</Option>
@@ -108,8 +108,8 @@ export default {
         'CLOSED': '已关闭',
         'ALREADY_PAID': '已支付',
         'WAIT_SHIP': '待发货',
-        'SMALL_CONSIGNMENT': '小排序寄售',
-        'BIG_CONSIGNMENT': '大排序寄售',
+        'SMALL_CONSIGNMENT': '自营店寄售',
+        'BIG_CONSIGNMENT': '大卖场寄售',
         'SUCCESS_CONSIGNMENT': '寄售成功',
         'ALREADY_SHIP': '已发货',
         'ALREADY_RECEIPT': '已收货',

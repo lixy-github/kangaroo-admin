@@ -66,6 +66,7 @@ export default {
         },
         yAxis: {
           type: 'value',
+          name: '(元)',
           axisLabel: {
             rotate: 12,
             fontSize: 10
