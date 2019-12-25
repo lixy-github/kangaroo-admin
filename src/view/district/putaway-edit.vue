@@ -24,11 +24,11 @@
       <FormItem label="用券数：" prop="consumerPrice">
         <Input v-model="formValidate.consumerPrice" placeholder="请输入可用券数量" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'RUSH' || formValidate.scope == 'RUSH_FIRST'" @on-blur="consumerBlur">
         </Input>
-        <span>&nbsp;&nbsp;（用券数量是商品价格的{{useCouponsNum}}%）</span>
+        <span>&nbsp;&nbsp;用券比{{useCouponsNum}}%</span>
       </FormItem>
       <FormItem label="赠券数：" prop="coupon">
         <Input v-model="formValidate.coupon" placeholder="请输入赠券" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))" :disabled="formValidate.scope == 'BATCH' || formValidate.scope == 'ALLDAY' || formValidate.scope == 'BATCH_FIRST'" @on-blur="couponBlur"></Input>
-        <span>&nbsp;&nbsp;（赠券数量是商品价格的{{couponsNum}}%）</span>
+        <span>&nbsp;&nbsp;赠券比{{couponsNum}}%</span>
       </FormItem>
       <FormItem label="库存：" prop="stock">
         <Input v-model="formValidate.stock" placeholder="请输入库存" style="width:300px" type="number" @mousewheel.native.prevent onKeypress="return (/[\d\.]/.test(String.fromCharCode(event.keyCode)))"></Input>
@@ -74,8 +74,8 @@ export default {
   data () {
     return {
       goodsName: '',
-      useCouponsNum: '0.00',
-      couponsNum: '0.00',
+      useCouponsNum: '0',
+      couponsNum: '0',
       scoperead: false,
       scopeList: constants.scopeData,
       goodsList: [],
@@ -127,8 +127,8 @@ export default {
           { pattern: /^([0-9]*)$/, message: '只能输入整数', trigger: 'blur' }
         ],
         /* postage: [
-                          { required: true, message: '请输入邮费', trigger: 'blur' }
-                        ], */
+                            { required: true, message: '请输入邮费', trigger: 'blur' }
+                          ], */
         maxBuyNo: [
           { required: true, message: '请输入限购数量', trigger: 'blur' },
           { pattern: /^\+?[1-9]\d*$/, message: '请输入大于0的整数', trigger: 'blur' }
@@ -154,13 +154,13 @@ export default {
         // 抢购
         case 'RUSH':
           this.formValidate.consumerPrice = '0'
-          this.useCouponsNum = '0.00'
+          this.useCouponsNum = '0'
           this.getTimeList('RUSH')
           break
           // 批发
         case 'BATCH':
           this.formValidate.coupon = '0'
-          this.couponsNum = '0.00'
+          this.couponsNum = '0'
           this.getTimeList('BATCH')
           break
           // 全天消费
@@ -171,13 +171,13 @@ export default {
           // 抢购优享
         case 'RUSH_FIRST':
           this.formValidate.consumerPrice = '0'
-          this.useCouponsNum = '0.00'
+          this.useCouponsNum = '0'
           this.formValidate.timeid = null
           break
           // 批发优享
         case 'BATCH_FIRST':
           this.formValidate.coupon = '0'
-          this.couponsNum = '0.00'
+          this.couponsNum = '0'
           this.formValidate.timeid = null
           break
       }
@@ -273,52 +273,52 @@ export default {
         }
       })
       /* setTimeout(() => {
-                     if(item.value === 'beijing') {
-                      item.children = [
-                        {
-                          value: 'talkingdata',
-                          label: 'TalkingData'
-                        },
-                        {
-                          value: 'baidu',
-                          label: '百度'
-                        },
-                        {
-                          value: 'sina',
-                          label: '新浪'
-                        }
-                      ];
-                    } else if(item.value === 'hangzhou') {
-                      item.children = [
-                        {
-                          value: 'ali',
-                          label: '阿里巴巴'
-                        },
-                        {
-                          value: '163',
-                          label: '网易'
-                        }
-                      ];
-                    }
-                    item.loading = false;
-                    callback();
-                  }, 1000); */
+                       if(item.value === 'beijing') {
+                        item.children = [
+                          {
+                            value: 'talkingdata',
+                            label: 'TalkingData'
+                          },
+                          {
+                            value: 'baidu',
+                            label: '百度'
+                          },
+                          {
+                            value: 'sina',
+                            label: '新浪'
+                          }
+                        ];
+                      } else if(item.value === 'hangzhou') {
+                        item.children = [
+                          {
+                            value: 'ali',
+                            label: '阿里巴巴'
+                          },
+                          {
+                            value: '163',
+                            label: '网易'
+                          }
+                        ];
+                      }
+                      item.loading = false;
+                      callback();
+                    }, 1000); */
     },
     getGoodsList () {
       /* this.goodsList = []
-                  let _data = {
-                    pageIndex: 1,
-                    pageSize: 2000
-                  }
-                  goodsfindList().then(res => {
-                    if (res.data.code == '0') {
-                      res.data.data.dataList.forEach(element => {
-                        this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
-                      })
-                    } else {
-                      this.$Message.error(res.data.msg)
+                    let _data = {
+                      pageIndex: 1,
+                      pageSize: 2000
                     }
-                  }) */
+                    goodsfindList().then(res => {
+                      if (res.data.code == '0') {
+                        res.data.data.dataList.forEach(element => {
+                          this.goodsList.push({ 'value': element.id.toString(), 'label': element.name })
+                        })
+                      } else {
+                        this.$Message.error(res.data.msg)
+                      }
+                    }) */
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {
@@ -398,17 +398,17 @@ export default {
     // 用券百分比
     consumerBlur () {
       if (this.formValidate.price && this.formValidate.price > 0) {
-        this.useCouponsNum = this.$public.MathRound((this.formValidate.consumerPrice / this.formValidate.price) * 100)
+        this.useCouponsNum = Math.round((this.formValidate.consumerPrice / this.formValidate.price) * 100)
       } else {
-        this.useCouponsNum = '0.00'
+        this.useCouponsNum = '0'
       }
     },
     // 赠券百分比
     couponBlur () {
       if (this.formValidate.price && this.formValidate.price > 0) {
-        this.couponsNum = this.$public.MathRound((this.formValidate.coupon / this.formValidate.price) * 100)
+        this.couponsNum = Math.round((this.formValidate.coupon / this.formValidate.price) * 100)
       } else {
-        this.couponsNum = '0.00'
+        this.couponsNum = '0'
       }
     }
   },
