@@ -119,13 +119,19 @@ export default {
           title: '变动前金额',
           align: 'center',
           minWidth: 150,
-          key: 'beforeMoney'
+          key: 'beforeMoney',
+          render: (h, p) => {
+            return h('div', {}, p.row.moneyType == 'MONEY' ? p.row.beforeMoney / 100 : p.row.beforeMoney)
+          }
         },
         {
           title: '变动后金额',
           align: 'center',
           key: 'afterMoney',
-          minWidth: 100
+          minWidth: 100,
+          render: (h, p) => {
+            return h('div', {}, p.row.moneyType == 'MONEY' ? p.row.afterMoney / 100 : p.row.afterMoney)
+          }
         },
         {
           title: '金额类型',
