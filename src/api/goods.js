@@ -63,3 +63,21 @@ export const goodsclassremove = (data) => {
     method: 'post'
   })
 }
+
+// 供应链
+export const goodsGetList = (data) => {
+  return Axios.request({
+    url: '/admin/goods/getList',
+    data: data,
+    method: 'post'
+  })
+}
+
+// 供应链
+export const goodsDetail = (data) => {
+  return Axios.request({
+    url: '/admin/goods/detail',
+    data: data,
+    method: 'post'
+  })
+}

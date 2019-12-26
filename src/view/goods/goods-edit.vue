@@ -1,6 +1,25 @@
 <template>
   <div class="addMillForm">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
+      <FormItem label="商品类型：">
+        <RadioGroup v-model="formValidate.type" @on-change="typeChange">
+          <Radio label="LOCAL" :disabled="isEdut">自有商品</Radio>
+          <Radio label="DMGOODS" :disabled="isEdut">供应链商品</Radio>
+        </RadioGroup>
+      </FormItem>
+      <FormItem label="上架商品：">
+        <Cascader :data="goodsList" :load-data="loadData" style="width:500px" v-model="goodsDetail" filterable :disabled="formValidate.type == 'LOCAL' || isEdut"></Cascader>
+      </FormItem>
+      <!-- <FormItem label="商品：">
+        <Select v-model="formValidate.dmGoodsId" style="width:300px" filterable :disabled="formValidate.type == 'LOCAL'" @on-change="goodsChange">
+          <Option v-for="item in goodsList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+      </FormItem>
+      <FormItem label="商品规格：">
+        <Select v-model="formValidate.dmSpecId" style="width:300px" filterable :disabled="formValidate.type == 'LOCAL'">
+          <Option v-for="item in specList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+      </FormItem> -->
       <FormItem label="商品名称：" prop="name">
         <Input v-model="formValidate.name" placeholder="请输入商品名称" style="width:300px"></Input>
       </FormItem>
@@ -46,7 +65,7 @@
 </template>
 <script>
 import { imgLoadUrl } from '@/api/api'
-import { goodsmodify, goodsadd } from '@/api/goods'
+import { goodsmodify, goodsadd, goodsGetList, goodsDetail } from '@/api/goods'
 import { classfindList } from '@/api/district'
 import wangEditor from '@/components/wangEditor/wangEditor'
 export default {
@@ -55,6 +74,7 @@ export default {
   },
   data () {
     return {
+      isEdut: false,
       imgLoadUrl,
       imageUrl: '',
       hasImage: false,
@@ -68,7 +88,10 @@ export default {
         coverImg: '',
         feilds: '',
         afterService: '',
-        description: ''
+        description: '',
+        type: 'LOCAL',
+        dmSpecId: '',
+        dmGoodsId: ''
       },
       ruleValidate: {
         name: [
@@ -94,10 +117,43 @@ export default {
         ]
       },
       cityList: [],
-      msgCN: ''
+      msgCN: '',
+      goodsList: [],
+      specList: [],
+      loading: false,
+      goodsDetail: []
     }
   },
   methods: {
+    typeChange (val) {
+      if (val == 'LOCAL') {
+        this.goodsDetail = []
+      }
+    },
+    loadData (item, callback) {
+      item.loading = true
+      goodsDetail({
+        id: item.value
+      }).then(res => {
+        if (res.data.code == '0') {
+          if (res.data.data.spec.length != 0) {
+            res.data.data.spec.forEach(element => {
+              item.children.push({ 'value': element.spec_id.toString(), 'label': element.spec_1 ? element.spec_1 : '规格一' })
+              item.loading = false
+              callback()
+            })
+          } else {
+            item.children.push({ 'value': '', 'label': '' })
+            item.loading = false
+            callback()
+          }
+        } else {
+          item.loading = false
+          callback()
+          this.$Message.error(res.data.msg)
+        }
+      })
+    },
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '图片大小限制',
@@ -156,7 +212,10 @@ export default {
               description: this.formValidate.description,
               feilds: this.formValidate.feilds,
               images: JSON.stringify(this.formValidate.images),
-              name: this.formValidate.name
+              name: this.formValidate.name,
+              type: this.formValidate.type,
+              dmSpecId: this.goodsDetail[1],
+              dmGoodsId: this.goodsDetail[0]
             }
             goodsmodify(_data).then(res => {
               if (res.data.code == '0') {
@@ -177,7 +236,10 @@ export default {
               description: this.formValidate.description,
               feilds: this.formValidate.feilds,
               images: JSON.stringify(this.formValidate.images),
-              name: this.formValidate.name
+              name: this.formValidate.name,
+              type: this.formValidate.type,
+              dmSpecId: this.formValidate.type == 'LOCAL' ? '' : this.goodsDetail[1],
+              dmGoodsId: this.formValidate.type == 'LOCAL' ? '' : this.goodsDetail[0]
             }
             goodsadd(_data).then(res => {
               if (res.data.code == '0') {
@@ -196,6 +258,7 @@ export default {
     },
     getClass () {
       this.cityList = []
+      this.goodsList = []
       classfindList().then(res => {
         if (res.data.code == '0') {
           res.data.data.forEach(element => {
@@ -205,8 +268,18 @@ export default {
           this.$Message.error(res.data.msg)
         }
       })
+      goodsGetList().then(res => {
+        if (res.data.code == '0') {
+          res.data.data.forEach(element => {
+            this.goodsList.push({ 'value': element.goods_id.toString(), 'label': element.goods_name, 'children': [], loading: false })
+          })
+        } else {
+          this.$Message.error(res.data.msg)
+        }
+      })
       if (this.$route.params.content) {
         let data = JSON.parse(this.$route.params.content)
+        this.isEdut = true
         this.formValidate = {
           id: data.id,
           name: data.name,
@@ -215,9 +288,14 @@ export default {
           coverImg: data.coverImg,
           feilds: data.feilds,
           afterService: data.afterService,
-          description: data.description
+          description: data.description,
+          type: data.type == 'NULL' ? 'LOCAL' : data.type,
+          dmSpecId: data.dmSpecId.toString(),
+          dmGoodsId: data.dmGoodsId.toString()
         }
+        this.goodsDetail = [data.dmSpecId, data.dmGoodsId]
       } else {
+        this.isEdut = false
         this.formValidate = {
           name: '',
           classId: '',
@@ -225,7 +303,10 @@ export default {
           coverImg: '',
           feilds: '',
           afterService: '',
-          description: ''
+          description: '',
+          type: 'LOCAL',
+          dmSpecId: '',
+          dmGoodsId: ''
         }
       }
     }

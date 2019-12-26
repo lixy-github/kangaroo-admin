@@ -49,6 +49,15 @@
               <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
             </div>
           </div>
+          <!-- <hr>
+          <h2>银行卡列表：</h2>
+          <Table :columns="tableColumns" :data="tableData" size="small" ref="table" stripe>
+          </Table>
+          <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+              <Page :total="pageData.total" :current="pageData.pageIndex" @on-change="changePage" :page-size="pageData.pageSize"></Page>
+            </div>
+          </div> -->
         </div>
       </div>
     </ty-right-model>
