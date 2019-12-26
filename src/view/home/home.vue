@@ -67,7 +67,7 @@ export default {
     inforCardData () {
       return [
         {
-          title: '日支付额',
+          title: '日销售额',
           icon: 'logo-usd',
           count: this.blockData.sumMoney,
           color: '#19be6b'
