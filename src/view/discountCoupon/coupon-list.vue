@@ -138,29 +138,29 @@ export default {
             ])
           }
           /* render: (h, params) => {
-              let texts = params.row.detail
-              if (params.row.detail != null) {
-                if (params.row.detail.length > 8) {
-                  texts = params.row.detail.slice(0, 8) + '...' // 进行数字截取
-                } else {
-                  texts = params.row.detail
+                let texts = params.row.detail
+                if (params.row.detail != null) {
+                  if (params.row.detail.length > 8) {
+                    texts = params.row.detail.slice(0, 8) + '...' // 进行数字截取
+                  } else {
+                    texts = params.row.detail
+                  }
                 }
-              }
-              return h('div', [
-                h('Tooltip', {
-                  props: {
-                    placement: 'top',
-                    transfer: true
-                  }
-                }, [texts, h('span', {
-                  slot: 'content',
-                  style: {
-                    whiteSpace: 'normal'
-                  }
-                }, params.row.detail)
+                return h('div', [
+                  h('Tooltip', {
+                    props: {
+                      placement: 'top',
+                      transfer: true
+                    }
+                  }, [texts, h('span', {
+                    slot: 'content',
+                    style: {
+                      whiteSpace: 'normal'
+                    }
+                  }, params.row.detail)
+                  ])
                 ])
-              ])
-            } */
+              } */
 
         },
         {
@@ -266,9 +266,9 @@ export default {
       detailTableData: [],
       detailTableColumns: [
         {
-          title: 'id',
+          title: '用户Id',
           align: 'center',
-          key: 'id',
+          key: 'userId',
           minWidth: 50
         },
         {
