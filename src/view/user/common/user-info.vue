@@ -10,7 +10,7 @@
         </div>
         <div class="content">
           <h2><span>{{userData.nickName+'账户现有资金：'}}</span>
-            <span style="font-weight: bold;font-size: 15px;">{{userData.account+'元'}}</span>
+            <span style="font-weight: bold;font-size: 15px;">{{account+'元'}}</span>
             <span>，消费券余额：</span>
             <span style="font-weight: bold;font-size: 15px;">{{userData.coupon+'元'}}</span></h2>
           <hr>
@@ -74,6 +74,7 @@ export default {
       return obj[val]
     }
     return {
+      account: '',
       userData: {
         nickName: '',
         account: '',
@@ -142,6 +143,7 @@ export default {
       userinfo({ id: this.rowData.id }).then(res => {
         if (res.data.code == '0') {
           this.userData = res.data.data
+          this.account = Math.round(res.data.data.account / 100)
         } else {
           this.$Message.error(res.data.msg)
         }

@@ -338,7 +338,7 @@ export default {
     },
     // 切换页码
     changePage (current) {
-      this.yesNoNowDay = ''
+      // this.yesNoNowDay = ''
       this.pageData.pageIndex = current
       this.tableData = this.getData()
     },
