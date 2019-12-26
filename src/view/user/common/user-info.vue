@@ -116,7 +116,7 @@ export default {
         total: 0, // 总共多少数据
         pages: 0, // 总页数
         pageIndex: 1, // 当前页
-        pageSize: 15 // 每页数据条数
+        pageSize: 10 // 每页数据条数
       },
       shopList: [],
       list: [{ num: 1 }, { num: 2 }]
@@ -131,6 +131,7 @@ export default {
       }).then(res => {
         if (res.data.code == '0') {
           this.tableData = res.data.data.dataList
+          this.pageData.total = res.data.data.total
         } else {
           this.$Message.error(res.data.msg)
         }
