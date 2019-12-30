@@ -228,6 +228,15 @@
             }
           },
           {
+            title: '寄售剩余数量',
+            align: 'center',
+            key: 'consignmentLaveNum',
+            minWidth: 110,
+            render: (h, p) => {
+              return h('div', {}, p.row.orderType == 'CONSIGNMENT' ? p.row.consignmentLaveNum : '--')
+            }
+          },
+          {
             title: '购买数量',
             align: 'center',
             key: 'buyCount',
