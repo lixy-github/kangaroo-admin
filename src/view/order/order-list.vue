@@ -268,7 +268,7 @@
                   },
                   on: {
                     click: () => {
-                      this.orderSendBtn(row.id)
+                      this.orderSendBtn(row.id, row)
                     }
                   }
                 }, '发货'),
@@ -359,13 +359,43 @@
         })
       },
       // 开始/结束
-      orderSendBtn(id) {
-        this.rowId = id
-        this.modal = true;
-        this.formValidate.logisticsCode = ''
-        this.formValidate.logisticsName = ''
-        this.formValidate.logisticsNo = '';
-        this.$refs['formValidate'].resetFields();
+      orderSendBtn(id, row) {
+
+
+        if(row.outsideOrderNo === null) {
+          //平台商品
+          this.rowId = id
+          this.modal = true;
+          this.formValidate.logisticsCode = ''
+          this.formValidate.logisticsName = ''
+          this.formValidate.logisticsNo = '';
+          this.$refs['formValidate'].resetFields();
+        } else {
+          // 三方商品
+          this.$Modal.confirm({
+            title: '提示',
+            content: `确定要发货吗？`,
+            onOk: () => {
+              orderSend({
+                id: id,
+              }).then(res => {
+                if(res.data.code == '0') {
+                  this.$Message.success('操作成功')
+                  this.getData()
+                } else {
+                  this.$Message.error(res.data.msg)
+                }
+              })
+            },
+            onCancel: () => {
+              this.$Message.info('已取消')
+            }
+          })
+
+
+
+
+        }
       },
       ok(name) {
         this.$refs[name].validate((valid) => {
