@@ -97,314 +97,318 @@
   </div>
 </template>
 <script>
-import { orderlist, logistics, orderSend, logisticsFirmTrack } from '@/api/order'
-export default {
-  name: 'discountCoupon',
-  data () {
-    /* 状态 */
-    var transStatus = (val) => {
-      var obj = {
-        'UNPAID': '未支付',
-        'CLOSED': '已关闭',
-        'ALREADY_PAID': '已支付',
-        'WAIT_SHIP': '待发货',
-        'SMALL_CONSIGNMENT': '自营店寄售',
-        'BIG_CONSIGNMENT': '大卖场寄售',
-        'SUCCESS_CONSIGNMENT': '寄售成功',
-        'ALREADY_SHIP': '已发货',
-        'ALREADY_RECEIPT': '已收货',
-        'REDEMPTION_SUCCESS': '换购成功'
-      }
-      return obj[val]
-    }
-    /* 类型 */
-    var transType = (val) => {
-      var obj = {
-        'ORDINARY': '普通订单',
-        'REDEMPTION': '换购订单',
-        'CONSIGNMENT': '寄售订单'
-      }
-      return obj[val]
-    }
-    return {
-      formValidate: {
-        logisticsNo: '',
-        logisticsCode: '',
-        logisticsName: ''
-      },
-      ruleValidate: {
-        logisticsNo: [
-          { required: true, message: '请输入快递单号', trigger: 'blur' }
-        ],
-        logisticsCode: [
-          { required: true, message: '请选择物理公司', trigger: 'change' }
-        ]
-      },
-      logisticsList: [],
-      formItem: {
-        time: '',
-        goodsName: '',
-        name: '',
-        orderNo: '',
-        orderStatus: '',
-        orderType: '',
-        phone: '',
-        userPhone: ''
-      },
-      title: '',
-      rowId: '',
-      tableData: [],
-      tableColumns: [
-        {
-          title: '商品Id',
-          align: 'center',
-          minWidth: 80,
-          key: 'goodsId',
-          fixed: 'left'
-        },
-        {
-          title: '商品名称',
-          align: 'center',
-          minWidth: 100,
-          key: 'goodsName',
-          fixed: 'left'
-        },
-        {
-          title: '收货人姓名',
-          align: 'center',
-          minWidth: 100,
-          key: 'name',
-          fixed: 'left'
-        },
-        {
-          title: '收货人电话',
-          align: 'center',
-          minWidth: 110,
-          key: 'phone'
-        },
-        {
-          title: '收货地址',
-          align: 'center',
-          minWidth: 150,
-          key: 'address',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-                style: {
-                  display: 'inline-block',
-                  width: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
-                },
-                domProps: { title: params.row.address },
-                on: { click: (e) => { e.stopPropagation() } }
-              }, params.row.address)
-            ])
-          }
-        },
-        {
-          title: '订单单号',
-          align: 'center',
-          minWidth: 200,
-          key: 'orderNo'
-        },
-        {
-          title: '订单状态',
-          align: 'center',
-          key: 'orderStatus',
-          minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, transStatus(p.row.orderStatus))
-          }
-        },
-        {
-          title: '订单类型',
-          align: 'center',
-          key: 'orderType',
-          minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, transType(p.row.orderType))
-          }
-        },
-        {
-          title: '购买数量',
-          align: 'center',
-          key: 'buyCount',
-          minWidth: 90
-        },
-        {
-          title: '创建时间',
-          align: 'center',
-          minWidth: 150,
-          key: 'createDate'
-        },
-        {
-          title: '操作',
-          // align: 'center',
-          minWidth: 80,
-          fixed: 'right',
-          render: (h, params) => {
-            const row = params.row
-            const text = ''
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px',
-                  display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
-                },
-                on: {
-                  click: () => {
-                    this.orderSendBtn(row.id)
-                  }
-                }
-              }, '发货'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px',
-                  display: row.orderStatus == 'ALREADY_SHIP' ? 'block' : 'none'
-                },
-                on: {
-                  click: () => {
-                    this.look(row.id)
-                  }
-                }
-              }, '物流信息')
-
-            ])
-          }
+  import { orderlist, logistics, orderSend, logisticsFirmTrack } from '@/api/order'
+  export default {
+    name: 'discountCoupon',
+    data() {
+      /* 状态 */
+      var transStatus = (val) => {
+        var obj = {
+          'UNPAID': '未支付',
+          'CLOSED': '已关闭',
+          'ALREADY_PAID': '已支付',
+          'WAIT_SHIP': '待发货',
+          'SMALL_CONSIGNMENT': '自营店寄售',
+          'BIG_CONSIGNMENT': '大卖场寄售',
+          'SUCCESS_CONSIGNMENT': '寄售成功',
+          'ALREADY_SHIP': '已发货',
+          'ALREADY_RECEIPT': '已收货',
+          'REDEMPTION_SUCCESS': '换购成功'
         }
-      ],
-      pageData: {
-        total: 0, // 总共多少数据
-        pages: 0, // 总页数
-        pageIndex: 1, // 当前页
-        pageSize: 15 // 每页数据条数
-      },
-      modal: false,
-      modal1: false,
-      tracesList: [],
-      yesNoNowDay: ''
-    }
-  },
-  methods: {
-    // 获取
-    getData () {
-      let startDate = this.formItem.time[0]
-      let endDate = this.formItem.time[1]
-      let _data = {
-        startDate: startDate ? startDate + ' 00:00:00' : '',
-        endDate: endDate ? endDate + ' 23:59:59' : '',
-        pageIndex: this.pageData.pageIndex,
-        pageSize: this.pageData.pageSize,
-        goodsName: this.formItem.goodsName, // 商品名称
-        name: this.formItem.name, // 收货人姓名
-        orderNo: this.formItem.orderNo, // 订单单号
-        orderStatus: this.formItem.orderStatus, // 订单状态
-        orderType: this.formItem.orderType, // 订单类型
-        phone: this.formItem.phone, // 收货人电话
-        userPhone: this.formItem.userPhone, // 手机号
-        yesNoNowDay: this.yesNoNowDay
+        return obj[val]
       }
-      orderlist(_data).then(res => {
-        if (res.data.code == '0') {
-          this.tableData = res.data.data.dataList
-          this.pageData.total = res.data.data.total
-        } else {
-          this.$Message.error(res.data.msg)
+      /* 类型 */
+      var transType = (val) => {
+        var obj = {
+          'ORDINARY': '普通订单',
+          'REDEMPTION': '换购订单',
+          'CONSIGNMENT': '寄售订单'
         }
-      })
-    },
-    getlogistics () {
-      logistics().then(res => {
-        res.data.data.forEach(element => {
-          this.logisticsList.push({ 'value': element.code, 'label': element.name })
-        })
-      })
-    },
-    // 搜索
-    onSearch () {
-      this.pageData.pageIndex = 1
-      this.yesNoNowDay = ''
-      this.getData()
-    },
-    // 切换页码
-    changePage (current) {
-      // this.yesNoNowDay = ''
-      this.pageData.pageIndex = current
-      this.tableData = this.getData()
-    },
-    logisticsChange (val) {
-      this.logisticsList.forEach(element => {
-        if (val === element.value) {
-          this.formValidate.logisticsName = element.label
-        }
-      })
-    },
-    // 开始/结束
-    orderSendBtn (id) {
-      this.rowId = id
-      this.modal = true
-    },
-    ok (name) {
-      this.$refs[name].validate((valid) => {
-        if (valid) {
-          orderSend({
-            id: this.rowId,
-            logisticsCode: this.formValidate.logisticsCode,
-            logisticsName: this.formValidate.logisticsName,
-            logisticsNo: this.formValidate.logisticsNo
-          }).then(res => {
-            if (res.data.code == '0') {
-              this.modal = false
-              this.$Message.success('操作成功')
-              this.getData()
-            } else {
-              this.$Message.error(res.data.msg)
+        return obj[val]
+      }
+      return {
+        formValidate: {
+          logisticsNo: '',
+          logisticsCode: '',
+          logisticsName: ''
+        },
+        ruleValidate: {
+          logisticsNo: [
+            { required: true, message: '请输入快递单号', trigger: 'blur' }
+          ],
+          logisticsCode: [
+            { required: true, message: '请选择物流公司', trigger: 'change' }
+          ]
+        },
+        logisticsList: [],
+        formItem: {
+          time: '',
+          goodsName: '',
+          name: '',
+          orderNo: '',
+          orderStatus: '',
+          orderType: '',
+          phone: '',
+          userPhone: ''
+        },
+        title: '',
+        rowId: '',
+        tableData: [],
+        tableColumns: [
+          {
+            title: '商品Id',
+            align: 'center',
+            minWidth: 80,
+            key: 'goodsId',
+            fixed: 'left'
+          },
+          {
+            title: '商品名称',
+            align: 'center',
+            minWidth: 100,
+            key: 'goodsName',
+            fixed: 'left'
+          },
+          {
+            title: '收货人姓名',
+            align: 'center',
+            minWidth: 100,
+            key: 'name',
+            fixed: 'left'
+          },
+          {
+            title: '收货人电话',
+            align: 'center',
+            minWidth: 110,
+            key: 'phone'
+          },
+          {
+            title: '收货地址',
+            align: 'center',
+            minWidth: 150,
+            key: 'address',
+            render: (h, params) => {
+              return h('div', [
+                h('span', {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  },
+                  domProps: { title: params.row.address },
+                  on: { click: (e) => { e.stopPropagation() } }
+                }, params.row.address)
+              ])
             }
-          })
-        }
-      })
+          },
+          {
+            title: '订单单号',
+            align: 'center',
+            minWidth: 200,
+            key: 'orderNo'
+          },
+          {
+            title: '订单状态',
+            align: 'center',
+            key: 'orderStatus',
+            minWidth: 100,
+            render: (h, p) => {
+              return h('div', {}, transStatus(p.row.orderStatus))
+            }
+          },
+          {
+            title: '订单类型',
+            align: 'center',
+            key: 'orderType',
+            minWidth: 100,
+            render: (h, p) => {
+              return h('div', {}, transType(p.row.orderType))
+            }
+          },
+          {
+            title: '购买数量',
+            align: 'center',
+            key: 'buyCount',
+            minWidth: 90
+          },
+          {
+            title: '创建时间',
+            align: 'center',
+            minWidth: 150,
+            key: 'createDate'
+          },
+          {
+            title: '操作',
+            // align: 'center',
+            minWidth: 80,
+            fixed: 'right',
+            render: (h, params) => {
+              const row = params.row
+              const text = ''
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px',
+                    display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
+                  },
+                  on: {
+                    click: () => {
+                      this.orderSendBtn(row.id)
+                    }
+                  }
+                }, '发货'),
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px',
+                    display: row.orderStatus == 'ALREADY_SHIP' ? 'block' : 'none'
+                  },
+                  on: {
+                    click: () => {
+                      this.look(row.id)
+                    }
+                  }
+                }, '物流信息')
+
+              ])
+            }
+          }
+        ],
+        pageData: {
+          total: 0, // 总共多少数据
+          pages: 0, // 总页数
+          pageIndex: 1, // 当前页
+          pageSize: 15 // 每页数据条数
+        },
+        modal: false,
+        modal1: false,
+        tracesList: [],
+        yesNoNowDay: ''
+      }
     },
-    look (id) {
-      logisticsFirmTrack({
-        orderId: id
-      }).then(res => {
-        if (res.data.code == '0') {
-          this.modal1 = true
-          this.tracesList = res.data.data.tracesList
-        } else {
-          this.$Message.error(res.data.msg)
+    methods: {
+      // 获取
+      getData() {
+        let startDate = this.formItem.time[0]
+        let endDate = this.formItem.time[1]
+        let _data = {
+          startDate: startDate ? startDate + ' 00:00:00' : '',
+          endDate: endDate ? endDate + ' 23:59:59' : '',
+          pageIndex: this.pageData.pageIndex,
+          pageSize: this.pageData.pageSize,
+          goodsName: this.formItem.goodsName, // 商品名称
+          name: this.formItem.name, // 收货人姓名
+          orderNo: this.formItem.orderNo, // 订单单号
+          orderStatus: this.formItem.orderStatus, // 订单状态
+          orderType: this.formItem.orderType, // 订单类型
+          phone: this.formItem.phone, // 收货人电话
+          userPhone: this.formItem.userPhone, // 手机号
+          yesNoNowDay: this.yesNoNowDay
         }
-      }).catch(() => {
-        this.$Message.error('获取失败')
-      })
+        orderlist(_data).then(res => {
+          if(res.data.code == '0') {
+            this.tableData = res.data.data.dataList
+            this.pageData.total = res.data.data.total
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        })
+      },
+      getlogistics() {
+        logistics().then(res => {
+          res.data.data.forEach(element => {
+            this.logisticsList.push({ 'value': element.code, 'label': element.name })
+          })
+        })
+      },
+      // 搜索
+      onSearch() {
+        this.pageData.pageIndex = 1
+        this.yesNoNowDay = ''
+        this.getData()
+      },
+      // 切换页码
+      changePage(current) {
+        // this.yesNoNowDay = ''
+        this.pageData.pageIndex = current
+        this.tableData = this.getData()
+      },
+      logisticsChange(val) {
+        this.logisticsList.forEach(element => {
+          if(val === element.value) {
+            this.formValidate.logisticsName = element.label
+          }
+        })
+      },
+      // 开始/结束
+      orderSendBtn(id) {
+        this.rowId = id
+        this.modal = true;
+        this.formValidate.logisticsCode = ''
+        this.formValidate.logisticsName = ''
+        this.formValidate.logisticsNo = '';
+        this.$refs['formValidate'].resetFields();
+      },
+      ok(name) {
+        this.$refs[name].validate((valid) => {
+          if(valid) {
+            orderSend({
+              id: this.rowId,
+              logisticsCode: this.formValidate.logisticsCode,
+              logisticsName: this.formValidate.logisticsName,
+              logisticsNo: this.formValidate.logisticsNo
+            }).then(res => {
+              if(res.data.code == '0') {
+                this.modal = false
+                this.$Message.success('操作成功')
+                this.getData()
+              } else {
+                this.$Message.error(res.data.msg)
+              }
+            })
+          }
+        })
+      },
+      look(id) {
+        logisticsFirmTrack({
+          orderId: id
+        }).then(res => {
+          if(res.data.code == '0') {
+            this.modal1 = true
+            this.tracesList = res.data.data.tracesList
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        }).catch(() => {
+          this.$Message.error('获取失败')
+        })
+      }
+    },
+    mounted() {
+      if(this.$route.query.status) {
+        this.formItem.orderStatus = this.$route.query.status
+      } else {
+        this.formItem.orderStatus = ''
+      }
+      if(this.$route.query.type) {
+        this.formItem.orderType = this.$route.query.type
+        this.yesNoNowDay = 'Y'
+      } else {
+        this.formItem.orderType = ''
+      }
+      this.getData()
+      this.getlogistics()
     }
-  },
-  mounted () {
-    if (this.$route.query.status) {
-      this.formItem.orderStatus = this.$route.query.status
-    } else {
-      this.formItem.orderStatus = ''
-    }
-    if (this.$route.query.type) {
-      this.formItem.orderType = this.$route.query.type
-      this.yesNoNowDay = 'Y'
-    } else {
-      this.formItem.orderType = ''
-    }
-    this.getData()
-    this.getlogistics()
   }
-}
 </script>
 <style lang="less">
 </style>
