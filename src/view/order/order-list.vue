@@ -164,10 +164,24 @@
           },
           {
             title: '商品名称',
-            align: 'center',
+            align: 'left',
             minWidth: 100,
             key: 'goodsName',
-            fixed: 'left'
+            render: (h, params) => {
+              return h('div', [
+                h('span', {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  },
+                  domProps: { title: params.row.goodsName },
+                  on: { click: (e) => { e.stopPropagation() } }
+                }, params.row.goodsName)
+              ])
+            }
           },
           {
             title: '收货人姓名',
@@ -237,10 +251,10 @@
             }
           },
           {
-            title: '购买数量',
+            title: '购买/寄售数量',
             align: 'center',
             key: 'buyCount',
-            minWidth: 90
+            minWidth: 120
           },
           {
             title: '创建时间',

@@ -4,16 +4,16 @@
       <Row style="padding-bottom: 20px;">
         <Col span="3" style="width: 250px">
         <FormItem label="时间段" prop="name">
-          <Select v-model="formItem.timeid">
-            <Option value="">全部</Option>
+          <Select v-model="formItem.timeid" clearable>
+            <!-- <Option value="">全部</Option> -->
             <Option v-for="item in timeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
         </Col>
         <Col span="3" style="width: 300px">
         <FormItem label="区域">
-          <Select v-model="formItem.scope">
-            <Option value="">全部</Option>
+          <Select v-model="formItem.scope" @on-change="scopeChange">
+            <Option value="-1">全部</Option>
             <Option v-for="item in scopeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
@@ -219,7 +219,7 @@
       // 获取商品列表
       getData() {
         let _data = {
-          scope: this.formItem.scope,
+          scope: this.formItem.scope == '-1' ? '' : this.formItem.scope,
           timeid: this.formItem.timeid,
           pageIndex: this.pageData.pageIndex,
           pageSize: this.pageData.pageSize,
@@ -234,14 +234,34 @@
           }
         })
       },
+      scopeChange(val) {
+        console.log(val)
+        switch(val) {
+          case 'RUSH':
+          case 'BATCH':
+            this.gettime(val)
+            break;
+          case 'ALLDAY':
+          case 'RUSH_FIRST':
+          case 'BATCH_FIRST':
+            this.timeList = []
+            break;
+          case '-1':
+            this.gettime()
+            break;
+        }
+      },
       // 获取时间段
-      gettime() {
+      gettime(scope) {
         this.timeList = []
-        templatefindList().then(res => {
+        templatefindList({
+          scope: scope ? scope : ''// RUSH,//抢购  BATCH,//批发
+        }).then(res => {
           if(res.data.code == '0') {
             res.data.data.forEach(element => {
               this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
             })
+            console.log(this.timeList)
           } else {
             this.$Message.error(res.data.msg)
           }
