@@ -32,7 +32,7 @@ export const orderSend = (data) => {
 export const logisticsFirmTrack = (data) => {
   return Axios.request({
     method: 'get',
-    url: '/api/logistics/logisticsFirmTrack',
+    url: '/web/logistics/logisticsFirmTrack',
     params: data
   })
 }
