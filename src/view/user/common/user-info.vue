@@ -9,7 +9,7 @@
           <Icon type="md-close" @click="HandlClose(false)" />
         </div>
         <div class="content">
-          <h2><span>{{userData.nickName+'账户现有资金：'}}</span>
+          <h2><span v-html="userData.nickName+'账户现有资金：'"></span>
             <span style="font-weight: bold;font-size: 15px;">{{account+'元'}}</span>
             <span>，消费券余额：</span>
             <span style="font-weight: bold;font-size: 15px;">{{userData.coupon+'元'}}</span></h2>
@@ -64,122 +64,126 @@
   </div>
 </template>
 <script>
-import { userinfo, allChildren, userSalesAccount } from '@/api/user'
-export default {
-  name: 'discountCoupon',
-  props: {
-    rowData: {
-      type: Object,
-      default: {}
-    }
-  },
-  data () {
-    var transControlRt = (val) => {
-      var obj = {
-        '0': '必不中',
-        '-1': '普通',
-        '100': '必中'
+  import { userinfo, allChildren, userSalesAccount } from '@/api/user'
+  export default {
+    name: 'discountCoupon',
+    props: {
+      rowData: {
+        type: Object,
+        default: {}
       }
-      return obj[val]
-    }
-    return {
-      account: '',
-      userData: {
-        nickName: '',
+    },
+    data() {
+      var transControlRt = (val) => {
+        var obj = {
+          '0': '必不中',
+          '-1': '普通',
+          '100': '必中'
+        }
+        return obj[val]
+      }
+      return {
         account: '',
-        coupon: ''
-      },
-      tableData: [],
-      tableColumns: [
-        {
-          title: '手机号',
-          align: 'center',
-          key: 'phone',
-          minWidth: 110
+        userData: {
+          nickName: '',
+          account: '',
+          coupon: ''
         },
-        {
-          title: '昵称',
-          align: 'center',
-          key: 'nickName',
-          minWidth: 100,
-          render: (h, p) => {
-            return h('div', {}, p.row.nickName ? p.row.nickName : '--')
+        tableData: [],
+        tableColumns: [
+          {
+            title: '手机号',
+            align: 'center',
+            key: 'phone',
+            minWidth: 110
+          },
+          {
+            title: '昵称',
+            align: 'center',
+            key: 'nickName',
+            minWidth: 200,
+            render: (h, p) => {
+              return h('div', {
+                domProps: {
+                  innerHTML: p.row.nickName
+                }
+              })
+            }
+          },
+          {
+            title: '调货',
+            align: 'center',
+            key: 'controlRt',
+            minWidth: 80,
+            render: (h, p) => {
+              return h('div', {}, transControlRt(p.row.controlRt))
+            }
+          },
+          {
+            title: '经验值',
+            align: 'center',
+            key: 'exp',
+            minWidth: 80
           }
+        ],
+        pageData: {
+          total: 0, // 总共多少数据
+          pages: 0, // 总页数
+          pageIndex: 1, // 当前页
+          pageSize: 10 // 每页数据条数
         },
-        {
-          title: '调货',
-          align: 'center',
-          key: 'controlRt',
-          minWidth: 80,
-          render: (h, p) => {
-            return h('div', {}, transControlRt(p.row.controlRt))
+        shopList: [],
+        list: [{ num: 1 }, { num: 2 }]
+      }
+    },
+    methods: {
+      getData() {
+        allChildren({
+          pageIndex: this.pageData.pageIndex,
+          pageSize: this.pageData.pageSize,
+          type: this.rowData.id
+        }).then(res => {
+          if(res.data.code == '0') {
+            this.tableData = res.data.data.dataList
+            this.pageData.total = res.data.data.total
+          } else {
+            this.$Message.error(res.data.msg)
           }
-        },
-        {
-          title: '经验值',
-          align: 'center',
-          key: 'exp',
-          minWidth: 80
-        }
-      ],
-      pageData: {
-        total: 0, // 总共多少数据
-        pages: 0, // 总页数
-        pageIndex: 1, // 当前页
-        pageSize: 10 // 每页数据条数
+        })
       },
-      shopList: [],
-      list: [{ num: 1 }, { num: 2 }]
+      // 查看领取详情
+      view() {
+        userinfo({ id: this.rowData.id }).then(res => {
+          if(res.data.code == '0') {
+            this.userData = res.data.data
+            this.account = Math.round(res.data.data.account / 100)
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        })
+        userSalesAccount({
+          userId: this.rowData.id
+        }).then(res => {
+          if(res.data.code == '0') {
+            this.shopList = res.data.data
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        })
+      },
+      HandlClose(flag) {
+        this.$emit('closeRight', false)
+      },
+      changePage(current) {
+        this.pageData.pageIndex = current
+        this.tableData = this.getData()
+      }
+    },
+    mounted() {
+      this.view()
+      this.getData()
     }
-  },
-  methods: {
-    getData () {
-      allChildren({
-        pageIndex: this.pageData.pageIndex,
-        pageSize: this.pageData.pageSize,
-        type: this.rowData.id
-      }).then(res => {
-        if (res.data.code == '0') {
-          this.tableData = res.data.data.dataList
-          this.pageData.total = res.data.data.total
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-    },
-    // 查看领取详情
-    view () {
-      userinfo({ id: this.rowData.id }).then(res => {
-        if (res.data.code == '0') {
-          this.userData = res.data.data
-          this.account = Math.round(res.data.data.account / 100)
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-      userSalesAccount({
-        userId: this.rowData.id
-      }).then(res => {
-        if (res.data.code == '0') {
-          this.shopList = res.data.data
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-    },
-    HandlClose (flag) {
-      this.$emit('closeRight', false)
-    },
-    changePage (current) {
-      this.pageData.pageIndex = current
-      this.tableData = this.getData()
-    }
-  },
-  mounted () {
-    this.view()
-    this.getData()
   }
-}
 </script>
 <style lang="less" scoped>
   .modelTitle {

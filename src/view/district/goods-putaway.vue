@@ -235,7 +235,6 @@
         })
       },
       scopeChange(val) {
-        console.log(val)
         switch(val) {
           case 'RUSH':
           case 'BATCH':
@@ -261,7 +260,6 @@
             res.data.data.forEach(element => {
               this.timeList.push({ 'value': element.id, 'label': element.hours + ':' + element.min })
             })
-            console.log(this.timeList)
           } else {
             this.$Message.error(res.data.msg)
           }

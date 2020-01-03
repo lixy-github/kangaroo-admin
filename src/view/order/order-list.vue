@@ -205,9 +205,16 @@
           {
             title: '收货人姓名',
             align: 'center',
-            minWidth: 100,
+            minWidth: 150,
             key: 'name',
-            fixed: 'left'
+            fixed: 'left',
+            render: (h, p) => {
+              return h('div', {
+                domProps: {
+                  innerHTML: p.row.name
+                }
+              })
+            }
           },
           {
             title: '收货人电话',

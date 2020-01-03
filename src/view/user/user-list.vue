@@ -145,7 +145,7 @@
             title: 'id',
             align: 'center',
             key: 'id',
-            minWidth: 50
+            minWidth: 80
           },
           {
             title: '手机号',
@@ -157,9 +157,13 @@
             title: '昵称',
             align: 'center',
             key: 'nickName',
-            minWidth: 100,
+            minWidth: 200,
             render: (h, p) => {
-              return h('div', {}, p.row.nickName ? p.row.nickName : '--')
+              return h('div', {
+                domProps: {
+                  innerHTML: p.row.nickName
+                }
+              })
             }
           },
           {

@@ -301,7 +301,6 @@
         if(this.$route.params.content) {
           this.scoperead = true
           let data = JSON.parse(this.$route.params.content)
-          console.log(data)
           this.getTimeList(data.scope.toString())
           this.formValidate = {
             id: data.rushid,
@@ -320,7 +319,6 @@
             timeid: data.timeid != null ? data.timeid.toString() : null
           }
           this.goodsName = data.name
-          console.log(this.formValidate.timeid)
         } else {
           this.scoperead = false
           this.formValidate = {
