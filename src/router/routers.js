@@ -55,7 +55,7 @@ export default [{
     component: () => import('@/view/home/home.vue')
   }]
 },
-  //   优惠券管理
+//   优惠券管理
 {
   path: '/discountCoupon',
   name: 'discountCoupon',
@@ -64,14 +64,14 @@ export default [{
     title: '优惠券管理',
     icon: 'ios-barcode-outline',
     showAlways: true,
-    access: ['优惠券管理', '分页查看优惠券', '添加优惠券']
+    access: ['优惠券管理', '优惠券列表', '添加优惠券']
   },
   children: [{
     path: 'coupon-list',
     name: 'coupon-list',
     meta: {
       title: '优惠券列表',
-      access: ['分页查看优惠券']
+      access: ['优惠券列表']
     },
     component: () => import('@/view/discountCoupon/coupon-list.vue')
   },
@@ -87,23 +87,23 @@ export default [{
   }
   ]
 },
-  //   商品管理
+//   商品管理
 {
   path: '/goods',
   name: 'goods',
   component: Main,
   meta: {
-    title: '商品管理',
+    title: '商品模板管理',
     icon: 'ios-cart-outline',
     showAlways: true,
-    access: ['商品库', '商品模块', '商品分类']
+    access: ['商品模板管理', '商品模板列表', '商品类目']
   },
   children: [{
     path: 'goods-list',
     name: 'goods-list',
     meta: {
-      title: '商品列表',
-      access: ['商品模块']
+      title: '商品模板列表',
+      access: ['商品模板列表']
     },
     component: () => import('@/view/goods/goods-list.vue')
   },
@@ -129,31 +129,31 @@ export default [{
     path: 'goods-classify',
     name: 'goods-classify',
     meta: {
-      title: '商品分类',
-      access: ['商品分类']
+      title: '商品类目',
+      access: ['商品类目']
     },
     component: () => import('@/view/goods/goods-classify.vue')
   }
 
   ]
 },
-  //   区域管理
+//   区域管理
 {
   path: '/district',
   name: 'district',
   component: Main,
   meta: {
-    title: '区域管理',
+    title: '商品管理',
     icon: 'md-grid',
     showAlways: true,
-    access: ['区域管理', '时间段管理', '区域商品']
+    access: ['商品管理', '商品列表', '区域时段']
   },
   children: [{
     path: 'goods-putaway',
     name: 'goods-putaway',
     meta: {
-      title: '商品上架',
-      access: ['区域商品']
+      title: '商品列表',
+      access: ['商品列表']
     },
     component: () => import('@/view/district/goods-putaway.vue')
   },
@@ -180,13 +180,13 @@ export default [{
     name: 'district-timeList',
     meta: {
       title: '区域时段',
-      access: ['时间段管理']
+      access: ['区域时段']
     },
     component: () => import('@/view/district/district-timeList.vue')
   }
   ]
 },
-  //   订单管理
+//   订单管理
 {
   path: '/order',
   name: 'order',
@@ -207,38 +207,38 @@ export default [{
     component: () => import('@/view/order/order-list.vue')
   }]
 },
-  //   发货管理
-  /* {
-    path: '/shipments',
-    name: 'shipments',
-    component: Main,
+//   发货管理
+/* {
+  path: '/shipments',
+  name: 'shipments',
+  component: Main,
+  meta: {
+    title: '发货管理',
+    icon: 'ios-archive-outline',
+    showAlways: true
+    // access: ['会员管理', '会员列表', '商家审核']
+  },
+  children: [{
+    path: 'shipments-list',
+    name: 'shipments-list',
     meta: {
-      title: '发货管理',
-      icon: 'ios-archive-outline',
-      showAlways: true
-      // access: ['会员管理', '会员列表', '商家审核']
+      title: '待发货列表'
+      // access: ['会员列表']
     },
-    children: [{
-      path: 'shipments-list',
-      name: 'shipments-list',
-      meta: {
-        title: '待发货列表'
-        // access: ['会员列表']
-      },
-      component: () => import('@/view/shipments/shipments-list.vue')
+    component: () => import('@/view/shipments/shipments-list.vue')
+  },
+  {
+    path: 'shipments-already',
+    name: 'shipments-already',
+    meta: {
+      title: '已发货列表'
+      // access: ['会员列表']
     },
-    {
-      path: 'shipments-already',
-      name: 'shipments-already',
-      meta: {
-        title: '已发货列表'
-        // access: ['会员列表']
-      },
-      component: () => import('@/view/shipments/shipments-already.vue')
-    }
-    ]
-  }, */
-  //   会员管理
+    component: () => import('@/view/shipments/shipments-already.vue')
+  }
+  ]
+}, */
+//   会员管理
 {
   path: '/user',
   name: 'user',
@@ -247,14 +247,14 @@ export default [{
     title: '会员管理',
     icon: 'md-person',
     showAlways: true,
-    access: ['会员管理', '用户模块', '用户等级模块']
+    access: ['会员管理', '用户列表', '用户等级']
   },
   children: [{
     path: 'user-list',
     name: 'user-list',
     meta: {
       title: '用户列表',
-      access: ['用户模块']
+      access: ['用户列表']
     },
     component: () => import('@/view/user/user-list.vue')
   },
@@ -263,13 +263,13 @@ export default [{
     name: 'user-level',
     meta: {
       title: '用户等级',
-      access: ['用户等级模块']
+      access: ['用户等级']
     },
     component: () => import('@/view/user/user-level.vue')
   }
   ]
 },
-  //   内容管理
+//   内容管理
 {
   path: '/content',
   name: 'content',
@@ -278,7 +278,7 @@ export default [{
     title: '内容管理',
     icon: 'ios-map',
     showAlways: true,
-    access: ['内容管理', '轮播图管理', '注册协议管理', '其他内容']
+    access: ['内容管理', '轮播图管理', '注册协议', '产品介绍']
   },
   children: [{
     path: 'swiper-list',
@@ -294,7 +294,7 @@ export default [{
     name: 'register-text',
     meta: {
       title: '注册协议',
-      access: ['注册协议管理']
+      access: ['注册协议']
     },
     component: () => import('@/view/content/register-text.vue')
   },
@@ -303,13 +303,13 @@ export default [{
     name: 'product-text',
     meta: {
       title: '产品介绍',
-      access: ['其他内容']
+      access: ['产品介绍']
     },
     component: () => import('@/view/content/product-text.vue')
   }
   ]
 },
-  //   财务管理
+//   财务管理
 {
   path: '/finance',
   name: 'finance',
@@ -330,7 +330,7 @@ export default [{
     component: () => import('@/view/finance/finance-list.vue')
   }]
 },
-  //   系统配置
+//   系统配置
 {
   path: '/system',
   name: 'system',
@@ -339,30 +339,21 @@ export default [{
     title: '系统配置',
     icon: 'md-cog',
     showAlways: true,
-    access: ['系统配置', '寄售返佣配置', '商家审核']
+    access: ['系统配置', '平台配置']
   },
   children: [
-    /* {
-                path: 'system-list',
-                name: 'system-list',
-                meta: {
-                  title: '系统配置',
-                  // access: ['会员列表']
-                },
-                component: () => import('@/view/system/system.vue')
-              }, */
     {
       path: 'consign-list',
       name: 'consign-list',
       meta: {
-        title: '寄售返佣配置',
-        access: ['寄售返佣配置']
+        title: '平台配置',
+        access: ['平台配置']
       },
       component: () => import('@/view/system/consign-list.vue')
     }
   ]
 },
-  // 权限
+// 权限
 {
   path: '/power',
   name: 'power',
