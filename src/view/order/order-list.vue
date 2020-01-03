@@ -49,6 +49,15 @@
           <Input v-model="formItem.phone" placeholder="收货人电话查询"></Input>
         </FormItem>
         </Col>
+        <Col span="3" style="width: 250px">
+        <FormItem label="商品类型">
+          <Select v-model="formItem.type">
+            <Option value="">全部</Option>
+            <Option value="LOCAL">自有商品</Option>
+            <Option value="DMGOODS">DM供应链商品</Option>
+          </Select>
+        </FormItem>
+        </Col>
         <Col span="3" style="width: 300px">
         <FormItem label="创建时间">
           <DatePicker type="daterange" v-model="formItem.time" split-panels placeholder="选择日期" format="yyyy-MM-dd" @on-change="formItem.time=$event"></DatePicker>
@@ -149,7 +158,8 @@
           orderStatus: '',
           orderType: '',
           phone: '',
-          userPhone: ''
+          userPhone: '',
+          type: ''
         },
         title: '',
         rowId: '',
@@ -180,6 +190,15 @@
                   domProps: { title: params.row.goodsName },
                   on: { click: (e) => { e.stopPropagation() } }
                 }, params.row.goodsName)
+              ])
+            }
+          },
+          {
+            title: '商品类型',
+            minWidth: 120,
+            render: (h, p) => {
+              return h('div', [
+                h('span', {}, p.row.type == 'LOCAL' ? '自有商品' : 'DM供应链商品')
               ])
             }
           },
@@ -335,7 +354,8 @@
           orderType: this.formItem.orderType, // 订单类型
           phone: this.formItem.phone, // 收货人电话
           userPhone: this.formItem.userPhone, // 手机号
-          yesNoNowDay: this.yesNoNowDay
+          yesNoNowDay: this.yesNoNowDay,
+          type: this.formItem.type
         }
         orderlist(_data).then(res => {
           if(res.data.code == '0') {

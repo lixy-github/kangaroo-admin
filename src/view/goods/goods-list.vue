@@ -15,9 +15,18 @@
           <Input v-model="formItem.name" placeholder="商品名称查询"></Input>
         </FormItem>
         </Col>
-        <Col span="3" style="width: 300px">
+        <Col span="3" style="width: 250px">
         <FormItem label="商品Id">
           <Input v-model="formItem.id" placeholder="商品Id查询"></Input>
+        </FormItem>
+        </Col>
+        <Col span="3" style="width: 250px">
+        <FormItem label="商品类型">
+          <Select v-model="formItem.type">
+            <Option value="">全部</Option>
+            <Option value="LOCAL">自有商品</Option>
+            <Option value="DMGOODS">DM供应链商品</Option>
+          </Select>
         </FormItem>
         </Col>
         <Col span="1" offset="1" style="width: 200px">
@@ -92,244 +101,270 @@
   </div>
 </template>
 <script>
-import { imgLoadUrl } from '@/api/api'
-import { goodsfindList, goodsremove } from '@/api/goods'
-import { classfindList } from '@/api/district'
-export default {
-  name: 'discountCoupon',
-  data () {
-    var transStatus = (val) => {
-      var obj = {
-        'WAITING': '未开始',
-        'OPEN': '进行中',
-        'CLOSE': '结束'
+  import { imgLoadUrl } from '@/api/api'
+  import { goodsfindList, goodsremove } from '@/api/goods'
+  import { classfindList } from '@/api/district'
+  export default {
+    name: 'discountCoupon',
+    data() {
+      var transStatus = (val) => {
+        var obj = {
+          'WAITING': '未开始',
+          'OPEN': '进行中',
+          'CLOSE': '结束'
+        }
+        return obj[val]
       }
-      return obj[val]
-    }
-    return {
-      imgLoadUrl,
-      formItem: {
-        classId: '',
-        name: '',
-        id: ''
-      },
-      cityList: [],
-      detailsIsShow: false,
-      title: '',
-      rowId: '',
-      tableData: [],
-      tableColumns: [
-        {
-          title: '商品Id',
-          align: 'center',
-          key: 'id',
-          minWidth: 60
+      return {
+        imgLoadUrl,
+        formItem: {
+          classId: '',
+          name: '',
+          id: '',
+          type: ''
         },
-        {
-          title: '商品名称',
-          align: 'center',
-          key: 'name',
-          minWidth: 100
-        },
-        {
-          title: '商品分类',
-          align: 'center',
-          key: 'className',
-          minWidth: 100
-        },
-        {
-          title: '封面图',
-          align: 'center',
-          key: 'image',
-          minWidth: 120,
-          render: (h, p) => {
-            return h('img', {
-              attrs: {
-                src: p.row.coverImg,
-                // src: this.imgLoadUrl + p.row.image,
-                style: 'height:40px;margin-top:5px;'
-              }
-            }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
-          }
-        },
-        {
-          title: '商品属性',
-          align: 'center',
-          key: 'feilds',
-          minWidth: 150,
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-                style: {
-                  display: 'inline-block',
-                  width: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
-                },
-                domProps: { title: params.row.feilds },
-                on: { click: (e) => { e.stopPropagation() } }
-              }, params.row.feilds)
-            ])
-          }
-        },
-        {
-          title: '操作',
-          align: 'center',
-          minWidth: 150,
-          render: (h, params) => {
-            const row = params.row
-            const status = row.status
-            const text = ''
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.edit(row)
-                  }
-                }
-              }, '编辑'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.delete(row.id)
-                  }
-                }
-              }, '删除'), h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.viewDetails(row)
-                  }
-                }
-              }, '查看详情')
-            ])
-          }
-        }
-      ],
-      pageData: {
-        total: 0, // 总共多少数据
-        pages: 0, // 总页数
-        pageIndex: 1, // 当前页
-        pageSize: 15 // 每页数据条数
-      },
-      rowDetails: [],
-      imgList: []
-    }
-  },
-  methods: {
-    // 获取商品列表
-    getData () {
-      let _data = {
-        classId: this.formItem.classId,
-        name: this.formItem.name,
-        id: this.formItem.id,
-        pageIndex: this.pageData.pageIndex,
-        pageSize: this.pageData.pageSize
-      }
-      goodsfindList(_data).then(res => {
-        if (res.data.code == '0') {
-          this.tableData = res.data.data.dataList
-          this.pageData.total = res.data.data.total
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-    },
-    // 获取商品分类
-    getClass () {
-      this.cityList = [{ 'value': '', 'label': '全部' }]
-      classfindList().then(res => {
-        if (res.data.code == '0') {
-          res.data.data.forEach(element => {
-            this.cityList.push({ 'value': element.id, 'label': element.name })
-          })
-        } else {
-          this.$Message.error(res.data.msg)
-        }
-      })
-    },
-    // 删除商品
-    delete (id) {
-      this.$Modal.confirm({
-        title: '提示',
-        content: `确定要删除此商品吗？`,
-        onOk: () => {
-          goodsremove({
-            id: id
-          }).then(res => {
-            if (res.data.code == '0') {
-              this.$Message.success('删除成功')
-              this.getData()
-            } else {
-              this.$Message.error(res.data.msg)
+        cityList: [],
+        detailsIsShow: false,
+        title: '',
+        rowId: '',
+        tableData: [],
+        tableColumns: [
+          {
+            title: '商品Id',
+            align: 'center',
+            key: 'id',
+            minWidth: 60
+          },
+          {
+            title: '商品名称',
+            align: 'center',
+            key: 'name',
+            minWidth: 150,
+            render: (h, params) => {
+              return h('div', [
+                h('span', {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  },
+                  domProps: { title: params.row.name },
+                  on: { click: (e) => { e.stopPropagation() } }
+                }, params.row.name)
+              ])
             }
-          })
+          },
+          {
+            title: '商品类型',
+            minWidth: 120,
+            render: (h, p) => {
+              return h('div', [
+                h('span', {}, p.row.type == 'LOCAL' ? '自有商品' : 'DM供应链商品')
+              ])
+            }
+          },
+          {
+            title: '商品分类',
+            align: 'center',
+            key: 'className',
+            minWidth: 100
+          },
+          {
+            title: '封面图',
+            align: 'center',
+            key: 'image',
+            minWidth: 120,
+            render: (h, p) => {
+              return h('img', {
+                attrs: {
+                  src: p.row.coverImg,
+                  // src: this.imgLoadUrl + p.row.image,
+                  style: 'height:40px;margin-top:5px;'
+                }
+              }, p.index + (this.pageData.curPage - 1) * this.pageData.pageSize + 1)
+            }
+          },
+          {
+            title: '商品属性',
+            align: 'center',
+            key: 'feilds',
+            minWidth: 150,
+            render: (h, params) => {
+              return h('div', [
+                h('span', {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  },
+                  domProps: { title: params.row.feilds },
+                  on: { click: (e) => { e.stopPropagation() } }
+                }, params.row.feilds)
+              ])
+            }
+          },
+          {
+            title: '操作',
+            align: 'center',
+            minWidth: 200,
+            render: (h, params) => {
+              const row = params.row
+              const status = row.status
+              const text = ''
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.edit(row)
+                    }
+                  }
+                }, '编辑'),
+                h('Button', {
+                  props: {
+                    type: 'error',
+                    size: 'small'
+
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.delete(row.id)
+                    }
+                  }
+                }, '删除'), h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.viewDetails(row)
+                    }
+                  }
+                }, '查看详情')
+              ])
+            }
+          }
+        ],
+        pageData: {
+          total: 0, // 总共多少数据
+          pages: 0, // 总页数
+          pageIndex: 1, // 当前页
+          pageSize: 15 // 每页数据条数
         },
-        onCancel: () => {
-          this.$Message.info('已取消')
+        rowDetails: [],
+        imgList: []
+      }
+    },
+    methods: {
+      // 获取商品列表
+      getData() {
+        let _data = {
+          type: this.formItem.type,
+          classId: this.formItem.classId,
+          name: this.formItem.name,
+          id: this.formItem.id,
+          pageIndex: this.pageData.pageIndex,
+          pageSize: this.pageData.pageSize
         }
-      })
+        goodsfindList(_data).then(res => {
+          if(res.data.code == '0') {
+            this.tableData = res.data.data.dataList
+            this.pageData.total = res.data.data.total
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        })
+      },
+      // 获取商品分类
+      getClass() {
+        this.cityList = [{ 'value': '', 'label': '全部' }]
+        classfindList().then(res => {
+          if(res.data.code == '0') {
+            res.data.data.forEach(element => {
+              this.cityList.push({ 'value': element.id, 'label': element.name })
+            })
+          } else {
+            this.$Message.error(res.data.msg)
+          }
+        })
+      },
+      // 删除商品
+      delete(id) {
+        this.$Modal.confirm({
+          title: '提示',
+          content: `确定要删除此商品吗？`,
+          onOk: () => {
+            goodsremove({
+              id: id
+            }).then(res => {
+              if(res.data.code == '0') {
+                this.$Message.success('删除成功')
+                this.getData()
+              } else {
+                this.$Message.error(res.data.msg)
+              }
+            })
+          },
+          onCancel: () => {
+            this.$Message.info('已取消')
+          }
+        })
+      },
+      // 编辑
+      edit(row) {
+        this.$router.push({
+          name: 'goods-edit',
+          params: { content: JSON.stringify(row) }
+        })
+      },
+      // 查看详情
+      viewDetails(row) {
+        this.HandlClose(true)
+        this.title = row.name
+        this.rowDetails = row
+        this.imgList = JSON.parse(row.images)
+        // this.getDetailsData()
+      },
+      // 搜索
+      onSearch() {
+        this.pageData.pageIndex = 1
+        this.getData()
+      },
+      // 切换页码
+      changePage(current) {
+        this.pageData.pageIndex = current
+        this.tableData = this.getData()
+      },
+      HandlClose(flag) {
+        this.detailsIsShow = flag
+      },
+      addBtn() {
+        this.$router.push('goods-edit')
+      }
     },
-    // 编辑
-    edit (row) {
-      this.$router.push({
-        name: 'goods-edit',
-        params: { content: JSON.stringify(row) }
-      })
-    },
-    // 查看详情
-    viewDetails (row) {
-      this.HandlClose(true)
-      this.title = row.name
-      this.rowDetails = row
-      this.imgList = JSON.parse(row.images)
-      // this.getDetailsData()
-    },
-    // 搜索
-    onSearch () {
-      this.pageData.pageIndex = 1
+    mounted() {
       this.getData()
-    },
-    // 切换页码
-    changePage (current) {
-      this.pageData.pageIndex = current
-      this.tableData = this.getData()
-    },
-    HandlClose (flag) {
-      this.detailsIsShow = flag
-    },
-    addBtn () {
-      this.$router.push('goods-edit')
+      this.getClass()
     }
-  },
-  mounted () {
-    this.getData()
-    this.getClass()
   }
-}
 </script>
 <style lang="less" scoped>
   .modelTitle {
