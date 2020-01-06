@@ -108,8 +108,8 @@ export default {
         configKey: JSON.stringify(['USER_PROPORTION', 'PLATFORM_FORMALITIES'])
       }
       sysfindList(_data).then(res => {
-        if (res.data.data.code == '0') {
-          this.tableData = res.data.data.data.dataList
+        if (res.data.code == '0') {
+          this.tableData = res.data.data
           // this.pageData.total = res.data.data.data.total
         } else {
           this.$Message.error(res.data.msg)
