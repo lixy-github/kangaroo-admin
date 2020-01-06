@@ -15,7 +15,7 @@
             <Option value="WITHDRAW">提现</Option>
             <Option value="CONSIGNMENT">寄售</Option>
             <Option value="BUY">人民币购买</Option>
-            <Option value="REBATE">返佣</Option>
+            <Option value="REBATE">平台手续费</Option>
             <Option value="ORDERTIMECOUNT">订单取消</Option>
             <Option value="BUY_COUNPN">消费券购买</Option>
             <Option value="BUY_REBATE">下级购买返佣</Option>
@@ -73,7 +73,7 @@ export default {
         'WITHDRAW': '提现',
         'CONSIGNMENT': '寄售',
         'BUY': '人民币购买',
-        'REBATE': '返佣',
+        'REBATE': '平台手续费',
         'ORDERTIMECOUNT': '订单取消',
         'BUY_COUNPN': '消费券购买',
         'BUY_REBATE': '下级购买返佣'
