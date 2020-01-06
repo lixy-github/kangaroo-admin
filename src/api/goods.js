@@ -64,19 +64,19 @@ export const goodsclassremove = (data) => {
   })
 }
 
-// 供应链
+// 供应链
 export const goodsGetList = (data) => {
   return Axios.request({
-    url: '/admin/goods/getList',
+    url: '/admin/daomingorder/getList',
     data: data,
     method: 'post'
   })
 }
 
-// 供应链
+// 供应链
 export const goodsDetail = (data) => {
   return Axios.request({
-    url: '/admin/goods/detail',
+    url: '/admin/daomingorder/detail',
     data: data,
     method: 'post'
   })
