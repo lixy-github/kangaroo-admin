@@ -13,7 +13,7 @@ export const sysfindList = (data) => {
 // 编辑配置
 export const sysmodify = (data) => {
   return Axios.request({
-    url: '/admin//config/sys/modify',
+    url: '/admin/config/sys/modify',
     data: data,
     method: 'post'
   })

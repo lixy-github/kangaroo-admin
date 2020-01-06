@@ -28,14 +28,20 @@ export default {
     // 获取
     getData () {
       let _data = {
-        pageIndex: 1,
-        pageSize: 1,
+        // pageIndex: 1,
+        // pageSize: 1,
         configKey: 'INTRODUCTION'
       }
       sysfindList(_data).then(res => {
-        if (res.data.data.code == '0') {
-          this.formItem.content = res.data.data.data.dataList[0].configVal
-          this.rowData = res.data.data.data.dataList[0]
+        if (res.data.code == '0') {
+          // this.formItem.content = res.data.data.data.dataList[0].configVal
+          // this.rowData = res.data.data.data.dataList[0]
+          res.data.data.forEach(val => {
+            if (val.configKey == 'INTRODUCTION') {
+              this.formItem.content = val.configVal
+              this.rowData = val
+            }
+          })
         } else {
           this.$Message.error(res.data.msg)
         }
