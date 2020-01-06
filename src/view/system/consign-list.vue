@@ -105,7 +105,7 @@ export default {
       let _data = {
         // pageIndex: this.pageData.pageIndex,
         // pageSize: this.pageData.pageSize,
-        configKey: 'USER_PROPORTION,PLATFORM_FORMALITIES'
+        configKey: JSON.stringify(['USER_PROPORTION', 'PLATFORM_FORMALITIES'])
       }
       sysfindList(_data).then(res => {
         if (res.data.data.code == '0') {
@@ -162,5 +162,3 @@ export default {
   }
 }
 </script>
-<style lang="less">
-</style>
