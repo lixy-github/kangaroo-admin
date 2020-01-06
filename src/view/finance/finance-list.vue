@@ -18,6 +18,7 @@
             <Option value="REBATE">返佣</Option>
             <Option value="ORDERTIMECOUNT">订单取消</Option>
             <Option value="BUY_COUNPN">消费券购买</Option>
+            <Option value="BUY_REBATE">下级购买返佣</Option>
           </Select>
         </FormItem>
         </Col>
@@ -74,7 +75,8 @@ export default {
         'BUY': '人民币购买',
         'REBATE': '返佣',
         'ORDERTIMECOUNT': '订单取消',
-        'BUY_COUNPN': '消费券购买'
+        'BUY_COUNPN': '消费券购买',
+        'BUY_REBATE': '下级购买返佣'
       }
       return obj[val]
     }
