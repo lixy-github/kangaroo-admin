@@ -34,8 +34,6 @@ export default {
       }
       sysfindList(_data).then(res => {
         if (res.data.code == '0') {
-          // this.formItem.content = res.data.data.data.dataList[0].configVal
-          // this.rowData = res.data.data.data.dataList[0]
           res.data.data.forEach(val => {
             if (val.configKey == 'INTRODUCTION') {
               this.formItem.content = val.configVal
