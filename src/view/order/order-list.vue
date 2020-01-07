@@ -323,7 +323,7 @@
                   },
                   style: {
                     marginRight: '5px',
-                    display: row.orderStatus == 'WAsIT_SHIP' ? 'block' : 'none'
+                    display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
                   },
                   on: {
                     click: () => {
