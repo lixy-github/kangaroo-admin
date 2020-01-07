@@ -437,6 +437,9 @@
     margin: 0 2px;
   }
   /deep/.ivu-cascader-menu-item {
-    padding-right: 60px;
+    padding-right: 45px;
+    i {
+      right: 6px;
+    }
   }
 </style>
