@@ -387,7 +387,7 @@
     }
   }
 </script>
-<style scoped>
+<style lang="less" scoped>
   .addMillForm {
     width: 800px;
     margin: 0 auto;
@@ -435,5 +435,8 @@
     font-size: 20px;
     cursor: pointer;
     margin: 0 2px;
+  }
+  /deep/.ivu-cascader-menu-item {
+    padding-right: 60px;
   }
 </style>
