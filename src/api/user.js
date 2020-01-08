@@ -108,3 +108,12 @@ export const userSalesAccount = (data) => {
     method: 'get'
   })
 }
+
+// 充值-暂用
+export const userCharge = (data) => {
+  return Axios.request({
+    url: '/admin/account/testRecharge',
+    data: data,
+    method: 'post'
+  })
+}
