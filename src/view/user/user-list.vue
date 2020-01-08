@@ -92,7 +92,9 @@
     <Modal v-model="modalCharge" title="充值" :loading="loading" @on-ok="okCharge">
       <Form :label-width="80">
         <FormItem label="金额">
-          <Input type="number" v-model="chargeMoney" placeholder="请输入充值金额" />
+          <Input type="number" v-model="chargeMoney" placeholder="请输入充值金额">
+            <span slot="append">元</span>
+          </Input>
         </FormItem>
       </Form>
     </Modal>
@@ -325,7 +327,7 @@ export default {
 
       userCharge({
         userId: this.chargeId,
-        money: this.chargeMoney
+        money: Number(this.chargeMoney) * 100
       }).then(res => {
         if (res.data.code == 0) {
           this.$Message.success('充值成功')
