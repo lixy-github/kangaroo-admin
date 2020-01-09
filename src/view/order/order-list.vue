@@ -12,7 +12,7 @@
           <Select v-model="formItem.orderStatus">
             <Option value="">全部</Option>
             <Option value="UNPAID">未支付</Option>
-            <Option value="ALREADY_PAID">已支付</Option>
+            <!-- <Option value="ALREADY_PAID">已支付</Option> -->
             <Option value="WAIT_SHIP">待发货</Option>
             <Option value="ALREADY_SHIP">已发货</Option>
             <Option value="ALREADY_RECEIPT">已收货</Option>
