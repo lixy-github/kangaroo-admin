@@ -117,3 +117,21 @@ export const userCharge = (data) => {
     method: 'post'
   })
 }
+
+// 下两级用户admin/user/batchUpdateControl
+export const twoList = (data) => {
+  return Axios.request({
+    url: '/admin/user/twoList',
+    data: data,
+    method: 'post'
+  })
+}
+
+// 批量设置风控
+export const batchUpdateControl = (data) => {
+  return Axios.request({
+    url: '/admin/user/batchUpdateControl',
+    data: data,
+    method: 'post'
+  })
+}

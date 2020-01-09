@@ -23,8 +23,8 @@
         <FormItem label="调货">
           <Select v-model="formItem.controlRt" clearable>
             <Option value="-1">普通</Option>
-            <Option value="0">降低成功率</Option>
-            <Option value="100">提升成功率</Option>
+            <Option value="0">低成功率</Option>
+            <Option value="100">高成功率</Option>
           </Select>
         </FormItem>
         </Col>
@@ -93,7 +93,7 @@
       <Form :label-width="80">
         <FormItem label="金额">
           <Input type="number" v-model="chargeMoney" placeholder="请输入充值金额">
-            <span slot="append">元</span>
+          <span slot="append">元</span>
           </Input>
         </FormItem>
       </Form>
@@ -121,9 +121,9 @@ export default {
     }
     var transControlRt = (val) => {
       var obj = {
-        '0': '降低成功率',
+        '0': '低成功率',
         '-1': '普通',
-        '100': '提升成功率'
+        '100': '高成功率'
       }
       return obj[val]
     }
@@ -159,7 +159,8 @@ export default {
           title: 'id',
           align: 'center',
           key: 'id',
-          minWidth: 80
+          minWidth: 80,
+          fixed: 'left'
         },
         {
           title: '手机号',
@@ -171,7 +172,8 @@ export default {
           title: '昵称',
           align: 'center',
           key: 'nickName',
-          minWidth: 200,
+          minWidth: 150,
+          fixed: 'left',
           render: (h, p) => {
             return h('div', {
               domProps: {
@@ -193,7 +195,7 @@ export default {
           title: '调货',
           align: 'center',
           key: 'controlRt',
-          minWidth: 80,
+          minWidth: 100,
           render: (h, p) => {
             return h('div', {}, transControlRt(p.row.controlRt))
           }
@@ -202,7 +204,7 @@ export default {
           title: '经验值',
           align: 'center',
           key: 'exp',
-          minWidth: 80
+          minWidth: 100
         },
         {
           title: '代理级别',
@@ -211,6 +213,18 @@ export default {
           render: (h, p) => {
             return h('div', {}, transLevel(p.row.agentLevel))
           }
+        },
+        {
+          title: '下级人数',
+          align: 'center',
+          key: 'inviteCount',
+          minWidth: 100
+        },
+        {
+          title: '直推人数',
+          align: 'center',
+          key: 'directCount',
+          minWidth: 100
         },
         {
           title: '返利比',
@@ -229,7 +243,8 @@ export default {
         {
           title: '操作',
           align: 'center',
-          minWidth: 220,
+          fixed: 'right',
+          minWidth: 280,
           render: (h, params) => {
             const row = params.row
             const status = row.status
