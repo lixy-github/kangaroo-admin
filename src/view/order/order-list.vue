@@ -3,8 +3,8 @@
     <Form :model="formItem" :label-width="80">
       <Row style="padding-bottom: 20px;">
         <Col span="3" style="width: 250px">
-        <FormItem label="手机号">
-          <Input v-model="formItem.userPhone" placeholder="手机号查询"></Input>
+        <FormItem label="用户手机号">
+          <Input v-model="formItem.userPhone" placeholder="用户手机号查询"></Input>
         </FormItem>
         </Col>
         <Col span="3" style="width: 250px">
@@ -173,10 +173,10 @@ export default {
           fixed: 'left'
         },
         {
-          title: '用户Id',
+          title: '用户手机号',
           align: 'center',
-          minWidth: 80,
-          key: 'userId',
+          minWidth: 110,
+          key: 'userPhone',
           fixed: 'left'
         },
         {
