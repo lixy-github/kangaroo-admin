@@ -14,7 +14,7 @@
             <span>，消费券余额：</span>
             <span style="font-weight: bold;font-size: 15px;">{{userData.coupon+'元'}}</span></h2>
           <hr>
-          <h2 style="margin-bottom:0px;">近12个月的寄售成功详情：</h2>
+          <!-- <h2 style="margin-bottom:0px;">近12个月的寄售成功详情：</h2>
           <div v-if="shopList.length">
             <h5>(仅展示寄售成功月份和当月寄售成功总数)</h5>
             <table border="0" cellpadding="0" cellspacing="0" v-if="shopList.length>0">
@@ -39,7 +39,7 @@
             </table>
           </div>
           <div v-else style="margin:20px 0;">暂无寄售成功信息</div>
-          <hr>
+          <hr> -->
           <h2>下两级用户：</h2>
           <Button type="primary" style="margin-bottom:20px" @click="selectTh">批量设置调货</Button>
           <Table :columns="twoTableColumns" :data="twoTableData" size="small" ref="selection" @on-selection-change="handleSelectRow()" stripe>
