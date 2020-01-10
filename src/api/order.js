@@ -24,10 +24,18 @@ export const orderSend = (data) => {
   return Axios.request({
     method: 'post',
     url: '/admin/order/send',
-    params: data
+    data: data
   })
 }
 
+// 修改发货
+export const orderSendupdate = (data) => {
+  return Axios.request({
+    method: 'post',
+    url: '/admin/order/logistics/update',
+    data: data
+  })
+}
 // 查看物流
 export const logisticsFirmTrack = (data) => {
   return Axios.request({
