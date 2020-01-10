@@ -10,7 +10,7 @@
           </Select>
         </FormItem>
         </Col>
-        <Col span="3" style="width: 300px">
+        <Col span="3" style="width: 250px">
         <FormItem label="区域">
           <Select v-model="formItem.scope" @on-change="scopeChange">
             <Option value="-1">全部</Option>
@@ -18,9 +18,14 @@
           </Select>
         </FormItem>
         </Col>
-        <Col span="3" style="width: 300px">
+        <Col span="3" style="width: 250px">
         <FormItem label="商品Id">
           <Input type="number" v-model="formItem.id" placeholder="商品Id查询"></Input>
+        </FormItem>
+        </Col>
+        <Col span="3" style="width: 250px">
+        <FormItem label="商品名称">
+          <Input v-model="formItem.name" placeholder="商品名称查询"></Input>
         </FormItem>
         </Col>
         <Col span="1" offset="1" style="width: 200px">
@@ -61,7 +66,8 @@
         formItem: {
           timeid: '',
           scope: '',
-          id: ''
+          id: '',
+          name: ''
         },
         scopeList: constants.scopeData,
         timeList: [],
@@ -223,7 +229,8 @@
           timeid: this.formItem.timeid,
           pageIndex: this.pageData.pageIndex,
           pageSize: this.pageData.pageSize,
-          id: this.formItem.id
+          id: this.formItem.id,
+          name: this.formItem.name
         }
         goodsfindListByPage(_data).then(res => {
           if(res.data.code == '0') {
