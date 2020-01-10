@@ -306,6 +306,22 @@ export default [{
       access: ['产品介绍']
     },
     component: () => import('@/view/content/product-text.vue')
+  }, {
+    path: 'buy-text',
+    name: 'buy-text',
+    meta: {
+      title: '购买协议',
+      access: ['购买协议']
+    },
+    component: () => import('@/view/content/buy-text.vue')
+  }, {
+    path: 'fabu-text',
+    name: 'fabu-text',
+    meta: {
+      title: '委托发布协议',
+      access: ['委托发布协议']
+    },
+    component: () => import('@/view/content/fabu-text.vue')
   }
   ]
 },
