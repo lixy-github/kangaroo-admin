@@ -9,21 +9,21 @@
   </div>
 </template>
 <script>
-export default {
-  props: {
-    isShow: {
-      default: false,
-      type: Boolean
+  export default {
+    props: {
+      isShow: {
+        default: false,
+        type: Boolean
+      },
+      width: {
+        default: '580px',
+        type: String
+      }
     },
-    width: {
-      default: '580px',
-      type: String
+    data() {
+      return {}
     }
-  },
-  data () {
-    return {}
   }
-}
 </script>
 
 <style lang="less" scoped>
@@ -37,7 +37,7 @@ export default {
     height: 100%;
     width: 580px;
     background: #fff;
-    z-index: 11;
+    z-index: 999;
     overflow-y: auto;
   }
   .addChannelList::-webkit-scrollbar {
