@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-  import { userinfo, allChildren, userSalesAccount, twoList, batchUpdateControl } from '@/api/user'
+  import { userinfo, allChildren, twoList, batchUpdateControl } from '@/api/user'
   export default {
     name: 'discountCoupon',
     props: {
@@ -312,15 +312,6 @@
           if(res.data.code == '0') {
             this.userData = res.data.data
             this.account = Math.round(res.data.data.account / 100)
-          } else {
-            this.$Message.error(res.data.msg)
-          }
-        })
-        userSalesAccount({
-          userId: this.rowData.id
-        }).then(res => {
-          if(res.data.code == '0') {
-            this.shopList = res.data.data
           } else {
             this.$Message.error(res.data.msg)
           }

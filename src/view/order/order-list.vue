@@ -18,6 +18,8 @@
             <Option value="ALREADY_RECEIPT">已收货</Option>
             <Option value="SMALL_CONSIGNMENT">自营店寄售</Option>
             <Option value="BIG_CONSIGNMENT">大卖场寄售</Option>
+            <Option value="SMALL_WAIT_CONSIGNMENT">自营店待寄售</Option>
+            <Option value="BIG_WAIT_CONSIGNMENT">大卖场待寄售</Option>
             <Option value="SUCCESS_CONSIGNMENT">寄售成功</Option>
             <Option value="REDEMPTION_SUCCESS">换购成功</Option>
             <Option value="CLOSED">已关闭</Option>
@@ -121,6 +123,8 @@
           'WAIT_SHIP': '待发货',
           'SMALL_CONSIGNMENT': '自营店寄售',
           'BIG_CONSIGNMENT': '大卖场寄售',
+          'SMALL_WAIT_CONSIGNMENT': '自营店待寄售',
+          'BIG_WAIT_CONSIGNMENT': '大卖场待寄售',
           'SUCCESS_CONSIGNMENT': '寄售成功',
           'ALREADY_SHIP': '已发货',
           'ALREADY_RECEIPT': '已收货',
@@ -266,7 +270,7 @@
             title: '订单状态',
             align: 'center',
             key: 'orderStatus',
-            minWidth: 100,
+            minWidth: 110,
             render: (h, p) => {
               return h('div', {}, transStatus(p.row.orderStatus))
             }

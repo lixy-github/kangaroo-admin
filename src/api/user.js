@@ -100,15 +100,6 @@ export const allChildren = (data) => {
   })
 }
 
-// 用户最近12个月的销量统计
-export const userSalesAccount = (data) => {
-  return Axios.request({
-    url: '/admin/user/userSalesAccount',
-    params: data,
-    method: 'get'
-  })
-}
-
 // 充值-暂用
 export const userCharge = (data) => {
   return Axios.request({
