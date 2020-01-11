@@ -12,7 +12,7 @@
           <Select v-model="formItem.orderStatus">
             <Option value="">全部</Option>
             <Option value="UNPAID">未支付</Option>
-            <!-- <Option value="ALREADY_PAID">已支付</Option> -->
+            <Option value="ALREADY_PAID">已支付</Option>
             <Option value="WAIT_SHIP">待发货</Option>
             <Option value="ALREADY_SHIP">已发货</Option>
             <Option value="ALREADY_RECEIPT">已收货</Option>
@@ -311,24 +311,81 @@
             minWidth: 150,
             fixed: 'right',
             render: (h, params) => {
-              const row = params.row
-              const text = ''
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '5px',
-                    display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
-                  },
-                  on: {
-                    click: () => {
-                      this.orderSendBtn(row.id, row)
+              const row = params.row;
+              if(row.type == 'LOCAL') {
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'primary',
+                      size: 'small'
+                    },
+                    style: {
+                      marginRight: '5px',
+                      display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
+                    },
+                    on: {
+                      click: () => {
+                        this.orderSendBtn(row.id, row)
+                      }
                     }
-                  }
-                }, '发货'),
+                  }, '发货'),
+                ])
+              } else {
+                if(row.orderStatus == 'WAIT_SHIP') {
+                  return h('div', [
+                    h('Button', {
+                      props: {
+                        type: 'primary',
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px',
+                        float: 'left'
+                      },
+                      on: {
+                        click: () => {
+                          this.orderSendBtn(row.id, row)
+                        }
+                      }
+                    }, '发货'),
+                  ])
+                } else if(row.orderStatus == 'ALREADY_PAID') {
+                  return h('div', [
+                    h('Button', {
+                      props: {
+                        type: 'primary',
+                        size: 'small'
+                      },
+                      style: {
+                        marginRight: '5px',
+                        float: 'left'
+                      },
+                      on: {
+                        click: () => {
+                          this.orderSendBtn(row.id, row)
+                        }
+                      }
+                    }, '发货'),
+                  ])
+                }
+
+              }
+              return h('div', [
+                /*  h('Button', {
+                   props: {
+                     type: 'primary',
+                     size: 'small'
+                   },
+                   style: {
+                     marginRight: '5px',
+                     display: row.orderStatus == 'WAIT_SHIP' ? 'block' : 'none'
+                   },
+                   on: {
+                     click: () => {
+                       this.orderSendBtn(row.id, row)
+                     }
+                   }
+                 }, '发货'), */
                 h('Button', {
                   props: {
                     type: 'primary',
