@@ -334,17 +334,28 @@ export default [{
     title: '财务管理',
     icon: 'logo-usd',
     showAlways: true,
-    access: ['财务管理', '资产明细']
+    access: ['财务管理', '资产明细', '收入统计']
   },
-  children: [{
-    path: 'finance-list',
-    name: 'finance-list',
-    meta: {
-      title: '资产明细',
-      access: ['资产明细']
+  children: [
+    {
+      path: 'finance-list',
+      name: 'finance-list',
+      meta: {
+        title: '资产明细',
+        access: ['资产明细']
+      },
+      component: () => import('@/view/finance/finance-list.vue')
     },
-    component: () => import('@/view/finance/finance-list.vue')
-  }]
+    {
+      path: 'revenue-statistics',
+      name: 'revenue-statistics',
+      meta: {
+        title: '收入统计',
+        // access: ['收入统计']
+      },
+      component: () => import('@/view/finance/revenue-statistics.vue')
+    },
+  ]
 },
 //   系统配置
 {
